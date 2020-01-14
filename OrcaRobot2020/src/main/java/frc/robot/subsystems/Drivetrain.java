@@ -7,13 +7,11 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
-import edu.wpi.first.wpilibj.VictorSP;
-import edu.wpi.first.wpilibj.GenericHID.Hand;
 //import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -25,16 +23,21 @@ public class Drivetrain extends SubsystemBase {
    * Creates a new Drivetrain.
    */
   //private DifferentialDrive drivetrain;
-  private VictorSP[] motors;
-  private TalonSRX talon;
+  private CANSparkMax[] motors;
   private SpeedControllerGroup right_motors;
-  //private SpeedControllerGroup left_motors;
+  private SpeedControllerGroup left_motors;
 
   public Drivetrain() {
-    motors= new VictorSP[] { new VictorSP(Constants.fl_motor_id),
-      new VictorSP(Constants.rr_motor_id), new VictorSP(Constants.fr_motor_id)};
-    talon =new TalonSRX(5);
+   
+    motors= new CANSparkMax[] { 
+      new CANSparkMax(Constants.rr_motor_id,MotorType.kBrushless),
+       new CANSparkMax(Constants.fr_motor_id,MotorType.kBrushless),
+       new CANSparkMax(Constants.rl_motor_id,MotorType.kBrushless), 
+       new CANSparkMax(Constants.rl_motor_id,MotorType.kBrushless) };
+    
+     
     right_motors = new SpeedControllerGroup(motors[1], motors[2]);
+    left_motors = new SpeedControllerGroup(motors[4], motors[3]);
     //drivetrain = new DifferentialDrive(left_motors, right_motors);
   }
 
@@ -42,7 +45,7 @@ public class Drivetrain extends SubsystemBase {
     
 
 
-    talon.set(ControlMode.PercentOutput,l);
+   
     motors[0].set(l);
 
     right_motors.set(r);
@@ -52,17 +55,14 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public void drive(Joystick joy){
-    double fwd = -joy.getY(Hand.kLeft);
-    double turn = joy.getRawAxis(2);
-    fwd = Math.copySign(fwd*fwd, fwd);
-    turn = Math.copySign(turn*turn, turn) * 0.5;
-    double l = fwd + turn;
-    double r = fwd - turn;
+    double l = -joy.getRawAxis(1);
+    double r = joy.getRawAxis(5);
+   
     drive(l,r);
   }
 
   public void _StAAapP(){
-    for (VictorSP t : motors) {
+    for (CANSparkMax t : motors) {
       t.set(0);
     } 
   }

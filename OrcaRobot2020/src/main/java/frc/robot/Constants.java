@@ -16,21 +16,9 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-    public static int fl_motor_id = 5;
-    public static int fr_motor_id = 2;
-    public static int rr_motor_id = 3;
-    public static int spin_motor_id = 7;
-    public static int winch0_id = 0;
-    public static int winch1_id = 1;
-    public static int climb_extender_id = 8;
-    public static int transfer_motor_0_id = 6;
-    public static int transfer_motor_1_id = 4;
-    public static int intake_motor_id = 9;
+    public static int fl_motor_id = 10;
+    public static int fr_motor_id = 3;
+    public static int rr_motor_id = 2;
+    public static int rl_motor_id = 1;
 
-    public static int flywheel_motor_0_id=1;
-    public static int flywheel_motor_1_id=2;
-
-    public static int disc_spinner_solenoid_id = 1;
-    public static int intake_solenoid_id = 3;
-    public static int transfer_solenoid_id = 2;  
 }
