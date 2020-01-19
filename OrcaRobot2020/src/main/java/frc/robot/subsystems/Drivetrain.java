@@ -10,11 +10,10 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.Joystick;
+
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
-//import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 
 
@@ -33,32 +32,28 @@ public class Drivetrain extends SubsystemBase {
       new CANSparkMax(Constants.rr_motor_id,MotorType.kBrushless),
        new CANSparkMax(Constants.fr_motor_id,MotorType.kBrushless),
        new CANSparkMax(Constants.rl_motor_id,MotorType.kBrushless), 
-       new CANSparkMax(Constants.rl_motor_id,MotorType.kBrushless) };
+       new CANSparkMax(Constants.fl_motor_id,MotorType.kBrushless) };
     
      
-    right_motors = new SpeedControllerGroup(motors[1], motors[2]);
-    left_motors = new SpeedControllerGroup(motors[4], motors[3]);
+    right_motors = new SpeedControllerGroup(motors[0], motors[1]);
+    left_motors = new SpeedControllerGroup(motors[3], motors[2]);
     //drivetrain = new DifferentialDrive(left_motors, right_motors);
   }
 
-  public void drive(double l, double r){
+  public void drive(Double r, Double l){
     
-
-
-   
-    motors[0].set(l);
-
+  
     right_motors.set(r);
-    
-    SmartDashboard.putNumber("r", r);
-    SmartDashboard.putNumber("l", l);
+    left_motors.set(l);
   }
 
-  public void drive(Joystick joy){
-    double l = -joy.getRawAxis(1);
-    double r = joy.getRawAxis(5);
+  public void drive(XboxController m_driver){
+    
+    
+   // double l = m_driver.getY(GenericHID.Hand.kLeft) * Constants.kLeftDriveScaling;
+    //double r = m_driver.getY(GenericHID.Hand.kRight) * Constants.kRightDriveScaling;
    
-    drive(l,r);
+    //drive(l,r);
   }
 
   public void _StAAapP(){
