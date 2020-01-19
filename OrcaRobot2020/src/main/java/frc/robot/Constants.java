@@ -16,9 +16,19 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+    //DriveTrain Motors
     public static int fl_motor_id = 10;
     public static int fr_motor_id = 3;
     public static int rr_motor_id = 2;
     public static int rl_motor_id = 1;
-
+    //Motors ID's
+    public static final int kIntake = 5;
+    public static final int kConveyor = 1;
+    public static final int kFlyWheel = 2;
+  //Speeds for Motors
+    public static final double kIntakeSpeed = 1.0;
+    public static final double kConveyorSpeed = 0.5;
+    public static final double kFlywheelSpeed = 0.45;
+    public static final double kLeftDriveScaling = 1.0 / 1.3;
+    public static final double kRightDriveScaling = 1.0 / 1.4;
 }
