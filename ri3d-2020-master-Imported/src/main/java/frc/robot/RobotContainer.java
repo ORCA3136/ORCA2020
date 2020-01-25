@@ -25,7 +25,6 @@ public class RobotContainer {
   // Subsystems:
  
   private final DriveTrain m_driveTrain = new DriveTrain();
-  private final NeoSoli m_NeoSoli = new NeoSoli();
 
   // Controllers:
   private final XboxController m_driver = new XboxController(1);
@@ -55,11 +54,9 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     // Change forward direction (Drive Y):
-    
-
-    new JoystickButton(m_driver, XboxController.Button.kY.value).whenPressed(new RunCommand(() -> NeoSoli.forward(),m_NeoSoli ));
+    new JoystickButton(m_driver, XboxController.Button.kY.value);
     // Activate shooter (Manip A):
-    new JoystickButton(m_driver, XboxController.Button.kX.value).whenPressed(new RunCommand(() -> NeoSoli.reverse(),m_NeoSoli ));
+   
   }
 
   /**
