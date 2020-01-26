@@ -14,11 +14,10 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.NeoSoli;
 import frc.robot.subsystems.flywheel;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants;
-import frc.robot.commands.Auto;
+
 
 
 
@@ -33,7 +32,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   // private final Dummy_Test_System m_testbed = new Dummy_Test_System();
 
-  private final Auto m_drive = new Auto();
+  
   private final XboxController m_driver = new XboxController(1);
  
   final Intake m_intake = new Intake();
@@ -61,10 +60,9 @@ public class RobotContainer {
     m_intake.setDefaultCommand(new RunCommand(() -> m_intake.intakeStop(), m_intake));
 
     // Drivetrain default command (Tank drive):
-    m_driveTrain.setDefaultCommand(new RunCommand(() -> m_driveTrain.Drive(m_driver.getY(GenericHID.Hand.kLeft) * Constants.kLeftDriveScaling,
-            m_driver.getY(GenericHID.Hand.kRight) * Constants.kRightDriveScaling), m_driveTrain));
+    m_driveTrain.setDefaultCommand(new RunCommand(() -> Drivetrain.Drive(m_driver.getY(GenericHID.Hand.kLeft) * Constants.kLeftDriveScaling,
+            m_driver.getY(GenericHID.Hand.kRight) * Constants.kRightDriveScaling,m_driver), m_driveTrain));
   }
-
   private Object AutoShoot() {
     return null;
   }
@@ -80,10 +78,12 @@ public class RobotContainer {
     // Activate shooter (Manip A):
    
     // Move conveyor up (Manip RB):
-    new JoystickButton(m_driver, XboxController.Button.kBumperRight.value) .whileActiveContinuous(new RunCommand(() -> m_conveyor.raiseConveyor(), m_conveyor));
+    new JoystickButton(m_driver, XboxController.Button.kBumperRight.value) .whileActiveContinuous(
+      new RunCommand(() -> Conveyor.raiseConveyor(), m_conveyor));
     
     // Run intake inward (Manip LB):
-    new JoystickButton(m_driver, XboxController.Button.kBumperLeft.value).whileHeld(new RunCommand(() -> m_intake.intakeIn(), m_intake));
+    new JoystickButton(m_driver, XboxController.Button.kBumperLeft.value).whileHeld(
+      new RunCommand(() -> m_intake.intakeIn(), m_intake));
   
   }
 
@@ -94,8 +94,5 @@ public class RobotContainer {
    
  //  * @return the command to run in autonomous
    
-  public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
-    return m_drive;
-  }
+ 
 }

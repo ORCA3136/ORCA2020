@@ -40,6 +40,7 @@ public class AutoShoot extends CommandBase {
     if (stop = false){
       flywheel.Run();
       ConveySoli.forward();
+      Conveyor.raiseConveyor();
     }
     
     else{

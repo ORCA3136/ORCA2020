@@ -8,8 +8,10 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import edu.wpi.first.wpilibj.GenericHID;
 
 
 import com.revrobotics.CANSparkMax;
@@ -32,10 +34,6 @@ public class Drivetrain extends SubsystemBase {
     * @param move The speed to move forward
     * @param turn The speed to turn the robot
     */
-   public void Drive(double l, double r) {
-      m_left.set(TrueLeftX(l));
-      m_right.set(TrueRightX(-r));
-   }
 
    public static void AutoD(double l, double r) {
       m_left.set((l));
@@ -44,26 +42,42 @@ public class Drivetrain extends SubsystemBase {
   /**
    * Reverses the forward direction of the robot
    */
-  public double TrueLeftX(double LY){
+  public static void Drive(double l, double r,XboxController driver) {
+if(driver.getYButton()){
+   m_left.set(driver.getTriggerAxis(GenericHID.Hand.kRight));
+   m_right.set(driver.getTriggerAxis(GenericHID.Hand.kRight)* -1);
 
-    // Used to get the absolute position of our Left control stick Y-axis (removes deadzone)
+   m_left.set(driver.getTriggerAxis(GenericHID.Hand.kLeft)* -1);
+   m_right.set(driver.getTriggerAxis(GenericHID.Hand.kLeft));
+      }
 
-  
-    double stick = LY * Constants.kLeftDriveScaling;
+   else{
+   
+      m_left.set(TrueRightX(l));
+      m_right.set(TrueLeftX(r));
+      }
+   }
 
-    stick *= Math.abs(stick);
+   public static double TrueLeftX(double LY) {
 
-   if (Math.abs(stick) < 0.1) {
+      // Used to get the absolute position of our Left control stick Y-axis (removes
+      // deadzone)
 
-       stick = 0;
+      double stick = LY * Constants.kLeftDriveScaling;
 
-    }
+      stick *= Math.abs(stick);
 
-    return stick;
+      if (Math.abs(stick) < 0.1) {
 
- }
+         stick = 0;
 
- public double TrueRightX(double RY){
+      }
+
+      return stick;
+
+   }
+
+   public static double TrueRightX(double RY) {
 
     // Used to get the absolute position of our Right control stick Y-axis (removes deadzone)
 

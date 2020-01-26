@@ -19,7 +19,7 @@ public class Conveyor extends SubsystemBase {
   /**
    * Runs conveyor up
    */
-  public void raiseConveyor() {
+  public static void raiseConveyor() {
     m_conveyor.set(-Constants.kConveyorSpeed);
   }
 
