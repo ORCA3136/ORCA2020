@@ -17,7 +17,7 @@ public class ColorSoli extends SubsystemBase {
 	
 	public ColorSoli() {
 		// TODO Auto-generated constructor stub
-		doubleSolenoid = new DoubleSolenoid(20, 0, 1);
+		doubleSolenoid = new DoubleSolenoid(0, 1);
 		
 	}
 

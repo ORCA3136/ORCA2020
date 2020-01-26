@@ -9,39 +9,51 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.IntakeSoli;
+import frc.robot.subsystems.ConveySoli;
+import frc.robot.subsystems.Conveyor;
+import frc.robot.subsystems.flywheel;
 
-public class Auto extends CommandBase {
-  
-   // Creates a new Auto.
-   
-  public double startTime;
-  public Auto() {
+public class AutoShoot extends CommandBase {
+  /**
+   * Creates a new AutoShoot.
+   */
+  public AutoShoot() {
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-   startTime = Timer.getFPGATimestamp();
-    IntakeSoli.forward();
+    flywheel.FlyAcceleration();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-   
-   
-    double time = Timer.getFPGATimestamp();
-    if (time - startTime < 1){
-      Drivetrain.AutoD(.4,.4);
-    }  else {
-      Drivetrain.AutoD(0,0);
+  
+  boolean Done = false;  
+  boolean stop = false; 
+  double time = Timer.getFPGATimestamp();
+
+
+  while (Done = false){
+    if (stop = false){
+      flywheel.Run();
+      ConveySoli.forward();
     }
-   
-   
-   Drivetrain.AutoD(.1,.1);
+    
+    else{
+      flywheel.stop();
+      Conveyor.stopConveyor();
+      ConveySoli.reverse();
+      Done = true;
+      }
+    
+    
+      if (time > 7){
+      stop = true;
+      }
+    }
   }
 
   // Called once the command ends or is interrupted.

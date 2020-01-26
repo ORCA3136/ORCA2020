@@ -14,7 +14,7 @@ import frc.robot.Constants;
 
 public class Conveyor extends SubsystemBase {
   // Motor Controllers:
-  private final WPI_VictorSPX m_conveyor = new WPI_VictorSPX(Constants.kConveyor);
+  private final static WPI_VictorSPX m_conveyor = new WPI_VictorSPX(Constants.kConveyor);
 
   /**
    * Runs conveyor up
@@ -33,7 +33,7 @@ public class Conveyor extends SubsystemBase {
   /**
    * Stops conveyor
    */
-  public void stopConveyor() {
+  public static void stopConveyor() {
     m_conveyor.stopMotor();
   }
 }
