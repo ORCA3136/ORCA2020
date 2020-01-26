@@ -67,7 +67,7 @@ if(driver.getYButton()){
 
       stick *= Math.abs(stick);
 
-      if (Math.abs(stick) < 0.1) {
+      if (Math.abs(stick) < 0.05) {
 
          stick = 0;
 
@@ -85,7 +85,7 @@ if(driver.getYButton()){
 
     stick *= Math.abs(stick);
 
-   if (Math.abs(stick) < 0.1) {
+   if (Math.abs(stick) < 0.05) {
 
        stick = 0;
 
