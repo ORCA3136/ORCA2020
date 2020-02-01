@@ -17,7 +17,7 @@ public class ConveySoli extends SubsystemBase {
 
     public ConveySoli() {
         // TODO Auto-generated constructor stub
-        doubleSolenoid = new DoubleSolenoid(2, 3);
+        doubleSolenoid = new DoubleSolenoid(20, 0, 1);
 
     }
 

@@ -2,11 +2,8 @@ package frc.robot.subsystems;
 
 // import java.util.Map;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
 // import edu.wpi.first.networktables.NetworkTableEntry;
 // import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 // import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -16,11 +13,7 @@ import frc.robot.Constants;
 
 public class flywheel extends SubsystemBase {
     static Double expont = .001;
-
-    private static CANSparkMax m_5 = new CANSparkMax(Constants.kFlyWheel5, MotorType.kBrushless);
-    private static CANSparkMax m_6 = new CANSparkMax(Constants.kFlyWheel6, MotorType.kBrushless);
-
-    private static SpeedControllerGroup m_flywheel = new SpeedControllerGroup(m_5, m_6);
+    private static WPI_VictorSPX m_flywheel = new WPI_VictorSPX(Constants.kFlyWheel);
 
     // Shuffleboard:
     // private ShuffleboardTab flywheelSpeedTab;
@@ -44,19 +37,16 @@ public class flywheel extends SubsystemBase {
     // currentFlywheelSpeedEntry = flywheelSpeedTab.add("Flywheel speed",
     // kFlywheelSpeed).getEntry();
     // }
-    /*
-     * spin fly reverse soli move hopper stop hopper fire soli stop fly
-     */
 
     /**
      * Spins the flywheel
      */
     public static void FlyAcceleration() {
         if (expont < Constants.kFlywheelSpeed) {
-       
-        //adds exponital growth to speed
-        expont = expont *expont;
-        m_flywheel.set(expont);
+
+            // adds exponital growth to speed
+            expont = expont * expont;
+            m_flywheel.set(expont);
        }
        else if (expont > Constants.kFlywheelSpeed){
             stop();
@@ -65,13 +55,6 @@ public class flywheel extends SubsystemBase {
             stop();
         }
     }
-
-
-    public static void Run() {
-        m_flywheel.set(Constants.kFlywheelSpeed);
-    }
-
-
 
     /**
      * Sets the speed of the flywheel
@@ -88,6 +71,9 @@ public class flywheel extends SubsystemBase {
     public static void stop() {
         m_flywheel.set(0);
     }
+
+	public static void Run() {
+	}
 
     /**
      * Runs continuously
