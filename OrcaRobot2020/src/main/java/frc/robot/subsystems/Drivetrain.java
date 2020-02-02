@@ -9,7 +9,7 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -45,21 +45,27 @@ public class Drivetrain extends SubsystemBase {
    // motors[2].set((r));
 }
 
-  public static void Drive(double l, double r, XboxController driver) {
-    /*if (driver.getYButton() == true) {
-      motors[1].set(driver.getTriggerAxis(GenericHID.Hand.kLeft)* -1);
-      motors[2].set(driver.getTriggerAxis(GenericHID.Hand.kLeft));
-   
-     motors[1].set(driver.getTriggerAxis(GenericHID.Hand.kRight));
-       
-     motors[2].set(driver.getTriggerAxis(GenericHID.Hand.kRight) * -1);
-      
+public static void WinchUp(XboxController driver){
+  motors[1].set(driver.getTriggerAxis(GenericHID.Hand.kLeft)* -1);
+  motors[2].set(driver.getTriggerAxis(GenericHID.Hand.kLeft));
+}
+
+public static void WinchDown(XboxController driver){
+  motors[1].set(driver.getTriggerAxis(GenericHID.Hand.kRight));   
+  motors[2].set(driver.getTriggerAxis(GenericHID.Hand.kRight) * -1);
+}
+ 
+public static void Drive(double l, double r, XboxController driver) {
+    if (driver.getYButton() == true) {
+      WinchDown(driver);
     }
-      else{*/
-        left_motors.set(TrueRightX(l));
-        right_motors.set(TrueLeftX(-r));
+    else{
+      left_motors.set(TrueRightX(l));
+      right_motors.set(TrueLeftX(-r));
           }
-      // }
+
+   
+       }
     
        public static double TrueLeftX(double LY) {
     

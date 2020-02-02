@@ -36,7 +36,7 @@ public class RobotContainer {
 
   private final Drivetrain m_drivetrain = new Drivetrain();
   
-  XboxController m_driver = new XboxController(1);
+  XboxController driver = new XboxController(1);
   NeoSoli m_Neo = new NeoSoli();
   ColorSoli m_Con = new ColorSoli(); 
   IntakeSoli m_in = new IntakeSoli();
@@ -44,17 +44,16 @@ public class RobotContainer {
   Intake m_intake = new Intake();
   Conveyor m_convoy = new Conveyor();
   flywheel m_fly = new flywheel();
-
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
     m_drivetrain.setDefaultCommand(
-        new RunCommand(() -> Drivetrain.Drive(m_driver.getY(GenericHID.Hand.kLeft) * Constants.kLeftDriveScaling,
-            m_driver.getY(GenericHID.Hand.kRight) * Constants.kRightDriveScaling, m_driver), m_drivetrain));
+        new RunCommand(() -> Drivetrain.Drive(driver.getY(GenericHID.Hand.kLeft) * Constants.kLeftDriveScaling,
+            driver.getY(GenericHID.Hand.kRight) * Constants.kRightDriveScaling, driver), m_drivetrain));
 
             m_fly.setDefaultCommand(
-              new RunCommand(() -> flywheel.Run(m_driver), m_fly));
+              new RunCommand(() -> flywheel.Run(driver), m_fly));
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -68,42 +67,57 @@ public class RobotContainer {
   private void configureButtonBindings() {
 
     // X button - Color solenoid up
-    new JoystickButton(m_driver, XboxController.Button.kX.value)
+    new JoystickButton(driver, XboxController.Button.kX.value)
         .whenPressed(new RunCommand(() -> ColorSoli.forward(), m_Con));
 
+
     // B button - Intake out
-    new JoystickButton(m_driver, XboxController.Button.kB.value)
+    new JoystickButton(driver, XboxController.Button.kB.value)
         .whenHeld(new RunCommand(() -> m_intake.intakeOut(), m_Con));
 
-        
-    new JoystickButton(m_driver, XboxController.Button.kB.value)
-    .whenHeld(new RunCommand(() -> m_intake.intakeOut(), m_Con));
+    new JoystickButton(driver, XboxController.Button.kB.value)
+    .whenReleased(new RunCommand(() -> m_intake.intakeStop(), m_Con));
  
+
+
    // Y button - PTO gearbox
-    new JoystickButton(m_driver, XboxController.Button.kY.value)
+    new JoystickButton(driver, XboxController.Button.kY.value)
     .whenReleased(new RunCommand(() -> NeoSoli.reverse(), m_Neo ));
   
-    new JoystickButton(m_driver, XboxController.Button.kY.value)
+    new JoystickButton(driver, XboxController.Button.kY.value)
     .whenHeld(new RunCommand(() -> NeoSoli.forward(), m_Neo ));
     
+
+
    //A button - Intake in
-    new JoystickButton(m_driver, XboxController.Button.kA.value)
+    new JoystickButton(driver, XboxController.Button.kA.value)
     .whenHeld(new RunCommand(() -> m_intake.intakeIn(), m_Con ));
 
+    new JoystickButton(driver, XboxController.Button.kA.value)
+    .whenReleased(new RunCommand(() -> m_intake.intakeStop(), m_Con));
+
+
+
    //Left Stick button - convey Soli fire
-    new JoystickButton(m_driver, XboxController.Button.kStickLeft.value)
+    new JoystickButton(driver, XboxController.Button.kStickLeft.value)
     .whenPressed(new RunCommand(() -> m_convoy.raiseConveyor(), m_convoy ));
   
+
+
    //Right Stick button - convey Soli retract
-    new JoystickButton(m_driver, XboxController.Button.kStickRight.value)
+    new JoystickButton(driver, XboxController.Button.kStickRight.value)
     .whenPressed(new RunCommand(() -> m_convoy.lowerConveyor(), m_convoy ));
  
+
+
    //Start button - color soli fire
-    new JoystickButton(m_driver, XboxController.Button.kStart.value)
+    new JoystickButton(driver, XboxController.Button.kStart.value)
     .whenPressed(new RunCommand(() -> m_Color.forward(),m_Color  ));
    
+
+
    //Start button - color soli retract
-    new JoystickButton(m_driver, XboxController.Button.kBack.value)
+    new JoystickButton(driver, XboxController.Button.kBack.value)
     .whenPressed(new RunCommand(() -> m_Color.reverse(), m_Color ));
  
   }

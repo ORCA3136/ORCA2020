@@ -86,10 +86,10 @@ public class flywheel extends SubsystemBase {
     }
 
     public static void Run(XboxController driver) {
-
+if(driver.getYButton()==false){
        left.set(driver.getTriggerAxis(GenericHID.Hand.kLeft)* 1);
         right.set(driver.getTriggerAxis(GenericHID.Hand.kLeft)* -1);
-        //right.set(expont);
+}//right.set(expont);
     }
 
     public static void test(XboxController m_driver) {

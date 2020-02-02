@@ -21,9 +21,6 @@ public final class Constants {
     public static int fr_motor_id = 4;
     public static int rr_motor_id = 3;
     public static int rl_motor_id = 2;
-    //Motors ID's
-  
-  //Speeds for Motors
     
     
  //Motors ID's
@@ -31,7 +28,9 @@ public final class Constants {
     public static final int kConveyor = 8;
     public static final int kFlyWheel_l = 5;
     public static final int kFlyWheel_R = 6;
-  //Speeds for Motors
+ 
+ 
+    //Speeds for Motors
     public static final double kIntakeSpeed = 0.75;
     public static final double kConveyorSpeed = 0.5;
     public static final double kFlywheelSpeed = 0.45;
