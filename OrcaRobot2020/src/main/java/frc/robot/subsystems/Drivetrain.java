@@ -7,90 +7,103 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import edu.wpi.first.wpilibj.GenericHID;
 
-
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 public class Drivetrain extends SubsystemBase {
-  // Motor Controllers:
-  private static CANSparkMax m_Left1 = new CANSparkMax(Constants.kLFDrive,MotorType.kBrushless);
-  private static CANSparkMax m_Left2 = new CANSparkMax(Constants.kLBDrive, MotorType.kBrushless);
-  private static CANSparkMax m_Right1 = new CANSparkMax(Constants.kRFDrive,MotorType.kBrushless);
-  private static CANSparkMax m_Right2 = new CANSparkMax(Constants.kRBDrive,MotorType.kBrushless);
-
-  // SpeedControllerGroups:
-  private static SpeedControllerGroup m_left = new SpeedControllerGroup(m_Left1, m_Left2);
-   private static SpeedControllerGroup m_right = new SpeedControllerGroup(m_Right2, m_Right1);
-
-   /**
-    * Runs arcade drive on this drivetrain
-    * 
-    * @param move The speed to move forward
-    * @param turn The speed to turn the robot
-    */
-
-   public static void AutoD(double l, double r) {
-      m_left.set((l));
-      m_right.set((r));
-  }
   /**
-   * Reverses the forward direction of the robot
+   * Creates a new Drivetrain.
    */
-  public static void Drive(double l, double r,XboxController driver) {
-if(driver.getYButton()){
-   m_left.set(driver.getTriggerAxis(GenericHID.Hand.kRight));
-   m_right.set(driver.getTriggerAxis(GenericHID.Hand.kRight)* -1);
+  //private DifferentialDrive drivetrain;
+  private static CANSparkMax[] motors;
+  private static SpeedControllerGroup right_motors;
+  private static SpeedControllerGroup left_motors;
 
-   m_left.set(driver.getTriggerAxis(GenericHID.Hand.kLeft)* -1);
-   m_right.set(driver.getTriggerAxis(GenericHID.Hand.kLeft));
-      }
+  public Drivetrain() {
 
-   else{
-   
-      m_left.set(TrueRightX(l));
-      m_right.set(TrueLeftX(r));
-      }
-   }
+    motors = new CANSparkMax[] { new CANSparkMax(Constants.rr_motor_id, MotorType.kBrushless),
+        new CANSparkMax(Constants.fr_motor_id, MotorType.kBrushless),
+        new CANSparkMax(Constants.rl_motor_id, MotorType.kBrushless),
+        new CANSparkMax(Constants.fl_motor_id, MotorType.kBrushless) };
 
-   public static double TrueLeftX(double LY) {
+    right_motors = new SpeedControllerGroup(motors[0], motors[1]);
+    left_motors = new SpeedControllerGroup(motors[3], motors[2]);
 
-      // Used to get the absolute position of our Left control stick Y-axis (removes
-      // deadzone)
+    motors[0].follow(motors[1]);
+    motors[3].follow(motors[2]);
+    // drivetrain = new DifferentialDrive(left_motors, right_motors);
+  }
 
-      double stick = LY * Constants.kLeftDriveScaling;
-
-      stick *= Math.abs(stick);
-
-      if (Math.abs(stick) < 0.05) {
-
-         stick = 0;
-
-      }
-
-      return stick;
-
-   }
-
-   public static double TrueRightX(double RY) {
-
-    // Used to get the absolute position of our Right control stick Y-axis (removes deadzone)
-
-    double stick = RY  * Constants.kLeftDriveScaling;
-
-    stick *= Math.abs(stick);
-
-   if (Math.abs(stick) < 0.05) {
-
-       stick = 0;
-
-    }
-
- return stick;
+  public static void AutoD(double l, double r) {
+   // motors[1].set((l));
+   // motors[2].set((r));
 }
+
+  public static void Drive(double l, double r, XboxController driver) {
+    /*if (driver.getYButton() == true) {
+      motors[1].set(driver.getTriggerAxis(GenericHID.Hand.kLeft)* -1);
+      motors[2].set(driver.getTriggerAxis(GenericHID.Hand.kLeft));
+   
+     motors[1].set(driver.getTriggerAxis(GenericHID.Hand.kRight));
+       
+     motors[2].set(driver.getTriggerAxis(GenericHID.Hand.kRight) * -1);
+      
+    }
+      else{*/
+        left_motors.set(TrueRightX(l));
+        right_motors.set(TrueLeftX(-r));
+          }
+      // }
+    
+       public static double TrueLeftX(double LY) {
+    
+          // Used to get the absolute position of our Left control stick Y-axis (removes
+          // deadzone)
+    
+          double stick = LY ;
+    
+          stick *= Math.abs(stick);
+    
+          if (Math.abs(stick) < 0.1) {
+    
+             stick = 0;
+    
+          }
+    
+          return stick;
+    
+       }
+    
+       public static double TrueRightX(double RY) {
+    
+        // Used to get the absolute position of our Right control stick Y-axis (removes deadzone)
+    
+        double stick = RY;
+    
+        stick *= Math.abs(stick);
+    
+       if (Math.abs(stick) < 0.1) {
+    
+           stick = 0;
+    
+        }
+    
+     return stick;
+      }
+
+  public void _StAAapP(){
+    for (CANSparkMax t : motors) {
+      t.set(0);
+    } 
+  }
+  @Override
+  public void periodic() {
+    // This method will be called once per scheduler run
+  }
 }

@@ -24,7 +24,7 @@ public class AutoShoot extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    flywheel.FlyAcceleration();
+   // flywheel.FlyAcceleration();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -38,9 +38,9 @@ public class AutoShoot extends CommandBase {
 
   while (Done = false){
     if (stop = false){
-      flywheel.Run();
-      ConveySoli.forward();
-      Conveyor.raiseConveyor();
+     // flywheel.Run();
+      //ConveySoli.forward();
+     // Conveyor.raiseConveyor();
     }
     
     else{

@@ -7,14 +7,14 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Conveyor extends SubsystemBase {
   // Motor Controllers:
-  private final static WPI_VictorSPX m_conveyor = new WPI_VictorSPX(Constants.kConveyor);
+  private final static WPI_TalonSRX m_conveyor = new WPI_TalonSRX(Constants.kConveyor);
 
   /**
    * Runs conveyor up

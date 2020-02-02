@@ -13,21 +13,21 @@ public class ColorSoli extends SubsystemBase {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 	
-	private DoubleSolenoid doubleSolenoid;
-	
-	public ColorSoli() {
-		// TODO Auto-generated constructor stub
-		doubleSolenoid = new DoubleSolenoid(20, 0, 1);
-		
-	}
+	private static DoubleSolenoid doubleSolenoid;
+
+    public ColorSoli() {
+        // TODO Auto-generated constructor stub
+      doubleSolenoid = new DoubleSolenoid(2, 3);
+
+    }
 
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
-        //setDefaultCommand(new MySpecialCommand());
+        // setDefaultCommand(new MySpecialCommand());
     }
-    
-    public void forward(){
-    	doubleSolenoid.set(DoubleSolenoid.Value.kForward);
+
+    public static void forward() {
+        doubleSolenoid.set(DoubleSolenoid.Value.kForward);
     }
     
     public void reverse(){

@@ -2,18 +2,23 @@ package frc.robot.subsystems;
 
 // import java.util.Map;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.XboxController;
 // import edu.wpi.first.networktables.NetworkTableEntry;
 // import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 // import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 // import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+
 
 public class flywheel extends SubsystemBase {
-    static Double expont = .001;
-    private static WPI_VictorSPX m_flywheel = new WPI_VictorSPX(Constants.kFlyWheel);
+    static Double expont = .1;
+    static CANSparkMax left = new CANSparkMax(5, MotorType.kBrushless);
+    static CANSparkMax right = new CANSparkMax(6, MotorType.kBrushless);
 
     // Shuffleboard:
     // private ShuffleboardTab flywheelSpeedTab;
@@ -41,21 +46,28 @@ public class flywheel extends SubsystemBase {
     /**
      * Spins the flywheel
      */
-    public static void FlyAcceleration() {
-        if (expont < Constants.kFlywheelSpeed) {
+ 
 
-            // adds exponital growth to speed
-            expont = expont * expont;
-            m_flywheel.set(expont);
-       }
-       else if (expont > Constants.kFlywheelSpeed){
-            stop();
-        } else {
-            // for testing putting stop
-            stop();
+    public static double SlowStop() {
+        boolean finish = false;
+        while (finish == false) {
+            if (expont / expont > 0) {
+                expont = 0.0;
+                finish = true;
+            } else if (expont > 0) {
+                // adds exponital growth to speed
+                expont = expont / expont;
+                left.set(expont);
+              //  right.set(expont);
+            } else {
+                // for testing putting stop
+                stop();
+                finish = true;
+            }
+
         }
+        return expont;
     }
-
     /**
      * Sets the speed of the flywheel
      * 
@@ -69,10 +81,20 @@ public class flywheel extends SubsystemBase {
      * Stops the flywheel
      */
     public static void stop() {
-        m_flywheel.set(0);
+       // right.set(0);
+        left.set(0);
     }
 
-	public static void Run() {
+    public static void Run(XboxController driver) {
+
+       left.set(driver.getTriggerAxis(GenericHID.Hand.kLeft)* 1);
+        right.set(driver.getTriggerAxis(GenericHID.Hand.kLeft)* -1);
+        //right.set(expont);
+    }
+
+    public static void test(XboxController m_driver) {
+        left.set(m_driver.getTriggerAxis(GenericHID.Hand.kLeft) * -1);
+        //right.set(m_driver.getTriggerAxis(GenericHID.Hand.kLeft) * -1);
 	}
 
     /**

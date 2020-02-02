@@ -7,14 +7,14 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Intake extends SubsystemBase {
   // Motor Controllers:
-  private final WPI_VictorSPX m_intake = new WPI_VictorSPX(Constants.kIntake);
+private final WPI_TalonSRX m_intake = new WPI_TalonSRX(Constants.kIntake);
 
   /**
    * Runs the intake motor inward
@@ -39,6 +39,6 @@ public class Intake extends SubsystemBase {
    * Stops the intake motor
    */
   public void intakeStop() {
-    m_intake.stopMotor();
+   m_intake.stopMotor();
   }
 }

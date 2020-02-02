@@ -17,7 +17,7 @@ public class IntakeSoli extends SubsystemBase {
 
     public IntakeSoli() {
         // TODO Auto-generated constructor stub
-        doubleSolenoid = new DoubleSolenoid(20, 0, 1);
+       doubleSolenoid = new DoubleSolenoid(4, 5);
 
     }
 

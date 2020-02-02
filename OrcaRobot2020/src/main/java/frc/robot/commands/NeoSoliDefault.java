@@ -16,23 +16,25 @@ public class NeoSoliDefault extends CommandBase {
  * @param NeoSoli 
    */
   public NeoSoliDefault() {
-    //addRequirements(NeoSoli); 
+   addRequirements(new NeoSoli()); 
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    NeoSoli.forward();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    NeoSoli.reverse();
+    NeoSoli.forward();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    NeoSoli.forward();
   }
 
   // Returns true when the command should end.

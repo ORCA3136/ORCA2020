@@ -2,7 +2,6 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.commands.NeoSoliDefault;
 
@@ -29,6 +28,7 @@ public class NeoSoli extends SubsystemBase {
 
     public static void forward() {
         doubleSolenoid.set(DoubleSolenoid.Value.kForward);
+
     }
     
     public static void reverse(){
