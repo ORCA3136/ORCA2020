@@ -2,12 +2,12 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 /**
  *
  */
+
 public class ColorSoli extends SubsystemBase {
     
     // Put methods for controlling this subsystem
@@ -17,7 +17,8 @@ public class ColorSoli extends SubsystemBase {
 
     public ColorSoli() {
         // TODO Auto-generated constructor stub
-      //AdoubleSolenoid = new DoubleSolenoid(2, 3);
+      doubleSolenoid = new DoubleSolenoid(2, 3);
+
 
     }
 

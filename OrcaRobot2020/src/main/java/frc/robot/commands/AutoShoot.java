@@ -9,9 +9,8 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.ConveySoli;
 import frc.robot.subsystems.Conveyor;
-import frc.robot.subsystems.flywheel;
+import frc.robot.subsystems.Flywheel;
 
 public class AutoShoot extends CommandBase {
   /**
@@ -44,9 +43,8 @@ public class AutoShoot extends CommandBase {
     }
     
     else{
-      flywheel.stop();
+      Flywheel.stop();
       Conveyor.stopConveyor();
-      ConveySoli.reverse();
       Done = true;
       }
     
