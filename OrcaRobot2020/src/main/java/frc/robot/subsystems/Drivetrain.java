@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import edu.wpi.first.wpilibj.GenericHID;
 
 
 public class Drivetrain extends SubsystemBase {
@@ -50,19 +51,22 @@ public class Drivetrain extends SubsystemBase {
   }
 //winches up
   public static void WinchUp(XboxController driver) {
-    motors[1].set(driver.getTriggerAxis(GenericHID.Hand.kLeft) * -1);
-    motors[2].set(driver.getTriggerAxis(GenericHID.Hand.kLeft));
+    forward();
+    motors[1].set(Constants.kWinchSpeed * -1);
+    motors[2].set(Constants.kWinchSpeed);
   }
 //winches down
   public static void WinchDown(XboxController driver) {
+    forward();
     motors[1].set(Constants.kWinchSpeed);
     motors[2].set(Constants.kWinchSpeed * -1);
+    
   }
 //manual drive
-  public static void Drive(double l, double r, XboxController driver) {
+  public static void Drive( XboxController controller) {
    
-      left_motors.set(TrueRightX(l));
-      right_motors.set(TrueLeftX(-r));
+      left_motors.set(TrueRightX((controller.getY(GenericHID.Hand.kLeft) * -Constants.kLeftDriveScaling)));
+      right_motors.set(TrueLeftX((controller.getY(GenericHID.Hand.kRight) * Constants.kLeftDriveScaling)));
     
   }
 //fixes deadzone
@@ -111,5 +115,8 @@ public static void reverse(){
 //holds 
 public static void off(){
   PTOSoli.set(Value.kOff);
+}
+public void initDefaultCommand() {
+  reverse();
 }
 }

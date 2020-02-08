@@ -17,19 +17,19 @@ import frc.robot.Constants;
 public class Intake extends SubsystemBase {
   static DoubleSolenoid IntakeSoli = new DoubleSolenoid(4, 5);
   // Motor Controllers:
-  private final WPI_TalonSRX m_intake = new WPI_TalonSRX(Constants.kIntake);
+  private final static WPI_TalonSRX m_intake = new WPI_TalonSRX(Constants.kIntake);
 
   /**
    * Runs the intake motor inward
    */
-  public void intakeIn() {
+  public static void intakeIn() {
     m_intake.set(Constants.kIntakeSpeed * -1);
   }
 
   /**
    * Runs the intake motor outward
    */
-  public void intakeOut() {
+  public static void intakeOut() {
     m_intake.set(Constants.kIntakeSpeed);
   }
 
@@ -41,7 +41,7 @@ public class Intake extends SubsystemBase {
   /**
    * Stops the intake motor
    */
-  public void intakeStop() {
+  public static void intakeStop() {
     m_intake.stopMotor();
   }
 

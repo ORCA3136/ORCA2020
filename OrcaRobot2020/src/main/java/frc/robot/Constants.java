@@ -24,9 +24,11 @@ public final class Constants {
     
     
  //Motors ID's
-    public static final int kIntake = 9;
+    public static final int kIntake = 5;
     public static final int kConveyor = 8;
-    public static final int kFlyWheel_l = 5;
+   
+    public static final int kFlyWheel_l = 7;
+  
     public static final int kFlyWheel_R = 6;
  
  
@@ -37,4 +39,7 @@ public final class Constants {
     public static final double kLeftDriveScaling = 1;
     public static final double kRightDriveScaling = 1;
     public static final double kWinchSpeed = 1;
+
+
+    public static boolean ToggleSoli = false;
 }

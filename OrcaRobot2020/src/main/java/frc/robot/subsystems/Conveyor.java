@@ -20,7 +20,7 @@ public class Conveyor extends SubsystemBase {
   private final static WPI_TalonSRX m_conveyor1 = new WPI_TalonSRX(Constants.kConveyor);
   private final static WPI_TalonSRX m_conveyor2 = new WPI_TalonSRX(Constants.kConveyor);
   static DoubleSolenoid ConveySoli = new DoubleSolenoid(0, 1);
-  static boolean flip = false;
+  
 
   /**
    * Runs conveyor up
@@ -33,7 +33,7 @@ public class Conveyor extends SubsystemBase {
   /**
    * Runs conveyor down
    */
-  public void lowerConveyor() {
+  public static void lowerConveyor() {
     m_conveyor1.set(Constants.kConveyorSpeed);
     m_conveyor2.set(-Constants.kConveyorSpeed);
   }
@@ -53,12 +53,12 @@ public class Conveyor extends SubsystemBase {
 
   public static void toggle() {
   //Switches between fired a reteacted per called
-    if (flip = true) {
+    if (Constants.ToggleSoli = true) {
       forward();
-      flip = false;
-    } else if (flip = false) {
+      Constants.ToggleSoli = false;
+    } else if (Constants.ToggleSoli = false) {
       reverse();
-      flip = true;
+      Constants.ToggleSoli = true;
     } else {
       off();
     }
