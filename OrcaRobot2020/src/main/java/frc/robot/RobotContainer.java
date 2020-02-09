@@ -104,34 +104,31 @@ public class RobotContainer {
 
 
 
-    //X Button
-
-
-
-
-
-    //Y Button
-
-
    //Left Stick Button - Conveyor Up
-    new JoystickButton(controller, XboxController.Button.kStickLeft.value)
-    .whenPressed(new RunCommand(() -> Conveyor.raiseConveyor(), m_Conveyor));
-  
-
+   new JoystickButton(controller, XboxController.Button.kStickLeft.value)
+   .whenPressed(new RunCommand(() -> Conveyor.stopConveyor(), m_Conveyor));
+   
 
    //Right Stick Button - Conveyor Down
-    new JoystickButton(controller, XboxController.Button.kStickRight.value)
-    .whenPressed(new RunCommand(() -> Conveyor.lowerConveyor(), m_Conveyor ));
- 
+  
 
-/*
+    //X Button - Conveyor Soli fire
+    new JoystickButton(controller, XboxController.Button.kX.value)
+    .whenPressed(new RunCommand(() -> Conveyor.forward(), m_Conveyor));
+
+
+    //Y Button - Conveyor Soli retact
+    new JoystickButton(controller, XboxController.Button.kY.value)
+    .whenPressed(new RunCommand(() -> Conveyor.reverse(), m_Conveyor));
+
+
    //Start Button 
 
 
 
    //Select/Back Button 
   
- */
+ 
   }
 
 

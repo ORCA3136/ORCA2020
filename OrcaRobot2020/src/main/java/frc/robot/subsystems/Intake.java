@@ -17,20 +17,25 @@ import frc.robot.Constants;
 public class Intake extends SubsystemBase {
   static DoubleSolenoid IntakeSoli = new DoubleSolenoid(4, 5);
   // Motor Controllers:
-  private final static WPI_TalonSRX m_intake = new WPI_TalonSRX(Constants.kIntake);
+  private final static WPI_TalonSRX m_intake1 = new WPI_TalonSRX(Constants.kIntake1);
+  private final static WPI_TalonSRX m_intake2 = new WPI_TalonSRX(Constants.kIntake2);
 
   /**
    * Runs the intake motor inward
    */
   public static void intakeIn() {
-    m_intake.set(Constants.kIntakeSpeed * -1);
+    m_intake1.set(Constants.kIntakeSpeed * -1);
+    m_intake2.set(Constants.kIntakeSpeed * -1);
+    Conveyor.raiseConveyor();
   }
 
   /**
    * Runs the intake motor outward
    */
   public static void intakeOut() {
-    m_intake.set(Constants.kIntakeSpeed);
+    m_intake1.set(Constants.kIntakeSpeed);
+    m_intake2.set(Constants.kIntakeSpeed);
+    Conveyor.lowerConveyor();
   }
 
   // toggles solenoid for the intake arms
@@ -42,7 +47,9 @@ public class Intake extends SubsystemBase {
    * Stops the intake motor
    */
   public static void intakeStop() {
-    m_intake.stopMotor();
+    m_intake1.stopMotor();
+    m_intake2.stopMotor();
+    Conveyor.stopConveyor();
   }
 
   public void initDefaultCommand() {

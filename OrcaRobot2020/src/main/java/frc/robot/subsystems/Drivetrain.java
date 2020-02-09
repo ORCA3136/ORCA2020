@@ -7,6 +7,8 @@
 
 package frc.robot.subsystems;
 
+import java.util.concurrent.DelayQueue;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -17,7 +19,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import edu.wpi.first.wpilibj.GenericHID;
+
 
 
 public class Drivetrain extends SubsystemBase {
@@ -58,6 +60,7 @@ public class Drivetrain extends SubsystemBase {
 //winches down
   public static void WinchDown(XboxController driver) {
     forward();
+    
     motors[1].set(Constants.kWinchSpeed);
     motors[2].set(Constants.kWinchSpeed * -1);
     
@@ -65,8 +68,8 @@ public class Drivetrain extends SubsystemBase {
 //manual drive
   public static void Drive( XboxController controller) {
    
-      left_motors.set(TrueRightX((controller.getY(GenericHID.Hand.kLeft) * -Constants.kLeftDriveScaling)));
-      right_motors.set(TrueLeftX((controller.getY(GenericHID.Hand.kRight) * Constants.kLeftDriveScaling)));
+      left_motors.set(TrueRightX((controller.getY(GenericHID.Hand.kLeft) * Constants.kLeftDriveScaling)));
+      right_motors.set(TrueLeftX((controller.getY(GenericHID.Hand.kRight) * -Constants.kLeftDriveScaling)));
     
   }
 //fixes deadzone

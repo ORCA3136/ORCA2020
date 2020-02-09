@@ -38,8 +38,8 @@ public class AutoShoot extends CommandBase {
   while (Done = false){
     if (stop = false){
      // flywheel.Run();
-      //ConveySoli.forward();
-     // Conveyor.raiseConveyor();
+        Conveyor.forward();
+       Conveyor.raiseConveyor();
     }
     
     else{

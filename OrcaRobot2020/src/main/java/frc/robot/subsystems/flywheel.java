@@ -13,12 +13,13 @@ import edu.wpi.first.wpilibj.XboxController;
 // import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 // import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 
 public class Flywheel extends SubsystemBase {
    // static Double expont = .1;
-    static CANSparkMax left = new CANSparkMax(5, MotorType.kBrushless);
-    static CANSparkMax right = new CANSparkMax(6, MotorType.kBrushless);
+    static CANSparkMax left = new CANSparkMax(Constants.kFlyWheel_l, MotorType.kBrushless);
+    static CANSparkMax right = new CANSparkMax(Constants.kFlyWheel_R, MotorType.kBrushless);
 
     // Shuffleboard:
     // private ShuffleboardTab flywheelSpeedTab;
@@ -106,6 +107,8 @@ public class Flywheel extends SubsystemBase {
         right.set(0);
         left.set(0);
     }
+
+    
 
     // continusly rus flyWheel
     public static void Run(XboxController driver) {}

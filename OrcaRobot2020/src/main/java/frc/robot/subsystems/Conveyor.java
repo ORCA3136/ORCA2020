@@ -17,8 +17,8 @@ import frc.robot.Constants;
 
 public class Conveyor extends SubsystemBase {
   // Motor Controllers:
-  private final static WPI_TalonSRX m_conveyor1 = new WPI_TalonSRX(Constants.kConveyor);
-  private final static WPI_TalonSRX m_conveyor2 = new WPI_TalonSRX(Constants.kConveyor);
+  private final static WPI_TalonSRX m_conveyor1 = new WPI_TalonSRX(Constants.kConveyor1);
+  private final static WPI_TalonSRX m_conveyor2 = new WPI_TalonSRX(Constants.kConveyor2);
   static DoubleSolenoid ConveySoli = new DoubleSolenoid(0, 1);
   
 
@@ -49,6 +49,7 @@ public class Conveyor extends SubsystemBase {
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     reverse();
+    stopConveyor();
   }
 
   public static void toggle() {
