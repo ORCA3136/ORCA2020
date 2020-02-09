@@ -74,6 +74,7 @@ public class RobotContainer {
 
 
 
+
    // Right Bumper Button - Lower Climb 
     new JoystickButton(controller, XboxController.Button.kBumperRight.value)
     .whenHeld(new RunCommand(() -> Drivetrain.WinchUp(controller), m_drivetrain ));
@@ -86,6 +87,7 @@ public class RobotContainer {
 
 
 
+
     // B Button - Intake Out
     new JoystickButton(controller, XboxController.Button.kB.value)
         .whenHeld(new RunCommand(() -> Intake.intakeOut(), m_Intake));
@@ -95,6 +97,7 @@ public class RobotContainer {
  
 
   
+
    //A Button - Intake In
     new JoystickButton(controller, XboxController.Button.kA.value)
     .whenHeld(new RunCommand(() -> Intake.intakeIn(),  m_Intake ));
@@ -104,12 +107,17 @@ public class RobotContainer {
 
 
 
+
    //Left Stick Button - Conveyor Up
    new JoystickButton(controller, XboxController.Button.kStickLeft.value)
    .whenPressed(new RunCommand(() -> Conveyor.stopConveyor(), m_Conveyor));
    
 
-   //Right Stick Button - Conveyor Down
+
+
+   //Right Stick Button 
+
+
   
 
     //X Button - Conveyor Soli fire
@@ -117,17 +125,25 @@ public class RobotContainer {
     .whenPressed(new RunCommand(() -> Conveyor.forward(), m_Conveyor));
 
 
+
+
     //Y Button - Conveyor Soli retact
     new JoystickButton(controller, XboxController.Button.kY.value)
     .whenPressed(new RunCommand(() -> Conveyor.reverse(), m_Conveyor));
 
 
-   //Start Button 
 
 
+   //Start Button - Shooter Speed Up
+   new JoystickButton(controller, XboxController.Button.kStart.value)
+   .whenPressed(new RunCommand(() -> Flywheel.SpeedUp(), m_FlyWheel));
+
+
+   
 
    //Select/Back Button 
-  
+   new JoystickButton(controller, XboxController.Button.kBack.value)
+   .whenPressed(new RunCommand(() -> Flywheel.SlowStop(), m_FlyWheel));
  
   }
 

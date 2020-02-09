@@ -38,8 +38,8 @@ public final class Constants {
     public static final double kIntakeSpeed = 0.75;
     public static final double kConveyorSpeed = 1;
     public static final double kFlywheelSpeed = 0.45;
-    public static final double kLeftDriveScaling = 0.8;
-    public static final double kRightDriveScaling = 0.8;
+    public static final double kLeftDriveScaling = 0.9;
+    public static final double kRightDriveScaling = 0.9;
     public static final double kWinchSpeed = 0.5;
 
 

@@ -17,7 +17,7 @@ import frc.robot.Constants;
 
 
 public class Flywheel extends SubsystemBase {
-   // static Double expont = .1;
+    static Double exponent = .01;
     static CANSparkMax left = new CANSparkMax(Constants.kFlyWheel_l, MotorType.kBrushless);
     static CANSparkMax right = new CANSparkMax(Constants.kFlyWheel_R, MotorType.kBrushless);
 
@@ -49,47 +49,52 @@ public class Flywheel extends SubsystemBase {
      */
 
     // exponential decay of speed
-    public static void SlowStop() {}
-     /*   boolean finish = false;
+    public static void SlowStop() {
+        boolean finish = false;
         while (finish == false) {
-            if (expont / expont > 0) {
-                expont = 0.0;
-                finish = true;
-            } else if (expont > 0) {
-                // adds exponital growth to speed
-                expont = expont / expont;
-                left.set(expont);
-                right.set(-expont);
-            } else {
-                // for testing putting stop
-                stop();
+            if (exponent == 0) {
+                left.set(exponent);
+                right.set(-exponent);
                 finish = true;
             }
-
+            else if (exponent / exponent < 0) {
+                exponent = 0.0;
+                finish = true;
+            } 
+            else if (exponent > 0) {
+                exponent = exponent - 2/exponent;
+                left.set(exponent);
+                right.set(-exponent);
+            }
+             else {
+                //Should never execute
+                stop();
+                finish = true;
+             }
          }
-        return expont;
+       
     }
-*/
+
     // exponential growth of speed
-    public static void SpeedUp() {}
-      /*  boolean finish = false;
+    public static void SpeedUp() {
+        boolean finish = false;
         while (finish == false) {
-            if (expont * expont > 0) {
-                expont = Constants.kFlywheelSpeed;
+            if (exponent * exponent > Constants.kFlywheelSpeed) {
+                exponent = Constants.kFlywheelSpeed;
                 finish = true;
-            } else if (expont > 0) {
-                // adds exponital growth to speed
-                expont = expont * expont;
-                left.set(expont);
-                right.set(-expont);
+            } else if (Constants.kFlywheelSpeed > exponent) {
+                exponent = exponent + exponent;
+                left.set(exponent);
+                right.set(-exponent);
             } else {
+                //Should never execute
                 stop();
                 finish = true;
             }
 
-        }*/
-      //  return expont;
-   // }
+        }
+        
+    }
 
     /**
      * Sets the speed of the flywheel
@@ -111,19 +116,18 @@ public class Flywheel extends SubsystemBase {
     
 
     // continusly rus flyWheel
-    public static void Run(XboxController driver) {}
-   /*     if (Constants.kFlywheelSpeed > expont) {
-            //SpeedUp();
+    public static void Run(XboxController driver) {
+        if (Constants.kFlywheelSpeed > exponent) {
+            SpeedUp();
         }
-       else if(expont == Constants.kFlywheelSpeed){
-           left.set(driver.getTriggerAxis(GenericHID.Hand.kLeft)* 1);
-           right.set(driver.getTriggerAxis(GenericHID.Hand.kLeft)* -1);
+       else if(exponent == Constants.kFlywheelSpeed){
+            SlowStop();
         }
         else{
             SlowStop();
         }
     }
-*/
+
 //manual run of flywheel
     public static void test(XboxController m_driver) {
         left.set(m_driver.getTriggerAxis(GenericHID.Hand.kLeft) * -1);

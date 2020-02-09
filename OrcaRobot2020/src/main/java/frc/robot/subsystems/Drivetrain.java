@@ -7,8 +7,6 @@
 
 package frc.robot.subsystems;
 
-import java.util.concurrent.DelayQueue;
-
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -49,7 +47,7 @@ public class Drivetrain extends SubsystemBase {
 //code for auto
   public static void AutoD(double l, double r) {
     motors[1].set((l));
-    motors[2].set((r));
+    motors[2].set((-r));
   }
 //winches up
   public static void WinchUp(XboxController driver) {

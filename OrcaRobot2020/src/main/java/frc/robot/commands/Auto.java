@@ -35,7 +35,7 @@ public class Auto extends CommandBase {
    
     double time = Timer.getFPGATimestamp();
     if (time - startTime < 4){
-      Drivetrain.AutoD(1,-1);
+      Drivetrain.AutoD(0.5,0.5);
     }  else {
       Drivetrain.AutoD(0.0,0.0);
     }
