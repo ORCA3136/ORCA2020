@@ -22,7 +22,7 @@ public class Flywheel extends SubsystemBase {
     static CANSparkMax right = new CANSparkMax(Constants.kFlyWheel_R, MotorType.kBrushless);
 
     public Flywheel(){
-left.follow(right, true);
+
 
     }
     // Shuffleboard:
