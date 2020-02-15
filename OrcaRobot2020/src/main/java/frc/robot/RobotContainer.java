@@ -109,15 +109,17 @@ public class RobotContainer {
 
 
    //Left Stick Button - Conveyor Up
+  
    new JoystickButton(controller, XboxController.Button.kStickLeft.value)
-   .whenPressed(new RunCommand(() -> Conveyor.stopConveyor(), m_Conveyor));
+   .whenPressed(new RunCommand(() -> Flywheel.set(Constants.getConstants().debugShooterSet), m_FlyWheel));
    
-
+   
+   
 
 
    //Right Stick Button 
    new JoystickButton(controller, XboxController.Button.kStickRight.value)
-   .whenPressed(new RunCommand(() -> Flywheel.SlowStop(), m_FlyWheel));
+   .whenPressed(new RunCommand(() -> Flywheel.stop(), m_FlyWheel));
  
 
   

@@ -1,9 +1,13 @@
 package frc.robot.subsystems;
 
+import com.revrobotics.CANEncoder;
+import com.revrobotics.CANPIDController;
+
 // import java.util.Map;
 
-
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.ControlType;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.GenericHID;
@@ -21,10 +25,57 @@ public class Flywheel extends SubsystemBase {
     static CANSparkMax left = new CANSparkMax(Constants.kFlyWheel_l, MotorType.kBrushless);
     static CANSparkMax right = new CANSparkMax(Constants.kFlyWheel_R, MotorType.kBrushless);
 
+<<<<<<< Updated upstream
     public Flywheel(){
 
+=======
+    
+  CANEncoder encoder;
+    static CANPIDController controller;
 
+    Constants constants = Constants.getConstants();
+
+    double setpoint = 0;
+
+public Flywheel(){
+    right.follow(left, true);
+    right.set(0.0);
+    
+    left.setIdleMode(IdleMode.kCoast);
+    right.setIdleMode(IdleMode.kCoast);
+    
+    encoder = right.getEncoder();
+    controller = right.getPIDController();
+    controller.setFeedbackDevice(encoder);
+    stop();
+    updateConstants();
+}
+//manual run of flywheel
+    public static void test(XboxController m_driver) {
+        right.set(m_driver.getTriggerAxis(GenericHID.Hand.kLeft) * -1);
+        
     }
+    
+    public static void set(double setpoint) {
+        controller.setReference(0, ControlType.kVelocity);
+    }
+
+    public static void stop() {
+        controller.setReference(0, ControlType.kDutyCycle);
+    }
+
+    public void update() {
+    }
+>>>>>>> Stashed changes
+
+    public void updateConstants() {
+        controller.setOutputRange(-1, 0);
+        controller.setP(constants.shooterP);
+        controller.setI(constants.shooterI);
+        controller.setD(constants.shooterD);
+        controller.setFF(constants.shooterF);
+    }
+
     // Shuffleboard:
     // private ShuffleboardTab flywheelSpeedTab;
     // private NetworkTableEntry flywheelSpeedEntry;
@@ -58,20 +109,17 @@ public class Flywheel extends SubsystemBase {
         while (finish == false) {
             if (exponent == 0) {
                 left.set(exponent);
-                
+
                 finish = true;
-            }
-            else if (exponent / exponent < 0) {
+            } else if (exponent / exponent < 0) {
                 exponent = 0.0;
                 finish = true;
-            } 
-            else if (exponent > 0) {
+            } else if (exponent > 0) {
                 exponent = exponent - .00002;
                 left.set(exponent);
-               
-            }
-             else {
-                //Should never execute
+
+            } else {
+                // Should never execute
                 stop();
                 finish = true;
              }
@@ -84,6 +132,7 @@ public class Flywheel extends SubsystemBase {
         exponent = .00001;
         boolean finish = false;
         left.set(exponent);
+        
           while (finish == false) {
             if (exponent + exponent > Constants.kFlywheelSpeed) {
                 exponent = Constants.kFlywheelSpeed;
@@ -91,6 +140,7 @@ public class Flywheel extends SubsystemBase {
             } else if (Constants.kFlywheelSpeed > exponent) {
                 exponent = exponent + .00001;
                 left.set(exponent);
+                
             } else {
                 //Should never execute
                 stop();
@@ -113,10 +163,7 @@ public class Flywheel extends SubsystemBase {
     /**
      * Stops the flywheel
      */
-    public static void stop() {
-        left.set(0);
-    }
-
+    
     
 
     // continusly rus flyWheel
@@ -132,10 +179,7 @@ public class Flywheel extends SubsystemBase {
         }
     }
 
-//manual run of flywheel
-    public static void test(XboxController m_driver) {
-        left.set(m_driver.getTriggerAxis(GenericHID.Hand.kLeft) * -1);
-	}
+
 
     /**
      * Runs continuously

@@ -10,6 +10,9 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
@@ -29,9 +32,15 @@ public class Drivetrain extends SubsystemBase {
   private static SpeedControllerGroup right_motors;
   private static SpeedControllerGroup left_motors;
   static DoubleSolenoid PTOSoli = new DoubleSolenoid(6, 7);
+  static NetworkTable vision_table = NetworkTableInstance.getDefault().getTable("limelight");
+
+  NetworkTableEntry target_valid = vision_table.getEntry("tv");
+  static NetworkTableEntry target_offset = vision_table.getEntry("tx");
 
   public Drivetrain() {
-//instantiates motors
+
+    // instantiates motors
+
     motors = new CANSparkMax[] { new CANSparkMax(Constants.rr_motor_id, MotorType.kBrushless),
         new CANSparkMax(Constants.fr_motor_id, MotorType.kBrushless),
         new CANSparkMax(Constants.rl_motor_id, MotorType.kBrushless),
@@ -39,16 +48,34 @@ public class Drivetrain extends SubsystemBase {
 
     right_motors = new SpeedControllerGroup(motors[0], motors[1]);
     left_motors = new SpeedControllerGroup(motors[3], motors[2]);
-//creates leader-follower relationships
+
+    // creates leader-follower relationships
     motors[0].follow(motors[1]);
     motors[3].follow(motors[2]);
     // drivetrain = new DifferentialDrive(left_motors, right_motors);
   }
+
+  public static void vision_align() {
+    double output = 0;
+
+    output = target_offset.getDouble(0) * Constants.visionP;
+    
+
+    output *= Constants.visionLimit;
+
+    AutoD(-output, output);
+
+}
+
+
+
 //code for auto
   public static void AutoD(double l, double r) {
     motors[1].set((l));
-    motors[2].set((-r));
+    motors[2].set((r));
   }
+
+
 //winches up
   public static void WinchUp(XboxController driver) {
     forward();
