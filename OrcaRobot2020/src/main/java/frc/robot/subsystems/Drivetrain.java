@@ -27,10 +27,21 @@ public class Drivetrain extends SubsystemBase {
    * Creates a new Drivetrain.
    */
   //private DifferentialDrive drivetrain;
+<<<<<<< Updated upstream
   private static CANSparkMax[] motors;
   private static SpeedControllerGroup right_motors;
   private static SpeedControllerGroup left_motors;
   static DoubleSolenoid PTOSoli = new DoubleSolenoid(6, 7);
+=======
+  private CANSparkMax[] motors;
+  private SpeedControllerGroup right_motors;
+  private SpeedControllerGroup left_motors;
+  DoubleSolenoid PTOSoli = new DoubleSolenoid(6, 7);
+  NetworkTable vision_table = NetworkTableInstance.getDefault().getTable("limelight");
+
+  NetworkTableEntry target_valid = vision_table.getEntry("tv");
+  NetworkTableEntry target_offset = vision_table.getEntry("tx");
+>>>>>>> Stashed changes
 
   public Drivetrain() {
 //instantiates motors
@@ -46,19 +57,37 @@ public class Drivetrain extends SubsystemBase {
     motors[3].follow(motors[2]);
     // drivetrain = new DifferentialDrive(left_motors, right_motors);
   }
+<<<<<<< Updated upstream
+=======
+
+  public void vision_align() {
+    double output = 0;
+
+    output = target_offset.getDouble(0) * Constants.visionP;
+    
+
+    output *= Constants.visionLimit;
+
+    AutoD(-output, output);
+
+}
+
+
+
+>>>>>>> Stashed changes
 //code for auto
-  public static void AutoD(double l, double r) {
+  public void AutoD(double l, double r) {
     motors[1].set((l));
     motors[2].set((r));
   }
 //winches up
-  public static void WinchUp(XboxController driver) {
+  public void WinchUp(XboxController driver) {
     forward();
     motors[1].set(Constants.kWinchSpeed * -1);
     motors[2].set(Constants.kWinchSpeed);
   }
 //winches down
-  public static void WinchDown(XboxController driver) {
+  public void WinchDown(XboxController driver) {
     forward();
     
     motors[1].set(Constants.kWinchSpeed);
@@ -66,15 +95,15 @@ public class Drivetrain extends SubsystemBase {
     
   }
 //manual drive
-  public static void Drive( XboxController controller) {
+  public void Drive( XboxController controller) {
    
       left_motors.set(TrueRightX((controller.getY(GenericHID.Hand.kLeft) * Constants.kLeftDriveScaling)));
       right_motors.set(TrueLeftX((controller.getY(GenericHID.Hand.kRight) * -Constants.kLeftDriveScaling)));
     
   }
 //fixes deadzone
-  public static double TrueLeftX(double LY) {
-    // Used to get the absolute position of our Left control stick Y-axis (removes
+  public double TrueLeftX(double LY) {
+    // Used t get the absolute position of our Left control stick Y-axis (removes
     // deadzone)
     double stick = LY;
     stick *= Math.abs(stick);
@@ -84,7 +113,7 @@ public class Drivetrain extends SubsystemBase {
     return stick;
   }
 //fixes deadzone
-  public static double TrueRightX(double RY) {
+  public double TrueRightX(double RY) {
     // Used to get the absolute position of our Right control stick Y-axis (removes
     // deadzone)
     double stick = RY;
@@ -95,7 +124,7 @@ public class Drivetrain extends SubsystemBase {
     return stick;
   }
 //stops motorsS
-  public static void _StAAapP() {
+  public void _StAAapP() {
     for (CANSparkMax t : motors) {
       t.set(0);
     }
@@ -103,20 +132,20 @@ public class Drivetrain extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
-    reverse();
-  }
+  // This method will be called once per scheduler run
+  reverse();
+}
 //fires forward
-  public static void forward() {
+  public void forward() {
     PTOSoli.set(DoubleSolenoid.Value.kForward);
 
 }
 //fires back
-public static void reverse(){
+public void reverse(){
   PTOSoli.set(Value.kReverse);
 }
 //holds 
-public static void off(){
+public void off(){
   PTOSoli.set(Value.kOff);
 }
 public void initDefaultCommand() {

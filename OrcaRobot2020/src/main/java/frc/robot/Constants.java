@@ -42,6 +42,11 @@ public final class Constants {
     public static final double kRightDriveScaling = 0.8;
     public static final double kWinchSpeed = 0.5;
 
+<<<<<<< Updated upstream
+=======
+    public static double debugShooterSet = -4000;
+    public static boolean ToggleSoli = false;
+>>>>>>> Stashed changes
 
     public static boolean ToggleSoli = false;
 }

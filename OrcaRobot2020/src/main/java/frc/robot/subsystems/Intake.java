@@ -7,35 +7,33 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Intake extends SubsystemBase {
-  static DoubleSolenoid IntakeSoli = new DoubleSolenoid(4, 5);
+  DoubleSolenoid IntakeSoli = new DoubleSolenoid(4, 5);
   // Motor Controllers:
-  private final static WPI_TalonSRX m_intake1 = new WPI_TalonSRX(Constants.kIntake1);
-  private final static WPI_TalonSRX m_intake2 = new WPI_TalonSRX(Constants.kIntake2);
+  private TalonSRX m_intake1 = new TalonSRX(Constants.kIntake1);
+  private TalonSRX m_intake2 = new TalonSRX(Constants.kIntake2);
 
   /**
    * Runs the intake motor inward
    */
-  public static void intakeIn() {
-    m_intake1.set(Constants.kIntakeSpeed * -1);
-    m_intake2.set(Constants.kIntakeSpeed * -1);
-    Conveyor.raiseConveyor();
+  public void intakeIn() {
+    m_intake1.set(ControlMode.PercentOutput, Constants.kIntakeSpeed * -1);
+    m_intake2.set(ControlMode.PercentOutput, Constants.kIntakeSpeed * -1);
   }
 
   /**
    * Runs the intake motor outward
    */
-  public static void intakeOut() {
-    m_intake1.set(Constants.kIntakeSpeed);
-    m_intake2.set(Constants.kIntakeSpeed);
-    Conveyor.lowerConveyor();
+  public void intakeOut() {
+    m_intake1.set(ControlMode.PercentOutput, Constants.kIntakeSpeed);
+    m_intake2.set(ControlMode.PercentOutput, Constants.kIntakeSpeed);
   }
 
   // toggles solenoid for the intake arms
@@ -46,25 +44,24 @@ public class Intake extends SubsystemBase {
   /**
    * Stops the intake motor
    */
-  public static void intakeStop() {
-    m_intake1.stopMotor();
-    m_intake2.stopMotor();
-    Conveyor.stopConveyor();
+  public void intakeStop() {
+    m_intake1.set(ControlMode.PercentOutput, 0);
+    m_intake2.set(ControlMode.PercentOutput, 0);
   }
 
   public void initDefaultCommand() {
     reverse();
   }
 
-  public static void forward() {
+  public void forward() {
     IntakeSoli.set(DoubleSolenoid.Value.kForward);
-}
+  }
 
-public void reverse(){
-  IntakeSoli.set(Value.kReverse);
-}
+  public void reverse(){
+    IntakeSoli.set(Value.kReverse);
+  }
 
-public void off(){
-  IntakeSoli.set(Value.kOff);
+  public void off(){
+    IntakeSoli.set(Value.kOff);
 }
 }

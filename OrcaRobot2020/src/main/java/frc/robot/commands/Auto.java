@@ -8,29 +8,36 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
-//import frc.robot.subsystems.IntakeSoli;
 
 public class Auto extends CommandBase {
   /**
    * Creates a new Auto.
    */
-  public double startTime;
-  public Auto() {
-    // Use addRequirements() here to declare subsystem dependencies.
+  private Timer timer = new Timer();
+  private Drivetrain m_Drivetrain;
+  private boolean finished;
+  public Auto(Drivetrain dt) {
+
+    m_Drivetrain = dt;
+    addRequirements(m_Drivetrain);
+    finished = false;
+
+
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-   startTime = Timer.getFPGATimestamp();
-    //IntakeSoli.forward();
+    timer.start();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+<<<<<<< Updated upstream
    
    
     double time = Timer.getFPGATimestamp();
@@ -38,20 +45,38 @@ public class Auto extends CommandBase {
       Drivetrain.AutoD(1,-1);
     }  else {
       Drivetrain.AutoD(0.0,0.0);
+=======
+    double m_time = timer.get();
+    
+    SmartDashboard.putNumber("Auto", m_time);
+
+    if(timer.get() < 5){
+    
+      m_Drivetrain.AutoD(.25, -.25);
+    
+      finished = false;
+    
+    }else{
+    
+      m_Drivetrain._StAAapP();
+    
+      finished = true;
+    
+>>>>>>> Stashed changes
     }
-   
-   
-   
+    
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    timer.stop();
+    timer.reset();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return finished;
   }
 }
