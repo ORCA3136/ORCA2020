@@ -7,8 +7,6 @@
 
 package frc.robot.subsystems;
 
-import java.util.concurrent.DelayQueue;
-
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -17,6 +15,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -26,12 +25,17 @@ public class Drivetrain extends SubsystemBase {
   /**
    * Creates a new Drivetrain.
    */
+<<<<<<< Updated upstream
   //private DifferentialDrive drivetrain;
 <<<<<<< Updated upstream
+=======
+  
+>>>>>>> Stashed changes
   private static CANSparkMax[] motors;
   private static SpeedControllerGroup right_motors;
   private static SpeedControllerGroup left_motors;
   static DoubleSolenoid PTOSoli = new DoubleSolenoid(6, 7);
+<<<<<<< Updated upstream
 =======
   private CANSparkMax[] motors;
   private SpeedControllerGroup right_motors;
@@ -43,6 +47,10 @@ public class Drivetrain extends SubsystemBase {
   NetworkTableEntry target_offset = vision_table.getEntry("tx");
 >>>>>>> Stashed changes
 
+=======
+  private DifferentialDrive autoSteer;  
+  
+>>>>>>> Stashed changes
   public Drivetrain() {
 //instantiates motors
     motors = new CANSparkMax[] { new CANSparkMax(Constants.rr_motor_id, MotorType.kBrushless),
@@ -55,8 +63,9 @@ public class Drivetrain extends SubsystemBase {
 //creates leader-follower relationships
     motors[0].follow(motors[1]);
     motors[3].follow(motors[2]);
-    // drivetrain = new DifferentialDrive(left_motors, right_motors);
+    autoSteer = new DifferentialDrive(left_motors, right_motors);
   }
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 =======
 
@@ -74,6 +83,25 @@ public class Drivetrain extends SubsystemBase {
 
 
 
+>>>>>>> Stashed changes
+=======
+
+  public void visionAlignment(Limelight m_Limelight){
+
+    boolean m_LimelightHasValidTarget = m_Limelight.findTarget();
+   
+    if (m_LimelightHasValidTarget){
+
+      double m_LimelightDriveCommand = m_Limelight.getDrive();
+      double m_LimelightSteerCommand = m_Limelight.getSteer();
+
+      autoSteer.arcadeDrive(m_LimelightDriveCommand,m_LimelightSteerCommand);
+
+    }else{
+
+      autoSteer.arcadeDrive(0.0,0.0);
+
+    }
 >>>>>>> Stashed changes
 //code for auto
   public void AutoD(double l, double r) {
