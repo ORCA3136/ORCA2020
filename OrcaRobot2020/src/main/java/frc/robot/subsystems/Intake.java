@@ -7,64 +7,108 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Intake extends SubsystemBase {
-  static DoubleSolenoid IntakeSoli = new DoubleSolenoid(4, 5);
+  DoubleSolenoid IntakeSoli = new DoubleSolenoid(1, 2);
   // Motor Controllers:
-  private final static WPI_TalonSRX m_intake1 = new WPI_TalonSRX(Constants.kIntake1);
-  private final static WPI_TalonSRX m_intake2 = new WPI_TalonSRX(Constants.kIntake2);
+  private VictorSPX m_intake1, m_intake2;
+  Conveyor m_convey;
+  boolean togglePressed, toggleOn; 
 
+  public Intake(Conveyor conv){
+    m_intake1 = new VictorSPX(Constants.kIntake1);
+    m_intake2 = new VictorSPX(Constants.kIntake2);
+    m_convey = conv;
+    togglePressed = false;
+    toggleOn = false;
+
+  }
+
+  @Override
+  public void periodic(){
+
+    SmartDashboard.putNumber("Motor One Voltz: ", m_intake1.getMotorOutputVoltage());
+    SmartDashboard.putNumber("Motor Two Voltz: ", m_intake2.getMotorOutputVoltage());
+    
+
+  }
   /**
    * Runs the intake motor inward
    */
-  public static void intakeIn() {
-    m_intake1.set(Constants.kIntakeSpeed * -1);
-    m_intake2.set(Constants.kIntakeSpeed * -1);
-    Conveyor.raiseConveyor();
+  public void intakeIn() {
+    m_intake1.set(ControlMode.PercentOutput, Constants.kIntakeSpeed * -1);
+    m_intake2.set(ControlMode.PercentOutput, Constants.kIntakeSpeed);
+    m_convey.raiseConveyor();
+
+   
   }
 
   /**
    * Runs the intake motor outward
    */
-  public static void intakeOut() {
-    m_intake1.set(Constants.kIntakeSpeed);
-    m_intake2.set(Constants.kIntakeSpeed);
-    Conveyor.lowerConveyor();
+  public void intakeOut() {
+    m_intake1.set(ControlMode.PercentOutput, Constants.kIntakeSpeed);
+    m_intake2.set(ControlMode.PercentOutput, Constants.kIntakeSpeed * -1);
+    m_convey.lowerConveyor();
   }
-
-  // toggles solenoid for the intake arms
-  public void toggle_solenoid() {
-
-  }
-
+ 
   /**
    * Stops the intake motor
    */
-  public static void intakeStop() {
-    m_intake1.stopMotor();
-    m_intake2.stopMotor();
-    Conveyor.stopConveyor();
+  
+   public void intakeStop() {
+    m_intake1.set(ControlMode.PercentOutput, 0);
+    m_intake2.set(ControlMode.PercentOutput, 0);
+    m_convey.stopConveyor();
   }
+
 
   public void initDefaultCommand() {
-    reverse();
+    retractIntake();
   }
 
-  public static void forward() {
+  public void deployIntake() {
     IntakeSoli.set(DoubleSolenoid.Value.kForward);
+  }
+
+  public void retractIntake(){
+    IntakeSoli.set(Value.kReverse);
+  }
+
+  public void off(){
+    IntakeSoli.set(Value.kOff);
 }
 
-public void reverse(){
-  IntakeSoli.set(Value.kReverse);
-}
 
-public void off(){
-  IntakeSoli.set(Value.kOff);
-}
+public void toggle(){
+  updateToggle();
+  if(toggleOn){
+    deployIntake();
+  }
+  else{
+    retractIntake();
+  }
+ 
+ 
+ }
+ private void updateToggle()
+ {
+   if(!togglePressed){
+     toggleOn=!toggleOn;
+     togglePressed=true;
+   }
+   else{
+     togglePressed = true;
+   }
+ }
 }

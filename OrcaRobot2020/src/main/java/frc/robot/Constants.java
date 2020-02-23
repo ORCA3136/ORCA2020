@@ -16,20 +16,9 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-    private static Constants instance = new Constants();
-
-    public static Constants getConstants() {
-        return instance;
-    }
-   
-    //PID Values
-    public double shooterP = 0.0011;
-    public double shooterI = 0;
-    public double shooterD = 4;
-    public double shooterF = 0.00017;
-
-   
-    //DriveTrain Motors
+    
+    
+//DriveTrain Motors
     public static int fl_motor_id = 1;
     public static int fr_motor_id = 4;
     public static int rr_motor_id = 3;
@@ -48,16 +37,19 @@ public final class Constants {
  
  
     //Speeds for Motors
-    public static final double kIntakeSpeed = 0.75;
+    public static final double kIntakeSpeed =1;
     public static final double kConveyorSpeed = 1;
-    public static final double kFlywheelSpeed = .9;
-    public static final double kLeftDriveScaling = 0.9;
-    public static final double kRightDriveScaling = 0.9;
+    public static final double kFlywheelSpeed = 0.45;
+    public static final double kLeftDriveScaling = 0.8;
+    public static final double kRightDriveScaling = 0.8;
     public static final double kWinchSpeed = 0.5;
 
-    public double debugShooterSet = -4000;
-    public static boolean ToggleSoli = false;
+    public static final double shooterP = 0.0011;
+    public static final double shooterI = 0;
+    public static final double shooterD = 4;
+    public static final double shooterF = 0.00017;
 
-    public static double visionP = -0.04;
-    public static double visionLimit = 0.5;
+    public static final double debugShooterSet = -4000;
+
+    public static boolean ToggleSoli = false;
 }

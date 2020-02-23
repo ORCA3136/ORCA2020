@@ -7,7 +7,8 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
@@ -17,43 +18,44 @@ import frc.robot.Constants;
 
 public class Conveyor extends SubsystemBase {
   // Motor Controllers:
-  private final static WPI_TalonSRX m_conveyor1 = new WPI_TalonSRX(Constants.kConveyor1);
-  private final static WPI_TalonSRX m_conveyor2 = new WPI_TalonSRX(Constants.kConveyor2);
-  static DoubleSolenoid ConveySoli = new DoubleSolenoid(0, 1);
-  
+  private VictorSPX m_conveyor1;
+  private VictorSPX m_conveyor2;
+  private DoubleSolenoid ConveySoli;
+
+
+  public Conveyor(){
+    m_conveyor1 = new VictorSPX(Constants.kConveyor1);
+    m_conveyor2 = new VictorSPX(Constants.kConveyor2);
+    ConveySoli = new DoubleSolenoid(0, 3);
+  }
+
 
   /**
    * Runs conveyor up
    */
-  public static void raiseConveyor() {
-    m_conveyor1.set(-Constants.kConveyorSpeed);
-    m_conveyor2.set(Constants.kConveyorSpeed);
+  public void raiseConveyor() {
+    m_conveyor1.set(ControlMode.PercentOutput, Constants.kConveyorSpeed);
+    m_conveyor2.set(ControlMode.PercentOutput, Constants.kConveyorSpeed *-1);
   }
 
   /**
    * Runs conveyor down
    */
-  public static void lowerConveyor() {
-    m_conveyor1.set(Constants.kConveyorSpeed);
-    m_conveyor2.set(-Constants.kConveyorSpeed);
+  public void lowerConveyor() {
+    m_conveyor1.set(ControlMode.PercentOutput, Constants.kConveyorSpeed * -1);
+    m_conveyor2.set(ControlMode.PercentOutput, Constants.kConveyorSpeed);
   }
 
   /**
    * Stops conveyor
    */
-  public static void stopConveyor() {
-    m_conveyor1.stopMotor();
-    m_conveyor2.stopMotor();
+  public void stopConveyor() {
+    m_conveyor1.set(ControlMode.PercentOutput, 0);
+    m_conveyor2.set(ControlMode.PercentOutput, 0);
   }
 
-  public void initDefaultCommand() {
-    // Set the default command for a subsystem here.
-    reverse();
-    stopConveyor();
-  }
-
-  public static void toggle() {
-  //Switches between fired a reteacted per called
+  public void toggle() {
+  //Switches between fired a retracted per called
     if (Constants.ToggleSoli = true) {
       forward();
       Constants.ToggleSoli = false;
@@ -64,16 +66,17 @@ public class Conveyor extends SubsystemBase {
       off();
     }
   }
+
 //fires 
-  public static void forward() {
-    ConveySoli.set(DoubleSolenoid.Value.kForward);
+public void forward() {
+  ConveySoli.set(DoubleSolenoid.Value.kForward);
 }
 //retracts
-public static void reverse() {
+public void reverse() {
   ConveySoli.set(Value.kReverse);
 }
 
-public static void off() {
+public void off() {
   ConveySoli.set(Value.kOff);
 }
 }

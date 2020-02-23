@@ -9,8 +9,10 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+//import frc.robot.auto.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -21,7 +23,8 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   Compressor c = new Compressor(0);
-  private RobotContainer m_robotContainer;
+  public RobotContainer m_robotContainer;
+  SendableChooser<Command> m_chooser = new SendableChooser<>();
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -31,7 +34,10 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
-  c.start();
+
+   // m_chooser.addOption("Auto 1", new Auto(m_robotContainer.m_Drivetrain, m_robotContainer.m_Intake, m_robotContainer.m_FlyWheel,m_robotContainer.m_Limelight,m_robotContainer.m_Conveyor));
+    
+    c.start();
     m_robotContainer = new RobotContainer();
   }
 
@@ -67,8 +73,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-   c.start();
+    
+  
+    c.start();
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();

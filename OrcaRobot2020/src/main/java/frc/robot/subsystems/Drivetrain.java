@@ -10,14 +10,12 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -26,21 +24,18 @@ import frc.robot.Constants;
 public class Drivetrain extends SubsystemBase {
   /**
    * Creates a new Drivetrain.
-   */
-  //private DifferentialDrive drivetrain;
-  private static CANSparkMax[] motors;
-  private static SpeedControllerGroup right_motors;
-  private static SpeedControllerGroup left_motors;
-  static DoubleSolenoid PTOSoli = new DoubleSolenoid(6, 7);
-  static NetworkTable vision_table = NetworkTableInstance.getDefault().getTable("limelight");
+  */
 
-  NetworkTableEntry target_valid = vision_table.getEntry("tv");
-  static NetworkTableEntry target_offset = vision_table.getEntry("tx");
+  //private DifferentialDrive drivetrain;
+  private CANSparkMax[] motors;
+  private SpeedControllerGroup right_motors;
+  private SpeedControllerGroup left_motors;
+  DoubleSolenoid PTOSoli = new DoubleSolenoid(6, 4);
+  private DifferentialDrive autoSteer;  
+  
 
   public Drivetrain() {
-
-    // instantiates motors
-
+//instantiates motors
     motors = new CANSparkMax[] { new CANSparkMax(Constants.rr_motor_id, MotorType.kBrushless),
         new CANSparkMax(Constants.fr_motor_id, MotorType.kBrushless),
         new CANSparkMax(Constants.rl_motor_id, MotorType.kBrushless),
@@ -48,58 +43,62 @@ public class Drivetrain extends SubsystemBase {
 
     right_motors = new SpeedControllerGroup(motors[0], motors[1]);
     left_motors = new SpeedControllerGroup(motors[3], motors[2]);
-
-    // creates leader-follower relationships
+//creates leader-follower relationships
     motors[0].follow(motors[1]);
     motors[3].follow(motors[2]);
-    // drivetrain = new DifferentialDrive(left_motors, right_motors);
+    autoSteer = new DifferentialDrive(left_motors, right_motors);
   }
-
-  public static void vision_align() {
-    double output = 0;
-
-    output = target_offset.getDouble(0) * Constants.visionP;
-    
-
-    output *= Constants.visionLimit;
-
-    AutoD(-output, output);
-
-}
+  
 
 
+  public void visionAlignment(Limelight m_Limelight){
 
+    boolean m_LimelightHasValidTarget = m_Limelight.findTarget();
+   
+    if (m_LimelightHasValidTarget){
+
+      double m_LimelightDriveCommand = m_Limelight.getDrive();
+      double m_LimelightSteerCommand = m_Limelight.getSteer();
+
+      autoSteer.arcadeDrive(m_LimelightDriveCommand,m_LimelightSteerCommand);
+
+    }else{
+
+      autoSteer.arcadeDrive(0.0,0.0);
+
+    }
+  }
 //code for auto
-  public static void AutoD(double l, double r) {
+  public void AutoD(double l, double r) {
     motors[1].set((l));
     motors[2].set((r));
   }
-
-
 //winches up
-  public static void WinchUp(XboxController driver) {
+  public void WinchUp(XboxController driver) {
     forward();
     motors[1].set(Constants.kWinchSpeed * -1);
     motors[2].set(Constants.kWinchSpeed);
   }
 //winches down
-  public static void WinchDown(XboxController driver) {
+  public void WinchDown(XboxController driver) {
+    if (driver.getStickButton(GenericHID.Hand.kRight) && driver.getYButton()
+    /* && Nuke button on joystick. NUKE button will call this method*/){
     forward();
     
     motors[1].set(Constants.kWinchSpeed);
     motors[2].set(Constants.kWinchSpeed * -1);
-    
+    }
   }
 //manual drive
-  public static void Drive( XboxController controller) {
+  public void Drive( XboxController controller) {
    
       left_motors.set(TrueRightX((controller.getY(GenericHID.Hand.kLeft) * Constants.kLeftDriveScaling)));
       right_motors.set(TrueLeftX((controller.getY(GenericHID.Hand.kRight) * -Constants.kLeftDriveScaling)));
     
   }
 //fixes deadzone
-  public static double TrueLeftX(double LY) {
-    // Used to get the absolute position of our Left control stick Y-axis (removes
+  public double TrueLeftX(double LY) {
+    // Used t get the absolute position of our Left control stick Y-axis (removes
     // deadzone)
     double stick = LY;
     stick *= Math.abs(stick);
@@ -109,7 +108,7 @@ public class Drivetrain extends SubsystemBase {
     return stick;
   }
 //fixes deadzone
-  public static double TrueRightX(double RY) {
+  public double TrueRightX(double RY) {
     // Used to get the absolute position of our Right control stick Y-axis (removes
     // deadzone)
     double stick = RY;
@@ -120,7 +119,7 @@ public class Drivetrain extends SubsystemBase {
     return stick;
   }
 //stops motorsS
-  public static void _StAAapP() {
+  public void _StAAapP() {
     for (CANSparkMax t : motors) {
       t.set(0);
     }
@@ -128,20 +127,20 @@ public class Drivetrain extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
-    reverse();
-  }
+  // This method will be called once per scheduler run
+  reverse();
+}
 //fires forward
-  public static void forward() {
+  public void forward() {
     PTOSoli.set(DoubleSolenoid.Value.kForward);
 
 }
 //fires back
-public static void reverse(){
+public void reverse(){
   PTOSoli.set(Value.kReverse);
 }
 //holds 
-public static void off(){
+public void off(){
   PTOSoli.set(Value.kOff);
 }
 public void initDefaultCommand() {
