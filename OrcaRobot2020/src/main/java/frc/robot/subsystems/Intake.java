@@ -11,9 +11,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -21,7 +19,8 @@ import frc.robot.Constants;
 public class Intake extends SubsystemBase {
   DoubleSolenoid IntakeSoli = new DoubleSolenoid(1, 2);
   // Motor Controllers:
-  private VictorSPX m_intake1, m_intake2;
+  private VictorSPX m_intake1;
+  private static VictorSPX m_intake2;
   Conveyor m_convey;
   boolean togglePressed, toggleOn; 
 
@@ -51,6 +50,10 @@ public class Intake extends SubsystemBase {
     m_convey.raiseConveyor();
 
    
+  }
+
+  public static void spit() {
+    m_intake2.set(ControlMode.PercentOutput, Constants.kIntakeSpeed * -1);   
   }
 
   /**

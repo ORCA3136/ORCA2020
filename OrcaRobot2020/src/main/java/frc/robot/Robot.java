@@ -10,9 +10,12 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.auto.Auto;
 //import frc.robot.auto.*;
+import frc.robot.subsystems.Camera;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -25,6 +28,7 @@ public class Robot extends TimedRobot {
   Compressor c = new Compressor(0);
   public RobotContainer m_robotContainer;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
+  Camera cam;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -35,10 +39,13 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
 
-   // m_chooser.addOption("Auto 1", new Auto(m_robotContainer.m_Drivetrain, m_robotContainer.m_Intake, m_robotContainer.m_FlyWheel,m_robotContainer.m_Limelight,m_robotContainer.m_Conveyor));
     
+    cam = new Camera();
     c.start();
     m_robotContainer = new RobotContainer();
+
+    m_chooser.addOption("Auto 1", new Auto(m_robotContainer.m_Drivetrain));
+    SmartDashboard.putData("Auto Chooser: ", m_chooser);
   }
 
   /**
@@ -87,6 +94,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
+  
   }
 
   @Override

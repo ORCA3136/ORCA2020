@@ -10,12 +10,7 @@ package frc.robot.auto;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
-import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Flywheel;
-import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Limelight;
 
 public class Auto extends CommandBase {
   /**
@@ -23,16 +18,9 @@ public class Auto extends CommandBase {
    */
   private Timer timer = new Timer();
   private Drivetrain m_Drivetrain;
-  private Intake m_Intake;
-  private Flywheel m_Fly;
-  private Limelight m_Limelight;
-  private Conveyor m_Hopper;
   private boolean finished;
 
-  public Auto(Drivetrain dt, Intake mIntake, Flywheel fw, Limelight LL, Conveyor hopper) {
-    m_Intake = mIntake;
-    m_Fly = fw;
-    m_Limelight = LL;
+  public Auto(Drivetrain dt) {
 
     m_Drivetrain = dt;
     addRequirements(m_Drivetrain);
@@ -51,29 +39,14 @@ public class Auto extends CommandBase {
   @Override
   public void execute() {
    
-   
-    
-    
     double m_time = timer.get();
 
     SmartDashboard.putNumber("Auto: ", m_time);
 
-    while(m_time < 5){
+    if(m_time < 5){
       m_Drivetrain.AutoD(.25, -.25);
-      m_Intake.deployIntake();
-      m_Intake.intakeIn();
-      m_Fly.set(Constants.debugShooterSet);
     }
-    
-    while(m_time > 5 && m_time < 7){
-      m_Drivetrain.visionAlignment(m_Limelight);
-    }
-
-
-    while(m_time > 7 && m_time < 15){
-      m_Hopper.forward();
-      m_Drivetrain._StAAapP();
-    }
+  
       
       finished = true;
   }

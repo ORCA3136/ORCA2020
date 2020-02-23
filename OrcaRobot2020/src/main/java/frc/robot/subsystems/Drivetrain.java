@@ -60,7 +60,7 @@ public class Drivetrain extends SubsystemBase {
       double m_LimelightDriveCommand = m_Limelight.getDrive();
       double m_LimelightSteerCommand = m_Limelight.getSteer();
 
-      autoSteer.arcadeDrive(m_LimelightDriveCommand,m_LimelightSteerCommand);
+      autoSteer.arcadeDrive(0,m_LimelightSteerCommand);
 
     }else{
 
@@ -91,10 +91,9 @@ public class Drivetrain extends SubsystemBase {
   }
 //manual drive
   public void Drive( XboxController controller) {
-   
-      left_motors.set(TrueRightX((controller.getY(GenericHID.Hand.kLeft) * Constants.kLeftDriveScaling)));
+ 
+     left_motors.set(TrueRightX((controller.getY(GenericHID.Hand.kLeft) * Constants.kLeftDriveScaling)));
       right_motors.set(TrueLeftX((controller.getY(GenericHID.Hand.kRight) * -Constants.kLeftDriveScaling)));
-    
   }
 //fixes deadzone
   public double TrueLeftX(double LY) {

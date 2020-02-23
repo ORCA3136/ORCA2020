@@ -16,6 +16,8 @@ public class AutoShoot extends CommandBase {
   /**
    * Creates a new AutoShoot.
    */
+Conveyor Convey;
+Flywheel fly;
   public AutoShoot() {
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -37,14 +39,14 @@ public class AutoShoot extends CommandBase {
 
   while (Done = false){
     if (stop = false){
-     // flywheel.Run();
-        Conveyor.forward();
-       Conveyor.raiseConveyor();
+       // Flywheel.Run();
+        Convey.forward();
+       Convey.raiseConveyor();
     }
     
     else{
-      Flywheel.stop();
-      Conveyor.stopConveyor();
+      fly.stop();
+      Convey.stopConveyor();
       Done = true;
       }
     

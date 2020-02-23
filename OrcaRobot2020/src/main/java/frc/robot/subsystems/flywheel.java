@@ -6,8 +6,6 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -25,7 +23,7 @@ public class Flywheel extends SubsystemBase {
     double setpoint = 0;
 
 public Flywheel(){
-    right.follow(left, true);
+    //right.follow(left, true);
     right.set(0.0);
     
     left.setIdleMode(IdleMode.kCoast);
@@ -38,8 +36,13 @@ public Flywheel(){
     updateConstants();
 }
 //manual run of flywheel
-    public void test(XboxController m_driver) {
-        right.set(m_driver.getTriggerAxis(GenericHID.Hand.kLeft) * -1);
+    public void test1() {
+        left.set(Constants.kFlywheelSpeed);
+        
+    }
+
+    public void test2() {
+        right.set(Constants.kFlywheelSpeed);
         
     }
     
@@ -48,11 +51,15 @@ public Flywheel(){
     }
 
     public void stop() {
-        controller.setReference(0, ControlType.kDutyCycle);
+        left.set(0);
     }
 
     public void update() {
     }
+
+    public void initDefaultCommand() {
+        stop();
+      }
 
     public void updateConstants() {
         controller.setOutputRange(-1, 0);

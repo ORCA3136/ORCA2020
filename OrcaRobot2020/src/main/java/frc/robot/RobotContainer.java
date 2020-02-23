@@ -40,8 +40,9 @@ public class RobotContainer {
   public Conveyor m_Conveyor;
   public Flywheel m_FlyWheel;
   public Limelight m_Limelight;
-  public Climber m_Climber;
+  public Climber m_climber;
 
+  
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
@@ -52,13 +53,13 @@ public class RobotContainer {
     m_Intake = new Intake(m_Conveyor);
     m_FlyWheel = new Flywheel();
     m_Limelight = new Limelight();
-    m_Climber = new Climber();
+    m_climber = new Climber();
 
     m_Drivetrain.setDefaultCommand(
         new RunCommand(() -> m_Drivetrain.Drive(controller),m_Drivetrain));
 
-    m_FlyWheel.setDefaultCommand(
-        new RunCommand(() -> m_FlyWheel.test(controller),m_FlyWheel));
+    //m_FlyWheel.setDefaultCommand(
+      //  new RunCommand(() -> m_FlyWheel.test(controller),m_FlyWheel));
 
     // Configure the button bindings
     configureButtonBindings();
@@ -74,19 +75,17 @@ public class RobotContainer {
 
     // Left Bumper Button - Deploy Intake
     new JoystickButton(controller, XboxController.Button.kBumperLeft.value)
-    .whenHeld(new RunCommand(() -> m_Intake.deployIntake()));
+    .whenHeld(new RunCommand(() -> m_Intake.toggle()));
 
-    new JoystickButton(controller, XboxController.Button.kBumperLeft.value)
-    .whenReleased(new RunCommand(() -> m_Intake.retractIntake()));
-
+  
 
 
-   // Left Bumper Button - Retract Intake
+   // Right Bumper Button - Flywheel
    new JoystickButton(controller, XboxController.Button.kBumperRight.value)
-   .whenHeld(new RunCommand(() -> m_Climber.retractClimber()));
+   .whenHeld(new RunCommand(() -> m_FlyWheel.test1()));
 
    new JoystickButton(controller, XboxController.Button.kBumperRight.value)
-  .whenReleased(new RunCommand(() -> m_Climber.erectClimber()));
+  .whenReleased(new RunCommand(() -> m_FlyWheel.stop()));
 
 
     // B Button - Intake Out
@@ -109,15 +108,22 @@ public class RobotContainer {
 
    //Left Stick Button - PID Shooter
    new JoystickButton(controller, XboxController.Button.kStickLeft.value)
-   .whenPressed(new RunCommand(() -> m_FlyWheel.set(Constants.debugShooterSet)));
-   
-   
+   .whenHeld(new RunCommand(() -> m_FlyWheel.test2()));
+
+   new JoystickButton(controller, XboxController.Button.kStickLeft.value)
+  .whenReleased(new RunCommand(() -> m_FlyWheel.stop()));
+
    
 
 
    //Right Stick Button  - Stop Shooter
    new JoystickButton(controller, XboxController.Button.kStickRight.value)
-   .whenPressed(new RunCommand(() -> m_FlyWheel.stop()));
+   .whenHeld(new RunCommand(() -> m_FlyWheel.test1()));
+
+   new JoystickButton(controller, XboxController.Button.kStickRight.value)
+  .whenReleased(new RunCommand(() -> m_FlyWheel.stop()));
+
+   
  
   
 
@@ -127,11 +133,9 @@ public class RobotContainer {
 
 
     //Y Button - Conveyor Soli retact
-    new JoystickButton(controller, XboxController.Button.kY.value)
-    .whenHeld(new RunCommand(() -> m_Drivetrain.forward()));
-
-    new JoystickButton(controller, XboxController.Button.kY.value)
-    .whenReleased(new RunCommand(() -> m_Drivetrain.reverse()));
+     new JoystickButton(controller, XboxController.Button.kY.value)
+   .whenHeld(new RunCommand(() -> m_Drivetrain.visionAlignment(m_Limelight)));
+   
 
 
    //Start Button - climb up
@@ -145,15 +149,12 @@ public class RobotContainer {
 
    // Back Button
    new JoystickButton(controller, XboxController.Button.kBack.value)
-   .whenHeld(new RunCommand(() -> m_Climber.retractClimber()));
+   .whenHeld(new RunCommand(() -> m_climber.retractClimber()));
 
    new JoystickButton(controller, XboxController.Button.kBack.value)
-  .whenReleased(new RunCommand(() -> m_Climber.erectClimber()));
+  .whenReleased(new RunCommand(() -> m_climber.erectClimber()));
 
-  // new JoystickButton(controller, XboxController.Button.kBack.value)
-  // .whenHeld(new AutoAlign(m_Drivetrain, m_Limelight));
-   
-
+  
  }
 
 }
