@@ -78,7 +78,7 @@ public class RobotContainer
 
     // Left Bumper Button - Deploy Intake
     new JoystickButton(controller, XboxController.Button.kBumperLeft.value)
-    .whenPressed(new InstantCommand(() -> m_Intake.toggle()));
+    .whenPressed(new InstantCommand(m_Intake::toggle, m_Intake);
 
   
 
