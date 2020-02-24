@@ -106,7 +106,7 @@ public class RobotContainer
 
    //Right Stick Button  - Stop Powercell shooter
    new JoystickButton(controller, XboxController.Button.kStickRight.value)
-   .whenHeld(new InstantCommand(m_flyWheel::runFlywheelwithoutPID, m_flyWheel))
+   .whenHeld(new InstantCommand(m_flyWheel::runFlywheelWithoutPID, m_flyWheel))
    .whenReleased(new InstantCommand(m_flyWheel::stop, m_flyWheel));
 
 //****************************************************************************************************************************
@@ -114,7 +114,7 @@ public class RobotContainer
 //****************************************************************************************************************************
   // Right Bumper Button - Flywheel
   new JoystickButton(controller, XboxController.Button.kBumperRight.value)
-  .whenHeld(new InstantCommand(m_flyWheel::runFlywheelwithoutPID, m_flyWheel))  //it is entirely possible these whenHeld Commands need to be made into run commands since they are longer running
+  .whenHeld(new InstantCommand(m_flyWheel::runFlywheelWithoutPID, m_flyWheel))  //it is entirely possible these whenHeld Commands need to be made into run commands since they are longer running
   .whenReleased(new InstantCommand( m_flyWheel::stop, m_flyWheel));
 
   //Left Stick Button - PID Shooter (NOTE: this is actually currently setup to just do Right motor onlY)
@@ -140,6 +140,11 @@ public class RobotContainer
 //returns the selected command to the robot.
  public Command getAutonomousCommand(){
    return m_chooser.getSelected();
+ }
+
+ public Flywheel getFlyWheel()
+ {
+    return m_flyWheel;
  }
 
 }

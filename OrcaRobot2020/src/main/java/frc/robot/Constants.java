@@ -52,12 +52,12 @@ public final class Constants {
     public static final double kRightDriveScaling = 0.8;
     public static final double kWinchSpeed = 0.5;
 
-    public static final double shooterP = 0.0011;
-    public static final double shooterI = 0;
-    public static final double shooterD = 4;
-    public static final double shooterF = 0.00017;
+    public static final double flyWheelP = 0.0011;
+    public static final double flyWheelI = 0;
+    public static final double flyWheelD = 4;
+    public static final double flyWheelF = 0.00017;
 
-    public static final double debugShooterSet = -4000;
+    public static final double flyWheelSetPoint = -5000;
 
     public static boolean ToggleSoli = false;
 }
