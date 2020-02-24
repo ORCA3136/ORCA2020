@@ -38,11 +38,11 @@ import frc.robot.subsystems.Limelight;
 public class RobotContainer
  {
   // The robot's subsystems
-  private final Drivetrain m_Drivetrain = new Drivetrain(); 
-  private final Conveyor m_Conveyor= new Conveyor();
-  private final Intake m_Intake =  new Intake(m_Conveyor);
-  private final Flywheel m_FlyWheel = new Flywheel();
-  private final Limelight m_Limelight = new Limelight();
+  private final Drivetrain m_drivetrain = new Drivetrain(); 
+  private final Conveyor m_conveyor= new Conveyor();
+  private final Intake m_intake =  new Intake(m_conveyor);
+  private final Flywheel m_flyWheel = new Flywheel();
+  private final Limelight m_limelight = new Limelight();
   private final Climber m_climber = new Climber();
 
   SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -55,11 +55,11 @@ public class RobotContainer
   public RobotContainer() {
 
    
-    m_chooser.setDefaultOption("Auto 1", new Auto(m_Drivetrain));
+    m_chooser.setDefaultOption("Auto 1", new Auto(m_drivetrain));
     SmartDashboard.putData("Auto Chooser: ", m_chooser);
 
-    m_Drivetrain.setDefaultCommand(
-        new RunCommand(() -> m_Drivetrain.drive(controller),m_Drivetrain));
+    m_drivetrain.setDefaultCommand(
+        new RunCommand(() -> m_drivetrain.drive(controller),m_drivetrain));
 
     //m_FlyWheel.setDefaultCommand(
       //  new RunCommand(() -> m_FlyWheel.test(controller),m_FlyWheel));
@@ -78,53 +78,53 @@ public class RobotContainer
 
     // Left Bumper Button - Deploy Intake
     new JoystickButton(controller, XboxController.Button.kBumperLeft.value)
-    .whenPressed(new InstantCommand(m_Intake::toggle, m_Intake);
+    .whenPressed(new InstantCommand(m_intake::toggle, m_intake));
 
   
 
 
    // Right Bumper Button - Flywheel
    new JoystickButton(controller, XboxController.Button.kBumperRight.value)
-   .whenHeld(new RunCommand(() -> m_FlyWheel.test1()));
+   .whenHeld(new RunCommand(() -> m_flyWheel.test1()));
 
    new JoystickButton(controller, XboxController.Button.kBumperRight.value)
-  .whenReleased(new RunCommand(() -> m_FlyWheel.stop()));
+  .whenReleased(new RunCommand(() -> m_flyWheel.stop()));
 
 
     // B Button - Intake Out
     new JoystickButton(controller, XboxController.Button.kB.value)
-        .whenHeld(new RunCommand(() -> m_Intake.intakeOut()));
+        .whenHeld(new RunCommand(() -> m_intake.intakeOut()));
 
     new JoystickButton(controller, XboxController.Button.kB.value)
-    .whenReleased(new RunCommand(() -> m_Intake.intakeStop()));
+    .whenReleased(new RunCommand(() -> m_intake.intakeStop()));
  
 
   
    //A Button - Intake In
     new JoystickButton(controller, XboxController.Button.kA.value)
-    .whenHeld(new RunCommand(() -> m_Intake.intakeIn()));
+    .whenHeld(new RunCommand(() -> m_intake.intakeIn()));
 
     new JoystickButton(controller, XboxController.Button.kA.value)
-    .whenReleased(new RunCommand(() -> m_Intake.intakeStop()));
+    .whenReleased(new RunCommand(() -> m_intake.intakeStop()));
 
 
 
    //Left Stick Button - PID Shooter
    new JoystickButton(controller, XboxController.Button.kStickLeft.value)
-   .whenHeld(new RunCommand(() -> m_FlyWheel.test2()));
+   .whenHeld(new RunCommand(() -> m_flyWheel.test2()));
 
    new JoystickButton(controller, XboxController.Button.kStickLeft.value)
-  .whenReleased(new RunCommand(() -> m_FlyWheel.stop()));
+  .whenReleased(new RunCommand(() -> m_flyWheel.stop()));
 
    
 
 
    //Right Stick Button  - Stop Shooter
    new JoystickButton(controller, XboxController.Button.kStickRight.value)
-   .whenHeld(new RunCommand(() -> m_FlyWheel.test1()));
+   .whenHeld(new RunCommand(() -> m_flyWheel.test1()));
 
    new JoystickButton(controller, XboxController.Button.kStickRight.value)
-  .whenReleased(new RunCommand(() -> m_FlyWheel.stop()));
+  .whenReleased(new RunCommand(() -> m_flyWheel.stop()));
 
    
  
@@ -132,22 +132,22 @@ public class RobotContainer
 
     //X Button - Conveyor Soli fire
     new JoystickButton(controller, XboxController.Button.kX.value)
-    .whenPressed(new RunCommand(() -> m_Intake.retractIntake()));
+    .whenPressed(new RunCommand(() -> m_intake.retractIntake()));
 
 
     //Y Button - Conveyor Soli retact
      new JoystickButton(controller, XboxController.Button.kY.value)
-   .whenHeld(new RunCommand(() -> m_Drivetrain.visionAlignment(m_Limelight)));
+   .whenHeld(new RunCommand(() -> m_drivetrain.visionAlignment(m_limelight)));
    
 
 
    //Start Button - climb up
    new JoystickButton(controller, XboxController.Button.kStart.value)
-   .whenHeld(new RunCommand(() -> m_Conveyor.forward()));
+   .whenHeld(new RunCommand(() -> m_conveyor.forward()));
 
 
    new JoystickButton(controller, XboxController.Button.kStart.value)
-  .whenReleased(new RunCommand(() ->m_Conveyor.reverse()));
+  .whenReleased(new RunCommand(() ->m_conveyor.reverse()));
 
 
    // Back Button

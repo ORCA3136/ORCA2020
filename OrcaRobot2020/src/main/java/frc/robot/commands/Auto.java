@@ -36,9 +36,9 @@ public class Auto extends CommandBase {
    
     double time = Timer.getFPGATimestamp();
     if (time - startTime < 4){
-      m_drive.autoD(0.5,0.5);
+      m_drive.autonomousDrive(0.5,0.5);
     }  else {
-      m_drive.autoD(0.0,0.0);
+      m_drive.autonomousDrive(0.0,0.0);
     }
    
    

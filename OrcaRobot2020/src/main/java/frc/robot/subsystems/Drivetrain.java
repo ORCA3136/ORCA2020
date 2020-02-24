@@ -69,7 +69,7 @@ public class Drivetrain extends SubsystemBase {
     }
   }
 //code for auto
-  public void autoD(double l, double r) {
+  public void autonomousDrive(double l, double r) {
     motors[1].set((l));
     motors[2].set((r));
   }
