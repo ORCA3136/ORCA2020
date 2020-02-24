@@ -40,7 +40,7 @@ Flywheel fly;
   while (Done = false){
     if (stop = false){
        // Flywheel.Run();
-        Convey.forward();
+        Convey.openHopperToFlyWheel();
        Convey.raiseConveyor();
     }
     

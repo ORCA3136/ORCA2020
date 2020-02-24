@@ -57,25 +57,26 @@ public class Conveyor extends SubsystemBase {
   public void toggle() {
   //Switches between fired a retracted per called
     if (Constants.ToggleSoli = true) {
-      forward();
+      openHopperToFlyWheel();
       Constants.ToggleSoli = false;
     } else if (Constants.ToggleSoli = false) {
-      reverse();
+      closeHopperToFlywheel();
       Constants.ToggleSoli = true;
     } else {
       off();
     }
   }
 
-//fires 
-public void forward() {
+//Open up the hopper stopper so powercells can flow into the flywheel 
+public void openHopperToFlyWheel() {
   ConveySoli.set(DoubleSolenoid.Value.kForward);
 }
-//retracts
-public void reverse() {
+//Close the hopper stopper so powercells don't flow into the flywheel
+public void closeHopperToFlywheel() {
   ConveySoli.set(Value.kReverse);
 }
 
+//TODO - find out what this method is for?
 public void off() {
   ConveySoli.set(Value.kOff);
 }

@@ -36,12 +36,15 @@ public Flywheel(){
     updateConstants();
 }
 //manual run of flywheel
-    public void test1() {
+    public void runFlywheelwithoutPID() {
         left.set(Constants.kFlywheelSpeed);
-        
+        right.set(Constants.kFlywheelSpeed);
     }
 
-    public void test2() {
+    public void runLeftFlyWheelMotorOnly(){
+        left.set(Constants.kFlywheelSpeed);
+    }
+    public void runRightFlyWheelOnly() {
         right.set(Constants.kFlywheelSpeed);
         
     }
