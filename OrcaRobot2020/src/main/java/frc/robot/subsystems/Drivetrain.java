@@ -57,7 +57,7 @@ public class Drivetrain extends SubsystemBase {
    
     if (m_LimelightHasValidTarget){
 
-      double m_LimelightDriveCommand = m_Limelight.getDrive();
+      //double m_LimelightDriveCommand = m_Limelight.getDrive();
       double m_LimelightSteerCommand = m_Limelight.getSteer();
 
       autoSteer.arcadeDrive(0,m_LimelightSteerCommand);

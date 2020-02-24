@@ -54,12 +54,12 @@ public class RobotContainer
    */
   public RobotContainer() {
 
-   
+    m_drivetrain.setDefaultCommand(
+      new RunCommand(() -> m_drivetrain.drive(controller),m_drivetrain));
+
     m_chooser.setDefaultOption("Auto 1", new Auto(m_drivetrain));
     SmartDashboard.putData("Auto Chooser: ", m_chooser);
 
-    m_drivetrain.setDefaultCommand(
-        new RunCommand(() -> m_drivetrain.drive(controller),m_drivetrain));
 
     //m_FlyWheel.setDefaultCommand(
       //  new RunCommand(() -> m_FlyWheel.test(controller),m_FlyWheel));
