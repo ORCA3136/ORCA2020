@@ -9,8 +9,13 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.auto.Auto;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Drivetrain;
@@ -30,33 +35,31 @@ import frc.robot.subsystems.Limelight;
  * scheduler calls). Instead, the structure of the robot (including subsystems,
  * commands, and button mappings) should be declared here.
  */
-public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
-  //private final Dummy_Test_System m_testbed = new Dummy_Test_System();
+public class RobotContainer
+ {
+  // The robot's subsystems
+  private final Drivetrain m_Drivetrain = new Drivetrain(); 
+  private final Conveyor m_Conveyor= new Conveyor();
+  private final Intake m_Intake =  new Intake(m_Conveyor);
+  private final Flywheel m_FlyWheel = new Flywheel();
+  private final Limelight m_Limelight = new Limelight();
+  private final Climber m_climber = new Climber();
 
-  public Drivetrain m_Drivetrain = new Drivetrain(); 
-  public XboxController controller;
-  public Intake m_Intake;
-  public Conveyor m_Conveyor;
-  public Flywheel m_FlyWheel;
-  public Limelight m_Limelight;
-  public Climber m_climber;
+  SendableChooser<Command> m_chooser = new SendableChooser<>();
 
-  
+  private final XboxController controller = new XboxController(1);
+
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
 
-    controller = new XboxController(1);
-    m_Conveyor = new Conveyor();
-    m_Intake = new Intake(m_Conveyor);
-    m_FlyWheel = new Flywheel();
-    m_Limelight = new Limelight();
-    m_climber = new Climber();
+   
+    m_chooser.setDefaultOption("Auto 1", new Auto(m_Drivetrain));
+    SmartDashboard.putData("Auto Chooser: ", m_chooser);
 
     m_Drivetrain.setDefaultCommand(
-        new RunCommand(() -> m_Drivetrain.Drive(controller),m_Drivetrain));
+        new RunCommand(() -> m_Drivetrain.drive(controller),m_Drivetrain));
 
     //m_FlyWheel.setDefaultCommand(
       //  new RunCommand(() -> m_FlyWheel.test(controller),m_FlyWheel));
@@ -75,7 +78,7 @@ public class RobotContainer {
 
     // Left Bumper Button - Deploy Intake
     new JoystickButton(controller, XboxController.Button.kBumperLeft.value)
-    .whenHeld(new RunCommand(() -> m_Intake.toggle()));
+    .whenPressed(new InstantCommand(() -> m_Intake.toggle()));
 
   
 
@@ -155,6 +158,10 @@ public class RobotContainer {
   .whenReleased(new RunCommand(() -> m_climber.erectClimber()));
 
   
+ }
+//returns the selected command to the robot.
+ public Command getAutonomousCommand(){
+   return m_chooser.getSelected();
  }
 
 }

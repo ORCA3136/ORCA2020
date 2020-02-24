@@ -69,18 +69,18 @@ public class Drivetrain extends SubsystemBase {
     }
   }
 //code for auto
-  public void AutoD(double l, double r) {
+  public void autoD(double l, double r) {
     motors[1].set((l));
     motors[2].set((r));
   }
 //winches up
-  public void WinchUp(XboxController driver) {
+  public void winchUp(XboxController driver) {
     forward();
     motors[1].set(Constants.kWinchSpeed * -1);
     motors[2].set(Constants.kWinchSpeed);
   }
 //winches down
-  public void WinchDown(XboxController driver) {
+  public void winchDown(XboxController driver) {
     if (driver.getStickButton(GenericHID.Hand.kRight) && driver.getYButton()
     /* && Nuke button on joystick. NUKE button will call this method*/){
     forward();
@@ -90,13 +90,13 @@ public class Drivetrain extends SubsystemBase {
     }
   }
 //manual drive
-  public void Drive( XboxController controller) {
+  public void drive( XboxController controller) {
  
-     left_motors.set(TrueRightX((controller.getY(GenericHID.Hand.kLeft) * Constants.kLeftDriveScaling)));
-      right_motors.set(TrueLeftX((controller.getY(GenericHID.Hand.kRight) * -Constants.kLeftDriveScaling)));
+     left_motors.set(trueRightX((controller.getY(GenericHID.Hand.kLeft) * Constants.kLeftDriveScaling)));
+      right_motors.set(trueLeftX((controller.getY(GenericHID.Hand.kRight) * -Constants.kLeftDriveScaling)));
   }
 //fixes deadzone
-  public double TrueLeftX(double LY) {
+  public double trueLeftX(double LY) {
     // Used t get the absolute position of our Left control stick Y-axis (removes
     // deadzone)
     double stick = LY;
@@ -107,7 +107,7 @@ public class Drivetrain extends SubsystemBase {
     return stick;
   }
 //fixes deadzone
-  public double TrueRightX(double RY) {
+  public double trueRightX(double RY) {
     // Used to get the absolute position of our Right control stick Y-axis (removes
     // deadzone)
     double stick = RY;
@@ -118,7 +118,7 @@ public class Drivetrain extends SubsystemBase {
     return stick;
   }
 //stops motorsS
-  public void _StAAapP() {
+  public void stop() {
     for (CANSparkMax t : motors) {
       t.set(0);
     }
@@ -127,7 +127,7 @@ public class Drivetrain extends SubsystemBase {
   @Override
   public void periodic() {
   // This method will be called once per scheduler run
-  reverse();
+  engageDrivePTO();
 }
 //fires forward
   public void forward() {
@@ -135,14 +135,16 @@ public class Drivetrain extends SubsystemBase {
 
 }
 //fires back
-public void reverse(){
+public void engageDrivePTO(){
   PTOSoli.set(Value.kReverse);
 }
 //holds 
-public void off(){
+public void engageClimbPTO(){
   PTOSoli.set(Value.kOff);
 }
+
+
 public void initDefaultCommand() {
-  reverse();
+  engageDrivePTO();
 }
 }

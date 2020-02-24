@@ -25,9 +25,8 @@ import frc.robot.subsystems.Camera;
  */
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
-  Compressor c = new Compressor(0);
+  Compressor compressor = new Compressor(0);
   public RobotContainer m_robotContainer;
-  SendableChooser<Command> m_chooser = new SendableChooser<>();
   Camera cam;
 
   /**
@@ -41,11 +40,10 @@ public class Robot extends TimedRobot {
 
     
     cam = new Camera();
-    c.start();
+    compressor.start();
     m_robotContainer = new RobotContainer();
 
-    m_chooser.addOption("Auto 1", new Auto(m_robotContainer.m_Drivetrain));
-    SmartDashboard.putData("Auto Chooser: ", m_chooser);
+   
   }
 
   /**
@@ -82,7 +80,7 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     
   
-    c.start();
+    compressor.start();
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
@@ -99,13 +97,16 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-  c.start();
+  compressor.start();
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
+    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+
+    // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
-      m_autonomousCommand.cancel();
+      m_autonomousCommand.schedule();
     }
   }
 
@@ -118,7 +119,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testInit() {
-   c.start();
+   compressor.start();
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
   }
