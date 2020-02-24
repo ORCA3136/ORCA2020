@@ -30,7 +30,7 @@ public class Drivetrain extends SubsystemBase {
   private CANSparkMax[] motors;
   private SpeedControllerGroup right_motors;
   private SpeedControllerGroup left_motors;
-  DoubleSolenoid PTOSoli = new DoubleSolenoid(6, 4);
+  DoubleSolenoid PTOSoli = new DoubleSolenoid(Constants.kPTOForward, Constants.kPTOReverse);
   private DifferentialDrive autoSteer;  
   
 

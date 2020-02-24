@@ -26,7 +26,7 @@ public class Conveyor extends SubsystemBase {
   public Conveyor(){
     m_conveyor1 = new VictorSPX(Constants.kConveyor1);
     m_conveyor2 = new VictorSPX(Constants.kConveyor2);
-    ConveySoli = new DoubleSolenoid(0, 3);
+    ConveySoli = new DoubleSolenoid(Constants.kHopperStopperForward, Constants.kHopperStopperReverse);
   }
 
 

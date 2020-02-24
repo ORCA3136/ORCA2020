@@ -35,7 +35,15 @@ public final class Constants {
     public static final int kFlyWheel_l = 7;
     public static final int kFlyWheel_R = 6;
  
- 
+ //Solinoids
+    public static final int kIntakeForward = 1;
+    public static final int kIntakeReverse = 2;
+    public static final int kHopperStopperForward = 0;
+    public static final int kHopperStopperReverse = 3;
+    public static final int kClimberForward = 5;
+    public static final int kClimberReverse = 7;
+    public static final int kPTOForward = 6;
+    public static final int kPTOReverse = 4;
     //Speeds for Motors
     public static final double kIntakeSpeed =1;
     public static final double kConveyorSpeed = 1;

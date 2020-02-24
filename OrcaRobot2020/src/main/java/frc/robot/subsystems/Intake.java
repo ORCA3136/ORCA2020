@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Intake extends SubsystemBase {
-  DoubleSolenoid IntakeSoli = new DoubleSolenoid(1, 2);
+  DoubleSolenoid IntakeSoli = new DoubleSolenoid(Constants.kIntakeForward, Constants.kIntakeReverse);
   // Motor Controllers:
   private VictorSPX m_intake1;
   private static VictorSPX m_intake2;

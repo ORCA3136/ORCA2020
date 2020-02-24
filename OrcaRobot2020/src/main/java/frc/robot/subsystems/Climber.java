@@ -10,12 +10,13 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class Climber extends SubsystemBase {
   DoubleSolenoid climberSol;
 
   public Climber() {
-    climberSol = new DoubleSolenoid(5,7);
+    climberSol = new DoubleSolenoid(Constants.kClimberForward,Constants.kClimberReverse);
 
   }
 
