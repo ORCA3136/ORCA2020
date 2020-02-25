@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.auto.Auto;
@@ -104,13 +105,15 @@ public class RobotContainer
   * POWERCELL SHOOTER RELATED COMMANDS
   */  
     //Y Button - Vision Alignment
-    new JoystickButton(controller, XboxController.Button.kY.value)
+    new JoystickButton(controller, XboxController.Button.kA.value)
     .whenHeld(new InstantCommand(() -> m_drivetrain.visionAlignment(m_limelight)));
 
    //Right Stick Button  - Stop Powercell shooter
-   new JoystickButton(controller, XboxController.Button.kStickRight.value)
-   .whenHeld(new InstantCommand(m_flyWheel::runFlywheelWithoutPID, m_flyWheel))
-   .whenReleased(new InstantCommand(m_flyWheel::stop, m_flyWheel));
+   new JoystickButton(controller, XboxController.Button.kB.value)
+   .whenHeld(new InstantCommand(m_flyWheel::runFlywheelWithoutPID, m_flyWheel)
+      .andThen(new WaitCommand(1),new InstantCommand(m_conveyor::openHopperToFlyWheel, m_conveyor),new InstantCommand(m_conveyor::raiseConveyor, m_conveyor)))
+   .whenReleased(new InstantCommand(m_flyWheel::stop, m_flyWheel)
+      .alongWith(new InstantCommand(m_conveyor::stopConveyor, m_conveyor), new InstantCommand(m_conveyor::closeHopperToFlywheel, m_conveyor)));
 
 //****************************************************************************************************************************
 //***************TODO clean up this button - seems to be a duplicate of the power cell related items *************************
@@ -134,7 +137,7 @@ public class RobotContainer
  * CLIMBER RELATED COMMANDS
  */
    // Climber up & Down
-   new JoystickButton(controller, XboxController.Button.kBack.value)
+   new JoystickButton(controller, XboxController.Button.kBumperLeft.value)
    .whenHeld(new InstantCommand(m_climber::erectClimber, m_climber))
   .whenReleased(new InstantCommand(m_climber::retractClimber, m_climber));
 
