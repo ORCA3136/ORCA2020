@@ -32,8 +32,8 @@ public Flywheel(){
     left.setIdleMode(IdleMode.kCoast);
     right.setIdleMode(IdleMode.kCoast);
     
-    encoder = right.getEncoder();
-    controller = right.getPIDController();
+    encoder = left.getEncoder();
+    controller = left.getPIDController();
     controller.setFeedbackDevice(encoder);
     stop();
     updateConstants();
