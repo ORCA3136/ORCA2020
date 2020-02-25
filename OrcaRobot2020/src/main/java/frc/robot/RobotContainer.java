@@ -81,9 +81,10 @@ public class RobotContainer
  /**
   * INTAKE RELATED COMMANDS
   */
-    // Left Bumper Button - Deploy Intake
-    new JoystickButton(controller, XboxController.Button.kBumperLeft.value)
-    .whenPressed(new InstantCommand(m_intake::toggle, m_intake));
+    // Left Bumper Button - Deploy Intake and start pulling in. This is a bit of an example based upon what Luke was asking for, but I think we need to consider if this is the right combination.
+    //but it serves as an example of chaining commands - with the .andThen structure. Other options include .alongWith for parallel commands
+    new JoystickButton(controller, XboxController.Button.kBumperRight.value)
+    .whenPressed(new InstantCommand(m_intake::toggle, m_intake).andThen(new InstantCommand(m_intake::intakeIn, m_intake)));
   
    //X Button - Conveyor Soli fire
    new JoystickButton(controller, XboxController.Button.kX.value)
