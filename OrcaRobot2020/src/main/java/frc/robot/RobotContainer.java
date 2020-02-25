@@ -85,30 +85,30 @@ public class RobotContainer
     // Left Bumper Button - Deploy Intake and start pulling in. This is a bit of an example based upon what Luke was asking for, but I think we need to consider if this is the right combination.
     //but it serves as an example of chaining commands - with the .andThen structure. Other options include .alongWith for parallel commands
     new JoystickButton(controller, XboxController.Button.kBumperRight.value)
-    .whenPressed(new InstantCommand(m_intake::toggle, m_intake).andThen(new InstantCommand(m_intake::intakeIn, m_intake)));
+    .whenPressed(new InstantCommand(m_intake::deployIntake, m_intake).andThen(new InstantCommand(m_intake::intakeIn, m_intake)));
   
-   //X Button - Conveyor Soli fire
+   //X Button - Retract the intake
    new JoystickButton(controller, XboxController.Button.kX.value)
-   .whenPressed(new InstantCommand(m_intake::retractIntake, m_intake));
+   .whenPressed(new InstantCommand(m_intake::retractIntake, m_intake).alongWith(new InstantCommand(m_intake::intakeStop, m_intake)));
   
     // B Button - Intake Out - runs the rollers pushing power cells out
     new JoystickButton(controller, XboxController.Button.kB.value)
         .whileHeld(new InstantCommand(m_intake::intakeOut, m_intake))  //it is entirely possible these whenHeld Commands need to be made into run commands since they are longer running
         .whenReleased(new InstantCommand(m_intake::intakeStop, m_intake));
  
-   //A Button - Intake In, runs the rollers pulling power cells in
-    new JoystickButton(controller, XboxController.Button.kA.value)
-    .whenHeld(new InstantCommand(m_intake::intakeIn, m_intake)) //it is entirely possible these whenHeld Commands need to be made into run commands since they are longer running
-    .whenReleased(new InstantCommand(m_intake::intakeStop, m_intake));
+   //?? Button - Intake In, runs the rollers pulling power cells in
+    // new JoystickButton(controller, XboxController.Button.??.value)
+    // .whenHeld(new InstantCommand(m_intake::intakeIn, m_intake)) //it is entirely possible these whenHeld Commands need to be made into run commands since they are longer running
+    // .whenReleased(new InstantCommand(m_intake::intakeStop, m_intake));
    
  /**
   * POWERCELL SHOOTER RELATED COMMANDS
   */  
-    //Y Button - Vision Alignment
+    //A Button - Vision Alignment
     new JoystickButton(controller, XboxController.Button.kA.value)
     .whenHeld(new InstantCommand(() -> m_drivetrain.visionAlignment(m_limelight)));
 
-   //Right Stick Button  - Stop Powercell shooter
+   //B Button - Start flywheel, and run the powercells out
    new JoystickButton(controller, XboxController.Button.kB.value)
    .whenHeld(new InstantCommand(m_flyWheel::runFlywheelWithoutPID, m_flyWheel)
       .andThen(new WaitCommand(1),new InstantCommand(m_conveyor::openHopperToFlyWheel, m_conveyor),new InstantCommand(m_conveyor::raiseConveyor, m_conveyor)))
@@ -119,14 +119,14 @@ public class RobotContainer
 //***************TODO clean up this button - seems to be a duplicate of the power cell related items *************************
 //****************************************************************************************************************************
   // Right Bumper Button - Flywheel
-  new JoystickButton(controller, XboxController.Button.kBumperRight.value)
-  .whenHeld(new InstantCommand(m_flyWheel::runFlywheelWithoutPID, m_flyWheel))  //it is entirely possible these whenHeld Commands need to be made into run commands since they are longer running
-  .whenReleased(new InstantCommand( m_flyWheel::stop, m_flyWheel));
+  // new JoystickButton(controller, XboxController.Button.kBumperRight.value)
+  // .whenHeld(new InstantCommand(m_flyWheel::runFlywheelWithoutPID, m_flyWheel))  //it is entirely possible these whenHeld Commands need to be made into run commands since they are longer running
+  // .whenReleased(new InstantCommand( m_flyWheel::stop, m_flyWheel));
 
   //Left Stick Button - PID Shooter (NOTE: this is actually currently setup to just do Right motor onlY)
- new JoystickButton(controller, XboxController.Button.kStickLeft.value)
-  .whenHeld(new InstantCommand(m_flyWheel::runRightFlyWheelOnly, m_flyWheel)) //TODO - need to update this to actual PID shooter 
-  .whenReleased(new InstantCommand(m_flyWheel::stop, m_flyWheel));
+//  new JoystickButton(controller, XboxController.Button.kStickLeft.value)
+//   .whenHeld(new InstantCommand(m_flyWheel::runRightFlyWheelOnly, m_flyWheel)) //TODO - need to update this to actual PID shooter 
+//   .whenReleased(new InstantCommand(m_flyWheel::stop, m_flyWheel));
 
    //Start Button - Open / Close the hopper stopper
    new JoystickButton(controller, XboxController.Button.kStart.value)
