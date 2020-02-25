@@ -59,6 +59,8 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
     //call the update method to update the smart dashboard display 
     m_robotContainer.getFlyWheel().update();
+    //update the smart dashboard with intertial sensor data.
+    m_robotContainer.getInertialSensor().updateDashboard();
   }
 
   /**

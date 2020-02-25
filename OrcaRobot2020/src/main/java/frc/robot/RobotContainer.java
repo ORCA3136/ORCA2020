@@ -20,6 +20,7 @@ import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Flywheel;
+import frc.robot.subsystems.InertialSensor;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Limelight;
 
@@ -44,6 +45,7 @@ public class RobotContainer
   private final Flywheel m_flyWheel = new Flywheel();
   private final Limelight m_limelight = new Limelight();
   private final Climber m_climber = new Climber();
+  private final InertialSensor m_inertialSensor = new InertialSensor();
 
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
@@ -141,10 +143,20 @@ public class RobotContainer
  public Command getAutonomousCommand(){
    return m_chooser.getSelected();
  }
-
+ /**
+  * Getter for the flywheel
+  * @return Flywheel
+  */
  public Flywheel getFlyWheel()
  {
     return m_flyWheel;
  }
 
+  /**
+   * Getter for the InertialSensor
+   */
+  public InertialSensor getInertialSensor()
+  {
+    return m_inertialSensor;
+  }
 }
