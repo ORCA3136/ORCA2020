@@ -34,16 +34,16 @@ public class Conveyor extends SubsystemBase {
    * Runs conveyor up
    */
   public void raiseConveyor() {
-    m_conveyor1.set(ControlMode.PercentOutput, Constants.kConveyorSpeed);
-    m_conveyor2.set(ControlMode.PercentOutput, Constants.kConveyorSpeed *-1);
+    m_conveyor1.set(ControlMode.PercentOutput, Constants.kConveyorSpeed *-1);
+    m_conveyor2.set(ControlMode.PercentOutput, Constants.kConveyorSpeed);
   }
 
   /**
    * Runs conveyor down
    */
   public void lowerConveyor() {
-    m_conveyor1.set(ControlMode.PercentOutput, Constants.kConveyorSpeed * -1);
-    m_conveyor2.set(ControlMode.PercentOutput, Constants.kConveyorSpeed);
+    m_conveyor1.set(ControlMode.PercentOutput, Constants.kConveyorSpeed);
+    m_conveyor2.set(ControlMode.PercentOutput, Constants.kConveyorSpeed *-1);
   }
 
   /**

@@ -48,7 +48,7 @@ public Flywheel(){
     public void runFlyWheelWithPID(double setPoint)
     {
         SmartDashboard.putNumber("Target FlyWheel Velocity: ", setPoint);
-        controller.setReference(setPoint, ControlType.kVelocity);
+        controller.setReference(Constants.flyWheelSetPoint, ControlType.kVelocity);
     }
 
     public void runLeftFlyWheelMotorOnly(){
