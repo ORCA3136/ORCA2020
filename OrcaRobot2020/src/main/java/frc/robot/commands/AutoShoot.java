@@ -32,22 +32,22 @@ Flywheel fly;
   @Override
   public void execute() {
   
-  boolean Done = false;  
+  boolean done = false;  
   boolean stop = false; 
   double time = Timer.getFPGATimestamp();
 
 
-  while (Done = false){
-    if (stop = false){
+  while (done == false){
+    if (stop == false){
        // Flywheel.Run();
-        Convey.forward();
-       Convey.raiseConveyor();
+        Convey.openHopperToFlyWheel();
+        Convey.raiseConveyor();
     }
     
     else{
       fly.stop();
       Convey.stopConveyor();
-      Done = true;
+      done = true;
       }
     
     

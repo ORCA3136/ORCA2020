@@ -9,12 +9,19 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.auto.Auto;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Flywheel;
+import frc.robot.subsystems.InertialSensor;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Limelight;
 
@@ -30,33 +37,32 @@ import frc.robot.subsystems.Limelight;
  * scheduler calls). Instead, the structure of the robot (including subsystems,
  * commands, and button mappings) should be declared here.
  */
-public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
-  //private final Dummy_Test_System m_testbed = new Dummy_Test_System();
+public class RobotContainer
+ {
+  // The robot's subsystems
+  private final Drivetrain m_drivetrain = new Drivetrain(); 
+  private final Conveyor m_conveyor= new Conveyor();
+  private final Intake m_intake =  new Intake(m_conveyor);
+  private final Flywheel m_flyWheel = new Flywheel();
+  private final Limelight m_limelight = new Limelight();
+  private final Climber m_climber = new Climber();
+  private final InertialSensor m_inertialSensor = new InertialSensor();
 
-  public Drivetrain m_Drivetrain = new Drivetrain(); 
-  public XboxController controller;
-  public Intake m_Intake;
-  public Conveyor m_Conveyor;
-  public Flywheel m_FlyWheel;
-  public Limelight m_Limelight;
-  public Climber m_climber;
+  SendableChooser<Command> m_chooser = new SendableChooser<>();
 
-  
+  private final XboxController controller = new XboxController(1);
+
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
 
-    controller = new XboxController(1);
-    m_Conveyor = new Conveyor();
-    m_Intake = new Intake(m_Conveyor);
-    m_FlyWheel = new Flywheel();
-    m_Limelight = new Limelight();
-    m_climber = new Climber();
+    m_drivetrain.setDefaultCommand(
+      new RunCommand(() -> m_drivetrain.drive(controller),m_drivetrain));
 
-    m_Drivetrain.setDefaultCommand(
-        new RunCommand(() -> m_Drivetrain.Drive(controller),m_Drivetrain));
+    m_chooser.setDefaultOption("Auto 1", new Auto(m_drivetrain));
+    SmartDashboard.putData("Auto Chooser: ", m_chooser);
+
 
     //m_FlyWheel.setDefaultCommand(
       //  new RunCommand(() -> m_FlyWheel.test(controller),m_FlyWheel));
@@ -73,88 +79,82 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
 
-    // Left Bumper Button - Deploy Intake
-    new JoystickButton(controller, XboxController.Button.kBumperLeft.value)
-    .whenHeld(new RunCommand(() -> m_Intake.toggle()));
+ /**
+  * INTAKE RELATED COMMANDS
+  */
+    // Right Bumper Button - Deploy Intake and start pulling in. This is a bit of an example based upon what Luke was asking for, but I think we need to consider if this is the right combination.
+    //but it serves as an example of chaining commands - with the .andThen structure. Other options include .alongWith for parallel commands
+    new JoystickButton(controller, XboxController.Button.kBumperRight.value)
+    .whenHeld(new InstantCommand(m_intake::deployIntake, m_intake).andThen(new InstantCommand(m_intake::intakeIn, m_intake)))
+     .whenReleased(new InstantCommand(m_intake::retractIntake, m_intake).andThen(new InstantCommand(m_intake::intakeStop, m_intake)));
 
-  
-
-
-   // Right Bumper Button - Flywheel
+   //X Button -   
    new JoystickButton(controller, XboxController.Button.kBumperRight.value)
-   .whenHeld(new RunCommand(() -> m_FlyWheel.test1()));
+   .whenPressed(new InstantCommand(m_intake::deployIntake, m_intake).andThen(new InstantCommand(m_intake::intakeStop, m_intake)));
 
-   new JoystickButton(controller, XboxController.Button.kBumperRight.value)
-  .whenReleased(new RunCommand(() -> m_FlyWheel.stop()));
-
-
-    // B Button - Intake Out
+    // B Button - Intake Out - runs the rollers pushing power cells out
     new JoystickButton(controller, XboxController.Button.kB.value)
-        .whenHeld(new RunCommand(() -> m_Intake.intakeOut()));
-
-    new JoystickButton(controller, XboxController.Button.kB.value)
-    .whenReleased(new RunCommand(() -> m_Intake.intakeStop()));
+        .whileHeld(new InstantCommand(m_intake::intakeOut, m_intake))  //it is entirely possible these whenHeld Commands need to be made into run commands since they are longer running
+        .whenReleased(new InstantCommand(m_intake::intakeStop, m_intake));
  
-
-  
-   //A Button - Intake In
+   //?? Button - Intake In, runs the rollers pulling power cells in
+    // new JoystickButton(controller, XboxController.Button.??.value)
+    // .whenHeld(new InstantCommand(m_intake::intakeIn, m_intake)) //it is entirely possible these whenHeld Commands need to be made into run commands since they are longer running
+    // .whenReleased(new InstantCommand(m_intake::intakeStop, m_intake));
+   
+ /**
+  * POWERCELL SHOOTER RELATED COMMANDS
+  */  
+    //A Button - Vision Alignment
     new JoystickButton(controller, XboxController.Button.kA.value)
-    .whenHeld(new RunCommand(() -> m_Intake.intakeIn()));
+    .whenHeld(new InstantCommand(() -> m_drivetrain.visionAlignment(m_limelight)));
 
-    new JoystickButton(controller, XboxController.Button.kA.value)
-    .whenReleased(new RunCommand(() -> m_Intake.intakeStop()));
+   //B Button - Start flywheel, and run the powercells out
+   new JoystickButton(controller, XboxController.Button.kB.value)
+   .whenHeld(new InstantCommand(m_flyWheel::runFlywheelWithoutPID, m_flyWheel)
+      .andThen(new WaitCommand(10))
+      .andThen(new InstantCommand(m_conveyor::openHopperToFlyWheel, m_conveyor),new InstantCommand(m_conveyor::raiseConveyor, m_conveyor)))
+   .whenReleased(new InstantCommand(m_flyWheel::stop, m_flyWheel)
+      .andThen(new InstantCommand(m_conveyor::stopConveyor, m_conveyor), new InstantCommand(m_conveyor::closeHopperToFlywheel, m_conveyor)));
 
+  //Left Stick Button - PID Shooter - Test only (NOTE: this is actually currently setup to just do Right motor onlY)
+//  new JoystickButton(controller, XboxController.Button.kStickLeft.value)
+//   .whenHeld(new InstantCommand(m_flyWheel::runRightFlyWheelOnly, m_flyWheel)) //TODO - need to update this to actual PID shooter 
+//   .whenReleased(new InstantCommand(m_flyWheel::stop, m_flyWheel));
 
-
-   //Left Stick Button - PID Shooter
-   new JoystickButton(controller, XboxController.Button.kStickLeft.value)
-   .whenHeld(new RunCommand(() -> m_FlyWheel.test2()));
-
-   new JoystickButton(controller, XboxController.Button.kStickLeft.value)
-  .whenReleased(new RunCommand(() -> m_FlyWheel.stop()));
-
-   
-
-
-   //Right Stick Button  - Stop Shooter
-   new JoystickButton(controller, XboxController.Button.kStickRight.value)
-   .whenHeld(new RunCommand(() -> m_FlyWheel.test1()));
-
-   new JoystickButton(controller, XboxController.Button.kStickRight.value)
-  .whenReleased(new RunCommand(() -> m_FlyWheel.stop()));
-
-   
- 
-  
-
-    //X Button - Conveyor Soli fire
-    new JoystickButton(controller, XboxController.Button.kX.value)
-    .whenPressed(new RunCommand(() -> m_Intake.retractIntake()));
-
-
-    //Y Button - Conveyor Soli retact
-     new JoystickButton(controller, XboxController.Button.kY.value)
-   .whenHeld(new RunCommand(() -> m_Drivetrain.visionAlignment(m_Limelight)));
-   
-
-
-   //Start Button - climb up
+   //Start Button - Open / Close the hopper stopper
    new JoystickButton(controller, XboxController.Button.kStart.value)
-   .whenHeld(new RunCommand(() -> m_Conveyor.forward()));
+   .whenHeld(new InstantCommand(m_conveyor::openHopperToFlyWheel, m_conveyor))
+  .whenReleased(new InstantCommand(m_conveyor::closeHopperToFlywheel, m_conveyor));
 
-
-   new JoystickButton(controller, XboxController.Button.kStart.value)
-  .whenReleased(new RunCommand(() ->m_Conveyor.reverse()));
-
-
-   // Back Button
-   new JoystickButton(controller, XboxController.Button.kBack.value)
-   .whenHeld(new RunCommand(() -> m_climber.retractClimber()));
-
-   new JoystickButton(controller, XboxController.Button.kBack.value)
-  .whenReleased(new RunCommand(() -> m_climber.erectClimber()));
+/**
+ * CLIMBER RELATED COMMANDS
+ */
+   // Climber up & Down
+   new JoystickButton(controller, XboxController.Button.kBumperLeft.value)
+   .whenHeld(new InstantCommand(m_climber::erectClimber, m_climber))
+  .whenReleased(new InstantCommand(m_climber::retractClimber, m_climber));
 
   
  }
+//returns the selected command to the robot.
+ public Command getAutonomousCommand(){
+   return m_chooser.getSelected();
+ }
+ /**
+  * Getter for the flywheel
+  * @return Flywheel
+  */
+ public Flywheel getFlyWheel()
+ {
+    return m_flyWheel;
+ }
 
+  /**
+   * Getter for the InertialSensor
+   */
+  public InertialSensor getInertialSensor()
+  {
+    return m_inertialSensor;
+  }
 }

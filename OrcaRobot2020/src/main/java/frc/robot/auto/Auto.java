@@ -44,7 +44,7 @@ public class Auto extends CommandBase {
     SmartDashboard.putNumber("Auto: ", m_time);
 
     if(m_time < 5){
-      m_Drivetrain.AutoD(.25, -.25);
+      m_Drivetrain.autonomousDrive(.25, -.25);
     }
   
       

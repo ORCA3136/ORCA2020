@@ -6,6 +6,8 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -23,25 +25,38 @@ public class Flywheel extends SubsystemBase {
     double setpoint = 0;
 
 public Flywheel(){
-    //right.follow(left, true);
-    right.set(0.0);
+
+    right.follow(left, true);
+    left.set(0.0);
     
     left.setIdleMode(IdleMode.kCoast);
     right.setIdleMode(IdleMode.kCoast);
     
-    encoder = right.getEncoder();
-    controller = right.getPIDController();
+    encoder = left.getEncoder();
+    controller = left.getPIDController();
     controller.setFeedbackDevice(encoder);
     stop();
     updateConstants();
 }
 //manual run of flywheel
-    public void test1() {
+//NOTE because the constructor has them setup as followers - setting the right does not matter.
+    public void runFlywheelWithoutPID() {
         left.set(Constants.kFlywheelSpeed);
-        
+        right.set(Constants.kFlywheelSpeed);
     }
 
-    public void test2() {
+    public void runFlyWheelWithPID(double setPoint)
+    {
+        SmartDashboard.putNumber("Target FlyWheel Velocity: ", setPoint);
+        controller.setReference(Constants.flyWheelSetPoint, ControlType.kVelocity);
+    }
+
+    public void runLeftFlyWheelMotorOnly(){
+        left.set(Constants.kFlywheelSpeed);
+    
+    }
+
+    public void runRightFlyWheelOnly() {
         right.set(Constants.kFlywheelSpeed);
         
     }
@@ -55,6 +70,7 @@ public Flywheel(){
     }
 
     public void update() {
+        SmartDashboard.putNumber("FlyWheel Velocity: ", Math.abs(encoder.getVelocity()));
     }
 
     public void initDefaultCommand() {
@@ -63,10 +79,10 @@ public Flywheel(){
 
     public void updateConstants() {
         controller.setOutputRange(-1, 0);
-        controller.setP(Constants.shooterP);
-        controller.setI(Constants.shooterI);
-        controller.setD(Constants.shooterD);
-        controller.setFF(Constants.shooterF);
+        controller.setP(Constants.flyWheelP);
+        controller.setI(Constants.flyWheelI);
+        controller.setD(Constants.flyWheelD);
+        controller.setFF(Constants.flyWheelF);
     }
 
     /**
