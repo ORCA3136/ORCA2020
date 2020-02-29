@@ -92,10 +92,10 @@ public class RobotContainer
    new JoystickButton(controller, XboxController.Button.kBumperRight.value)
    .whenPressed(new InstantCommand(m_intake::deployIntake, m_intake).andThen(new InstantCommand(m_intake::intakeStop, m_intake)));
 
-    // B Button - Intake Out - runs the rollers pushing power cells out
-    new JoystickButton(controller, XboxController.Button.kB.value)
-        .whileHeld(new InstantCommand(m_intake::intakeOut, m_intake))  //it is entirely possible these whenHeld Commands need to be made into run commands since they are longer running
-        .whenReleased(new InstantCommand(m_intake::intakeStop, m_intake));
+    // // B Button - Intake Out - runs the rollers pushing power cells out
+    // new JoystickButton(controller, XboxController.Button.kB.value)
+    //     .whileHeld(new InstantCommand(m_intake::intakeOut, m_intake))  //it is entirely possible these whenHeld Commands need to be made into run commands since they are longer running
+    //     .whenReleased(new InstantCommand(m_intake::intakeStop, m_intake));
  
    //?? Button - Intake In, runs the rollers pulling power cells in
     // new JoystickButton(controller, XboxController.Button.??.value)
@@ -112,7 +112,7 @@ public class RobotContainer
    //B Button - Start flywheel, and run the powercells out
    new JoystickButton(controller, XboxController.Button.kB.value)
    .whenHeld(new InstantCommand(m_flyWheel::runFlywheelWithoutPID, m_flyWheel)
-      .andThen(new WaitCommand(10))
+      .andThen(new WaitCommand(1))
       .andThen(new InstantCommand(m_conveyor::openHopperToFlyWheel, m_conveyor),new InstantCommand(m_conveyor::raiseConveyor, m_conveyor)))
    .whenReleased(new InstantCommand(m_flyWheel::stop, m_flyWheel)
       .andThen(new InstantCommand(m_conveyor::stopConveyor, m_conveyor), new InstantCommand(m_conveyor::closeHopperToFlywheel, m_conveyor)));
