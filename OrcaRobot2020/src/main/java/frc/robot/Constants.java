@@ -60,4 +60,23 @@ public final class Constants {
     public static final double flyWheelSetPoint = -5000;
 
     public static boolean ToggleSoli = false;
+
+    //JoyStick buttons
+    public final int kY = 0;
+    public final int kX = 1;
+    public final int kA = 2;
+    public final int kB = 3;
+    public final int kLB = 4;
+    public final int kRB = 5;
+    public final int kRT = 6;
+    public final int kLT = 7;
+    public final int kSelect = 8;
+    public final int kStart = 9;
+    //JoyStick Axis
+    public final int kAxisX =0;
+    public final int kAxisY =1;
+
+
+
+
 }

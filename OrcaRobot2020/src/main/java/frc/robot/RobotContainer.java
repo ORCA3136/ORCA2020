@@ -7,7 +7,10 @@
 
 package frc.robot;
 
+import java.sql.Driver;
+
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -47,10 +50,12 @@ public class RobotContainer
   private final Limelight m_limelight = new Limelight();
   private final Climber m_climber = new Climber();
   private final InertialSensor m_inertialSensor = new InertialSensor();
+  private final Constants m_constants= new Constants();
 
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
   private final XboxController controller = new XboxController(1);
+  private final Joystick Joystick = new Joystick(0);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -79,64 +84,54 @@ public class RobotContainer
    */
   private void configureButtonBindings() {
 
+
  /**
   * INTAKE RELATED COMMANDS
   */
-    // Right Bumper Button - Deploy Intake and start pulling in. This is a bit of an example based upon what Luke was asking for, but I think we need to consider if this is the right combination.
-    //but it serves as an example of chaining commands - with the .andThen structure. Other options include .alongWith for parallel commands
+    // Right Bumper Button - Deploy Intake and start pulling in
     new JoystickButton(controller, XboxController.Button.kBumperRight.value)
     .whenHeld(new InstantCommand(m_intake::deployIntake, m_intake).andThen(new InstantCommand(m_intake::intakeIn, m_intake)))
      .whenReleased(new InstantCommand(m_intake::retractIntake, m_intake).andThen(new InstantCommand(m_intake::intakeStop, m_intake)));
 
-   //X Button -   
-   new JoystickButton(controller, XboxController.Button.kBumperRight.value)
-   .whenPressed(new InstantCommand(m_intake::deployIntake, m_intake).andThen(new InstantCommand(m_intake::intakeStop, m_intake)));
+    // Left Bumper Button - Deploy Intake and start pulling in
+    new JoystickButton(controller, XboxController.Button.kBumperLeft.value)
+    .whenHeld(new InstantCommand(m_intake::deployIntake, m_intake).andThen(new InstantCommand(m_intake::intakeOut, m_intake)))
+     .whenReleased(new InstantCommand(m_intake::retractIntake, m_intake).andThen(new InstantCommand(m_intake::intakeStop, m_intake)));
 
-    // B Button - Intake Out - runs the rollers pushing power cells out
-    new JoystickButton(controller, XboxController.Button.kB.value)
-        .whileHeld(new InstantCommand(m_intake::intakeOut, m_intake))  //it is entirely possible these whenHeld Commands need to be made into run commands since they are longer running
-        .whenReleased(new InstantCommand(m_intake::intakeStop, m_intake));
- 
-   //?? Button - Intake In, runs the rollers pulling power cells in
-    // new JoystickButton(controller, XboxController.Button.??.value)
-    // .whenHeld(new InstantCommand(m_intake::intakeIn, m_intake)) //it is entirely possible these whenHeld Commands need to be made into run commands since they are longer running
-    // .whenReleased(new InstantCommand(m_intake::intakeStop, m_intake));
-   
- /**
-  * POWERCELL SHOOTER RELATED COMMANDS
-  */  
-    //A Button - Vision Alignment
-    new JoystickButton(controller, XboxController.Button.kA.value)
+
+
+
+
+  /*
+  *
+  * JOYSTICK BUTTONS
+  *
+  */
+  //Winch - Select (NUKE!!!!!!!!)
+  new JoystickButton(Joystick, m_constants.kSelect)
+    .whenHeld(new InstantCommand(() -> m_drivetrain.winchUp(controller, Joystick)));
+
+//Climber up & Down - Start (NUKE!!!!!!!!)
+  new JoystickButton(Joystick,m_constants.kStart)
+    .whenHeld(new InstantCommand(() -> m_climber.NukeClimb(controller),m_climber))
+      .whenReleased(new InstantCommand(m_climber::retractClimber, m_climber));
+
+//Auto Align - LB/L1
+  new JoystickButton(Joystick,m_constants.kLB)
     .whenHeld(new InstantCommand(() -> m_drivetrain.visionAlignment(m_limelight)));
 
-   //B Button - Start flywheel, and run the powercells out
-   new JoystickButton(controller, XboxController.Button.kB.value)
+//RB Button - Start flywheel, and run the powercells out
+  new JoystickButton(Joystick,m_constants.kLT)
    .whenHeld(new InstantCommand(m_flyWheel::runFlywheelWithoutPID, m_flyWheel)
       .andThen(new WaitCommand(10))
-      .andThen(new InstantCommand(m_conveyor::openHopperToFlyWheel, m_conveyor),new InstantCommand(m_conveyor::raiseConveyor, m_conveyor)))
-   .whenReleased(new InstantCommand(m_flyWheel::stop, m_flyWheel)
-      .andThen(new InstantCommand(m_conveyor::stopConveyor, m_conveyor), new InstantCommand(m_conveyor::closeHopperToFlywheel, m_conveyor)));
+        .andThen(new InstantCommand(m_conveyor::openHopperToFlyWheel, m_conveyor),new InstantCommand(m_conveyor::raiseConveyor, m_conveyor)))
+          .whenReleased(new InstantCommand(m_flyWheel::stop, m_flyWheel)
+            .andThen(new InstantCommand(m_conveyor::stopConveyor, m_conveyor), new InstantCommand(m_conveyor::closeHopperToFlywheel, m_conveyor)));
 
-  //Left Stick Button - PID Shooter - Test only (NOTE: this is actually currently setup to just do Right motor onlY)
-//  new JoystickButton(controller, XboxController.Button.kStickLeft.value)
-//   .whenHeld(new InstantCommand(m_flyWheel::runRightFlyWheelOnly, m_flyWheel)) //TODO - need to update this to actual PID shooter 
-//   .whenReleased(new InstantCommand(m_flyWheel::stop, m_flyWheel));
-
-   //Start Button - Open / Close the hopper stopper
-   new JoystickButton(controller, XboxController.Button.kStart.value)
-   .whenHeld(new InstantCommand(m_conveyor::openHopperToFlyWheel, m_conveyor))
-  .whenReleased(new InstantCommand(m_conveyor::closeHopperToFlywheel, m_conveyor));
-
-/**
- * CLIMBER RELATED COMMANDS
- */
-   // Climber up & Down
-   new JoystickButton(controller, XboxController.Button.kBumperLeft.value)
-   .whenHeld(new InstantCommand(m_climber::erectClimber, m_climber))
-  .whenReleased(new InstantCommand(m_climber::retractClimber, m_climber));
-
-  
  }
+
+
+
 //returns the selected command to the robot.
  public Command getAutonomousCommand(){
    return m_chooser.getSelected();

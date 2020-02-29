@@ -12,6 +12,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
@@ -73,12 +74,17 @@ public class Drivetrain extends SubsystemBase {
     motors[1].set((l));
     motors[2].set((r));
   }
+
+
 //winches up
-  public void winchUp(XboxController driver) {
+  public void winchUp(XboxController driver, Joystick JoyStick) {
+    if(driver.getYButton()||driver.getBackButton())
     forward();
     motors[1].set(Constants.kWinchSpeed * -1);
     motors[2].set(Constants.kWinchSpeed);
   }
+
+
 //winches down
   public void winchDown(XboxController driver) {
     if (driver.getStickButton(GenericHID.Hand.kRight) && driver.getYButton()
