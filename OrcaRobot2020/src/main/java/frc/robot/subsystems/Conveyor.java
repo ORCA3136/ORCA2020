@@ -7,8 +7,8 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
@@ -18,14 +18,14 @@ import frc.robot.Constants;
 
 public class Conveyor extends SubsystemBase {
   // Motor Controllers:
-  private VictorSPX m_conveyor1;
-  private VictorSPX m_conveyor2;
+  private CANSparkMax m_conveyor1;
+  private CANSparkMax m_conveyor2;
   private DoubleSolenoid ConveySoli;
 
 
   public Conveyor(){
-    m_conveyor1 = new VictorSPX(Constants.kConveyor1);
-    m_conveyor2 = new VictorSPX(Constants.kConveyor2);
+    m_conveyor1 = new CANSparkMax(Constants.kConveyor1, MotorType.kBrushless);
+    m_conveyor2 = new CANSparkMax(Constants.kConveyor2, MotorType.kBrushless);
     ConveySoli = new DoubleSolenoid(Constants.kHopperStopperForward, Constants.kHopperStopperReverse);
   }
 
@@ -34,24 +34,24 @@ public class Conveyor extends SubsystemBase {
    * Runs conveyor up
    */
   public void raiseConveyor() {
-    m_conveyor1.set(ControlMode.PercentOutput, Constants.kConveyorSpeed *-1);
-    m_conveyor2.set(ControlMode.PercentOutput, Constants.kConveyorSpeed);
+    m_conveyor1.set( Constants.kConveyorSpeed *-1);
+    m_conveyor2.set( Constants.kConveyorSpeed);
   }
 
   /**
    * Runs conveyor down
    */
   public void lowerConveyor() {
-    m_conveyor1.set(ControlMode.PercentOutput, Constants.kConveyorSpeed);
-    m_conveyor2.set(ControlMode.PercentOutput, Constants.kConveyorSpeed *-1);
+    m_conveyor1.set(Constants.kConveyorSpeed);
+    m_conveyor2.set(Constants.kConveyorSpeed *-1);
   }
 
   /**
    * Stops conveyor
    */
   public void stopConveyor() {
-    m_conveyor1.set(ControlMode.PercentOutput, 0);
-    m_conveyor2.set(ControlMode.PercentOutput, 0);
+    m_conveyor1.set( 0);
+    m_conveyor2.set( 0);
   }
 
   public void toggle() {
