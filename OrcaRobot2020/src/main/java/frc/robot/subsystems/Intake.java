@@ -24,8 +24,8 @@ public class Intake extends SubsystemBase {
   boolean togglePressed, toggleOn; 
 
   public Intake(Conveyor conv){
-    m_intake1 = new CANSparkMax(Constants.kFlyWheel_l, MotorType.kBrushless);
-    m_intake2 = new CANSparkMax(Constants.kFlyWheel_l, MotorType.kBrushless);
+    m_intake1 = new CANSparkMax(Constants.kIntake1, MotorType.kBrushless);
+    m_intake2 = new CANSparkMax(Constants.kIntake2, MotorType.kBrushless);
     m_convey = conv;
     togglePressed = false;
     toggleOn = false;
