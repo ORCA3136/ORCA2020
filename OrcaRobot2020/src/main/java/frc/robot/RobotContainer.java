@@ -7,7 +7,6 @@
 
 package frc.robot;
 
-import java.sql.Driver;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
@@ -107,12 +106,12 @@ public class RobotContainer
   * JOYSTICK BUTTONS
   *
   */
-  //Winch - Select (NUKE!!!!!!!!)
-  new JoystickButton(Joystick, m_constants.kSelect)
-    .whenHeld(new InstantCommand(() -> m_drivetrain.winchUp(controller, Joystick)));
-
-//Climber up & Down - Start (NUKE!!!!!!!!)
-  new JoystickButton(Joystick,m_constants.kStart)
+  //Winch - X (NUKE!!!!!!!!)
+  new JoystickButton(Joystick, m_constants.kX)
+    .whenHeld(new InstantCommand(() -> m_drivetrain.winchUp(controller, Joystick)))
+     .whenReleased(new InstantCommand(() -> m_drivetrain.stop()));
+//Climber up & Down -A (NUKE!!!!!!!!)
+  new JoystickButton(Joystick,m_constants.kA)
     .whenHeld(new InstantCommand(() -> m_climber.NukeClimb(controller),m_climber))
       .whenReleased(new InstantCommand(m_climber::retractClimber, m_climber));
 
