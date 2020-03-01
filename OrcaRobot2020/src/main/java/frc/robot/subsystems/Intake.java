@@ -51,9 +51,9 @@ public class Intake extends SubsystemBase {
    
   }
 
-  public static void spit() {
-    m_intake2.set(
-       Constants.kIntakeSpeed * -1);   
+  public void defualt(XboxController driver) {
+   intakeIn(driver);  
+   intakeOut(driver);
   }
 
   /**
@@ -116,4 +116,6 @@ public void toggle(){
      togglePressed = true;
    }
  }
+
+
 }
