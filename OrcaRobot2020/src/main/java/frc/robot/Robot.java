@@ -11,6 +11,9 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.ScheduleCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.auto.Auto;
 //import frc.robot.auto.*;
 import frc.robot.subsystems.Camera;
 
@@ -35,11 +38,10 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
 
-    
+    m_robotContainer = new RobotContainer();
     cam = new Camera();
     compressor.start();
-    m_robotContainer = new RobotContainer();
-
+  
    
   }
 
@@ -79,13 +81,20 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    
+      
+
+    m_autonomousCommand = new Auto(m_robotContainer.getDrivetrain(), m_robotContainer.getFlyWheel(), m_robotContainer.getConveyor());
+
   
     compressor.start();
+    
     // schedule the autonomous command (example)
+    
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
+    
+   
   }
 
   /**
@@ -93,6 +102,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
+
+    
   
   }
 
@@ -103,12 +114,12 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    
 
     // schedule the autonomous command (example)
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.schedule();
-    }
+     if (m_autonomousCommand != null) {
+     m_autonomousCommand.cancel();
+     }
   }
 
   /**

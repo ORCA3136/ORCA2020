@@ -70,9 +70,9 @@ public class Drivetrain extends SubsystemBase {
     }
   }
 //code for auto
-  public void autonomousDrive(double l, double r) {
-    motors[1].set((l));
-    motors[2].set((r));
+  public void autonomousDrive() {
+    left_motors.set(trueRightX(Constants.kLeftDriveScaling));
+    right_motors.set(trueLeftX(-Constants.kLeftDriveScaling));
   }
 
 
@@ -80,15 +80,15 @@ public class Drivetrain extends SubsystemBase {
   public void winchUp(XboxController driver, Joystick JoyStick) {
     if(driver.getYButton()||driver.getBackButton())
     forward();
-    motors[1].set(Constants.kWinchSpeed * -1);
-    motors[2].set(Constants.kWinchSpeed);
+    motors[1].set(Constants.kWinchSpeed);
+    motors[2].set(Constants.kWinchSpeed * -1);
   }
 
 
 //winches down
   public void winchDown(XboxController driver) {
-    if (driver.getStickButton(GenericHID.Hand.kRight) && driver.getYButton()
-    /* && Nuke button on joystick. NUKE button will call this method*/){
+    if (driver.getStickButton(GenericHID.Hand.kRight) && driver.getYButton()){
+    
     forward();
     
     motors[1].set(Constants.kWinchSpeed);

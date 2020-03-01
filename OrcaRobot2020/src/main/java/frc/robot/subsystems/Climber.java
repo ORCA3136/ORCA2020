@@ -36,7 +36,7 @@ public class Climber extends SubsystemBase {
     }
   }
 
-  public void erectClimber(){
+  private void erectClimber(){
     climberSol.set(Value.kForward);
   }
 
