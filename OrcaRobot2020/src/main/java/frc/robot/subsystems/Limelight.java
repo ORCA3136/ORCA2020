@@ -11,9 +11,7 @@ import edu.wpi.first.networktables.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-/**
- * Add your docs here.
- */
+
 public class Limelight extends SubsystemBase{
 
   private final double STEER_K = 0.03;
@@ -25,6 +23,8 @@ public class Limelight extends SubsystemBase{
   private NetworkTableEntry ledMode;
 
   public boolean m_LimelightHasValidTarget;
+  
+   double changeLedMode;
 
 
   public Limelight(){
@@ -43,15 +43,16 @@ public class Limelight extends SubsystemBase{
     ledMode = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode");  
 
     SmartDashboard.putNumber("ledMode: ", ledMode.getDouble(0));
+    
+    changeLedMode = SmartDashboard.getNumber("ChangeLimelightMode: ", 0);
+    
+    ledMode.setNumber(changeLedMode);
   }
 
 
   public boolean findTarget(){
     
     m_LimelightHasValidTarget = false;
-    ledMode.setDouble(3);
-    
-    
 
     if(tv > 1){
 
@@ -70,7 +71,6 @@ public class Limelight extends SubsystemBase{
   public void stopTracking(){
 
     m_LimelightHasValidTarget = false;
-    ledMode.setDouble(1);
     
   }
 
