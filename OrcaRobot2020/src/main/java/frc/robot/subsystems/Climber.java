@@ -28,7 +28,7 @@ public class Climber extends SubsystemBase {
   }
 
   public void NukeClimb(XboxController Driver) {
-    if(Driver.getStartButton()){
+    if(Driver.getXButton()){
       erectClimber();
     }
     else{

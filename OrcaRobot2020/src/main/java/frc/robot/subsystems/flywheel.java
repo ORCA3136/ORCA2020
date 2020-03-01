@@ -35,6 +35,7 @@ public Flywheel(){
     encoder = left.getEncoder();
     controller = left.getPIDController();
     controller.setFeedbackDevice(encoder);
+    controller.setOutputRange(Constants.kMinOutput,Constants.kMinOutput);
     stop();
     updateConstants();
 }
@@ -45,21 +46,16 @@ public Flywheel(){
         right.set(Constants.kFlywheelSpeed);
     }
 
-    public void runFlyWheelWithPID(double setPoint)
+    public void runFlyWheelWithPID()
     {
-        SmartDashboard.putNumber("Target FlyWheel Velocity: ", setPoint);
+        SmartDashboard.putNumber("Target FlyWheel Velocity: ", Constants.flyWheelSetPoint );
+        //updateConstants();
         controller.setReference(Constants.flyWheelSetPoint, ControlType.kVelocity);
+       
+
     }
 
-    public void runLeftFlyWheelMotorOnly(){
-        left.set(Constants.kFlywheelSpeed);
     
-    }
-
-    public void runRightFlyWheelOnly() {
-        right.set(Constants.kFlywheelSpeed);
-        
-    }
     
     public void set(double setpoint) {
         controller.setReference(0, ControlType.kDutyCycle);
@@ -78,7 +74,7 @@ public Flywheel(){
       }
 
     public void updateConstants() {
-        controller.setOutputRange(-1, 0);
+       // controller.setOutputRange(-1, 0);
         controller.setP(Constants.flyWheelP);
         controller.setI(Constants.flyWheelI);
         controller.setD(Constants.flyWheelD);

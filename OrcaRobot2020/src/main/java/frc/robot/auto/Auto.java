@@ -10,7 +10,11 @@ package frc.robot.auto;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Flywheel;
 
 public class Auto extends CommandBase {
   /**
@@ -19,10 +23,14 @@ public class Auto extends CommandBase {
   private Timer timer = new Timer();
   private Drivetrain m_Drivetrain;
   private boolean finished;
+  private final Flywheel m_fly;
+  private final Conveyor m_Conveyor;
 
-  public Auto(Drivetrain dt) {
+  public Auto(Drivetrain dt,Flywheel fw,Conveyor cv) {
 
     m_Drivetrain = dt;
+    m_Conveyor = cv;
+    m_fly = fw;
     addRequirements(m_Drivetrain);
     finished = false;
 
@@ -42,8 +50,13 @@ public class Auto extends CommandBase {
     double m_time = timer.get();
 
     SmartDashboard.putNumber("Auto: ", m_time);
-
-    if(m_time < 5){
+    if( m_time < 5){
+      new InstantCommand(() -> m_fly.runFlyWheelWithPID());
+      new WaitCommand(10);
+      new InstantCommand(m_Conveyor::openHopperToFlyWheel, m_Conveyor);
+      new InstantCommand(m_Conveyor::raiseConveyor, m_Conveyor);
+    }
+    else if(m_time > 13){
       m_Drivetrain.autonomousDrive(.25, -.25);
     }
   
@@ -61,6 +74,9 @@ public class Auto extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    new InstantCommand(m_fly::stop, m_fly);
+    new InstantCommand(m_Conveyor::stopConveyor, m_Conveyor);
+    new InstantCommand(m_Conveyor::closeHopperToFlywheel, m_Conveyor);
     return finished;
   }
 }

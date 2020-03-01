@@ -42,10 +42,8 @@ public class Intake extends SubsystemBase {
    * Runs the intake motor inward
    */
   public void intakeIn() {
-    m_intake1.set(
-       Constants.kIntakeSpeed * -1);
-    m_intake2.set(
-       Constants.kIntakeSpeed);
+    m_intake1.set(Constants.kIntakeSpeed * -1);
+    m_intake2.set(Constants.kIntakeSpeed);
     m_convey.raiseConveyor();
 
    

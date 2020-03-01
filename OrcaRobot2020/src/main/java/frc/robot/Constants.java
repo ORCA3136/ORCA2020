@@ -36,14 +36,18 @@ public final class Constants {
     public static final int kFlyWheel_R = 6;
  
  //Solinoids
-    public static final int kIntakeForward = 0;
-    public static final int kIntakeReverse = 3;
-    public static final int kHopperStopperForward = 1;
-    public static final int kHopperStopperReverse = 2;
-    public static final int kClimberForward = 7;
-    public static final int kClimberReverse = 5;
-    public static final int kPTOForward = 6;
-    public static final int kPTOReverse = 4;
+    public static final int kIntakeForward = 3;
+    public static final int kIntakeReverse = 0;
+    
+    public static final int kHopperStopperForward = 7;
+    public static final int kHopperStopperReverse = 4;
+    
+    public static final int kClimberForward = 5;
+    public static final int kClimberReverse = 6;
+    
+    public static final int kPTOForward = 2;
+    public static final int kPTOReverse = 1;
+   
     //Speeds for Motors
     public static final double kIntakeSpeed =1;
     public static final double kConveyorSpeed = 1;
@@ -56,8 +60,10 @@ public final class Constants {
     public static final double flyWheelI = 0;
     public static final double flyWheelD = 4;
     public static final double flyWheelF = 0.00017;
+    public static final double  kMaxOutput = 1; 
+    public static final double kMinOutput = -1;
 
-    public static final double flyWheelSetPoint = -5000;
+    public static final double flyWheelSetPoint = 5000;
 
     public static boolean ToggleSoli = false;
 

@@ -33,7 +33,7 @@ public class Conveyor extends SubsystemBase {
   /**
    * Runs conveyor up
    */
-  public void raiseConveyor() {
+  public void lowerConveyor() {
     m_conveyor1.set( Constants.kConveyorSpeed *-1);
     m_conveyor2.set( Constants.kConveyorSpeed);
   }
@@ -41,7 +41,7 @@ public class Conveyor extends SubsystemBase {
   /**
    * Runs conveyor down
    */
-  public void lowerConveyor() {
+  public void raiseConveyor() {
     m_conveyor1.set(Constants.kConveyorSpeed);
     m_conveyor2.set(Constants.kConveyorSpeed *-1);
   }

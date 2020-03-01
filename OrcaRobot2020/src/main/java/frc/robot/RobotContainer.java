@@ -64,7 +64,7 @@ public class RobotContainer
     m_drivetrain.setDefaultCommand(
       new RunCommand(() -> m_drivetrain.drive(controller),m_drivetrain));
 
-    m_chooser.setDefaultOption("Auto 1", new Auto(m_drivetrain));
+    m_chooser.setDefaultOption("Auto 1", new Auto(m_drivetrain,m_flyWheel,m_conveyor));
     SmartDashboard.putData("Auto Chooser: ", m_chooser);
 
 
@@ -89,7 +89,8 @@ public class RobotContainer
   */
     // Right Bumper Button - Deploy Intake and start pulling in
     new JoystickButton(controller, XboxController.Button.kBumperRight.value)
-    .whenHeld(new InstantCommand(m_intake::deployIntake, m_intake).andThen(new InstantCommand(m_intake::intakeIn, m_intake)))
+    .whenHeld(new InstantCommand(m_intake::deployIntake, m_intake).andThen(new InstantCommand(m_intake::intakeIn, m_intake))
+    .andThen(new WaitCommand(2)))
      .whenReleased(new InstantCommand(m_intake::retractIntake, m_intake).andThen(new InstantCommand(m_intake::intakeStop, m_intake)));
 
     // Left Bumper Button - Deploy Intake and start pulling in
@@ -97,9 +98,9 @@ public class RobotContainer
     .whenHeld(new InstantCommand(m_intake::deployIntake, m_intake).andThen(new InstantCommand(m_intake::intakeOut, m_intake)))
      .whenReleased(new InstantCommand(m_intake::retractIntake, m_intake).andThen(new InstantCommand(m_intake::intakeStop, m_intake)));
 
+     new JoystickButton(controller, XboxController.Button.kA.value).whenHeld(new InstantCommand(() -> m_climber.erectClimber()));
 
-
-
+     new JoystickButton(controller, XboxController.Button.kB.value).whenHeld(new InstantCommand(() -> m_climber.retractClimber()));
 
   /*
   *
@@ -121,15 +122,23 @@ public class RobotContainer
 
 //RB Button - Start flywheel, and run the powercells out
   new JoystickButton(Joystick,m_constants.kLT)
-   .whenHeld(new InstantCommand(m_flyWheel::runFlywheelWithoutPID, m_flyWheel)
-      .andThen(new WaitCommand(10))
-        .andThen(new InstantCommand(m_conveyor::openHopperToFlyWheel, m_conveyor),new InstantCommand(m_conveyor::raiseConveyor, m_conveyor)))
-          .whenReleased(new InstantCommand(m_flyWheel::stop, m_flyWheel)
-            .andThen(new InstantCommand(m_conveyor::stopConveyor, m_conveyor), new InstantCommand(m_conveyor::closeHopperToFlywheel, m_conveyor)));
+   .whenHeld(new InstantCommand(() -> m_flyWheel.runFlywheelWithoutPID())
+   .andThen(new InstantCommand(m_conveyor::stopConveyor, m_conveyor))
+      .andThen(new WaitCommand(2))
+        .andThen(new InstantCommand(m_conveyor::openHopperToFlyWheel, m_conveyor)
+          .andThen(new WaitCommand(2))
+            .andThen(new InstantCommand(m_conveyor::raiseConveyor, m_conveyor))))
+    .whenReleased(new InstantCommand(m_conveyor::stopConveyor, m_conveyor)
+    .andThen(new InstantCommand(m_flyWheel::stop, m_flyWheel))
+      .andThen(new WaitCommand(2))
+        .andThen(new InstantCommand(m_conveyor::closeHopperToFlywheel, m_conveyor)));
+
+
+
 
  }
 
-
+//m_flyWheel.runFlyWheelWithPID(m_constants.flyWheelSetPoint)
 
 //returns the selected command to the robot.
  public Command getAutonomousCommand(){
