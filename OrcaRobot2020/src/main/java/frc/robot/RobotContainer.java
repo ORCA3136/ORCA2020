@@ -88,18 +88,20 @@ public class RobotContainer
    
   // Right Bumper Button - Deploy Intake and start pulling in
     new JoystickButton(controller, XboxController.Button.kBumperRight.value)
-      .whenHeld(new InstantCommand(m_intake::deployIntake, m_intake)
-        .andThen(new WaitCommand(0.5))
-          .andThen(new InstantCommand(()->m_intake.intakeIn(controller), m_intake))
-            .andThen(new InstantCommand(m_conveyor::openHopperToFlyWheel, m_conveyor)))  
+      .whenHeld(new InstantCommand(m_intake::deployIntake, m_intake)  
+        .andThen(new InstantCommand(m_conveyor::stopConveyor, m_conveyor)) 
+          .andThen(new WaitCommand(0.5))
+            .andThen(new InstantCommand(()->m_intake.intakeIn(controller), m_intake))
+             .andThen(new InstantCommand(m_conveyor::openHopperToFlyWheel, m_conveyor)))        
     .whenReleased(new InstantCommand(m_intake::retractIntake, m_intake)
       .andThen(new InstantCommand(m_intake::intakeStop, m_intake)));
 
     // Left Bumper Button - Deploy Intake and start pulling in
     new JoystickButton(controller, XboxController.Button.kBumperLeft.value)
-    .whenHeld(new InstantCommand(m_intake::deployIntake, m_intake)
+  .whenHeld(new InstantCommand(m_intake::deployIntake, m_intake)
+    .andThen(new InstantCommand(m_conveyor::stopConveyor, m_conveyor)) 
       .andThen(new WaitCommand(0.5))
-      .andThen(new InstantCommand(()->m_intake.intakeOut(controller), m_intake))
+        .andThen(new InstantCommand(()->m_intake.intakeOut(controller), m_intake))
           .andThen(new InstantCommand(m_conveyor::openHopperToFlyWheel, m_conveyor)))
     .whenReleased(new InstantCommand(m_intake::retractIntake, m_intake)
       .andThen(new InstantCommand(m_intake::intakeStop, m_intake)));
