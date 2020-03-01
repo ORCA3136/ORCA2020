@@ -30,10 +30,11 @@ public class Limelight extends SubsystemBase{
   public Limelight(){
     
     m_LimelightHasValidTarget = false;
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("lefMode").setNumber(1);
 
 
   }
-  
+  s
   public void periodic(){
 
     tv = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
