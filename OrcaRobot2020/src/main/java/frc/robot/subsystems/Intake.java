@@ -11,9 +11,11 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import edu.wpi.first.wpilibj.GenericHID;
 
 public class Intake extends SubsystemBase {
   DoubleSolenoid IntakeSoli = new DoubleSolenoid(Constants.kIntakeForward, Constants.kIntakeReverse);
@@ -41,9 +43,9 @@ public class Intake extends SubsystemBase {
   /**
    * Runs the intake motor inward
    */
-  public void intakeIn() {
-    m_intake1.set(Constants.kIntakeSpeed * -1);
-    m_intake2.set(Constants.kIntakeSpeed);
+  public void intakeIn(XboxController driver) {
+    m_intake2.set(driver.getTriggerAxis(GenericHID.Hand.kLeft));
+    m_intake1.set(driver.getTriggerAxis(GenericHID.Hand.kLeft) * -1);
     m_convey.raiseConveyor();
 
    
@@ -57,11 +59,9 @@ public class Intake extends SubsystemBase {
   /**
    * Runs the intake motor outward
    */
-  public void intakeOut() {
-    m_intake1.set(
-       Constants.kIntakeSpeed);
-    m_intake2.set(
-       Constants.kIntakeSpeed * -1);
+  public void intakeOut(XboxController driver) {
+    m_intake1.set(driver.getTriggerAxis(GenericHID.Hand.kRight));
+    m_intake2.set(driver.getTriggerAxis(GenericHID.Hand.kRight) * -1);
     m_convey.lowerConveyor();
   }
  
