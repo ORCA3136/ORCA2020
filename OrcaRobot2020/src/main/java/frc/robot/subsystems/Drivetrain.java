@@ -71,8 +71,8 @@ public class Drivetrain extends SubsystemBase {
   }
 //code for auto
   public void autonomousDrive() {
-    left_motors.set(trueRightX(Constants.kLeftDriveScaling));
-    right_motors.set(trueLeftX(-Constants.kLeftDriveScaling));
+    left_motors.set(.25);
+    right_motors.set(-.25);
   }
 
 
