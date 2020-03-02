@@ -18,15 +18,16 @@ import frc.robot.Constants;
 
 public class Conveyor extends SubsystemBase {
   // Motor Controllers:
-  private CANSparkMax m_conveyor1;
-  private CANSparkMax m_conveyor2;
+  private CANSparkMax leftConveyor;
+  private CANSparkMax rightConveyor;
   private DoubleSolenoid ConveySoli;
 
 
   public Conveyor(){
-    m_conveyor1 = new CANSparkMax(Constants.kConveyor1, MotorType.kBrushless);
-    m_conveyor2 = new CANSparkMax(Constants.kConveyor2, MotorType.kBrushless);
+    leftConveyor = new CANSparkMax(Constants.kConveyor1, MotorType.kBrushless);
+    rightConveyor = new CANSparkMax(Constants.kConveyor2, MotorType.kBrushless);
     ConveySoli = new DoubleSolenoid(Constants.kHopperStopperForward, Constants.kHopperStopperReverse);
+    rightConveyor.follow(leftConveyor,true);
   }
 
 
@@ -34,24 +35,24 @@ public class Conveyor extends SubsystemBase {
    * Runs conveyor up
    */
   public void lowerConveyor() {
-    m_conveyor1.set( Constants.kConveyorSpeed *-1);
-    m_conveyor2.set( Constants.kConveyorSpeed);
+    leftConveyor.set( Constants.kConveyorSpeed *-1);
+    
   }
 
   /**
    * Runs conveyor down
    */
   public void raiseConveyor() {
-    m_conveyor1.set(Constants.kConveyorSpeed);
-    m_conveyor2.set(Constants.kConveyorSpeed *-1);
+    leftConveyor.set(Constants.kConveyorSpeed);
+   
   }
 
   /**
    * Stops conveyor
    */
   public void stopConveyor() {
-    m_conveyor1.set( 0);
-    m_conveyor2.set( 0);
+    leftConveyor.set( 0);
+    
   }
 
   public void toggle() {

@@ -7,25 +7,32 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import edu.wpi.first.wpilibj.GenericHID;
 
 public class Intake extends SubsystemBase {
   DoubleSolenoid IntakeSoli = new DoubleSolenoid(Constants.kIntakeForward, Constants.kIntakeReverse);
   // Motor Controllers:
-  private CANSparkMax m_intake1;
-  private static CANSparkMax m_intake2;
+  private CANSparkMax bottomRoller;
+  private static CANSparkMax topRoller;
   Conveyor m_convey;
   boolean togglePressed, toggleOn; 
+  CANEncoder topEncoder, bottomEncoder;
 
   public Intake(Conveyor conv){
-    m_intake1 = new CANSparkMax(Constants.kIntake1, MotorType.kBrushless);
-    m_intake2 = new CANSparkMax(Constants.kIntake2, MotorType.kBrushless);
+    bottomRoller = new CANSparkMax(Constants.kIntake1, MotorType.kBrushless);
+    topRoller = new CANSparkMax(Constants.kIntake2, MotorType.kBrushless);
+    topEncoder= topRoller.getEncoder();
+    bottomEncoder = bottomRoller.getEncoder();
     m_convey = conv;
     togglePressed = false;
     toggleOn = false;
@@ -35,6 +42,10 @@ public class Intake extends SubsystemBase {
   @Override
   public void periodic(){
 
+    SmartDashboard.putNumber(   "Bottom Roller Velocity", bottomEncoder.getVelocity());
+    SmartDashboard.putNumber(   "Top Roller Velocity",    topEncoder.getVelocity());
+    SmartDashboard.putNumber(   "Bottom Roller Current", bottomRoller.getOutputCurrent());
+    SmartDashboard.putNumber(   "Top Roller Current",    topRoller.getOutputCurrent());
     
 
   }
@@ -42,26 +53,16 @@ public class Intake extends SubsystemBase {
    * Runs the intake motor inward
    */
   public void intakeIn() {
-    m_intake1.set(Constants.kIntakeSpeed * -1);
-    m_intake2.set(Constants.kIntakeSpeed);
+    topRoller.set(Constants.kConveyorSpeed);
+    bottomRoller.set(Constants.kConveyorSpeed * -1);
     m_convey.raiseConveyor();
-
-   
   }
-
-  public static void spit() {
-    m_intake2.set(
-       Constants.kIntakeSpeed * -1);   
-  }
-
   /**
    * Runs the intake motor outward
    */
   public void intakeOut() {
-    m_intake1.set(
-       Constants.kIntakeSpeed);
-    m_intake2.set(
-       Constants.kIntakeSpeed * -1);
+    bottomRoller.set(Constants.kConveyorSpeed);
+    topRoller.set(Constants.kConveyorSpeed * -1);
     m_convey.lowerConveyor();
   }
  
@@ -70,9 +71,9 @@ public class Intake extends SubsystemBase {
    */
   
    public void intakeStop() {
-    m_intake1.set(
+    bottomRoller.set(
        0);
-    m_intake2.set(
+    topRoller.set(
        0);
     m_convey.stopConveyor();
   }
@@ -116,4 +117,5 @@ public void toggle(){
      togglePressed = true;
    }
  }
+
 }

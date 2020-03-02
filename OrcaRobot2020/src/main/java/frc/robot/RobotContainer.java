@@ -64,15 +64,14 @@ public class RobotContainer
     m_drivetrain.setDefaultCommand(
       new RunCommand(() -> m_drivetrain.drive(controller),m_drivetrain));
 
+    
+
     m_chooser.setDefaultOption("Auto 1", new Auto(m_drivetrain,m_flyWheel,m_conveyor));
     SmartDashboard.putData("Auto Chooser: ", m_chooser);
 
-
-    //m_FlyWheel.setDefaultCommand(
-      //  new RunCommand(() -> m_FlyWheel.test(controller),m_FlyWheel));
-
     // Configure the button bindings
     configureButtonBindings();
+  
   }
 
   /**
@@ -84,43 +83,57 @@ public class RobotContainer
   private void configureButtonBindings() {
 
 
- /**
-  * INTAKE RELATED COMMANDS
+ /*
+  *
+  * Xbox Controls
+  *
   */
-    // Right Bumper Button - Deploy Intake and start pulling in
+   
+  // Right Bumper Button - Deploy Intake and start pulling in
     new JoystickButton(controller, XboxController.Button.kBumperRight.value)
-    .whenHeld(new InstantCommand(m_intake::deployIntake, m_intake).andThen(new InstantCommand(m_intake::intakeIn, m_intake))
-    .andThen(new WaitCommand(2)))
-     .whenReleased(new InstantCommand(m_intake::retractIntake, m_intake).andThen(new InstantCommand(m_intake::intakeStop, m_intake)));
+      .whenHeld(new InstantCommand(m_intake::deployIntake, m_intake)  
+        .andThen(new InstantCommand(m_conveyor::stopConveyor, m_conveyor)) 
+          .andThen(new WaitCommand(0.5))) 
+    .whenReleased(new InstantCommand(m_intake::retractIntake, m_intake));
 
     // Left Bumper Button - Deploy Intake and start pulling in
     new JoystickButton(controller, XboxController.Button.kBumperLeft.value)
-    .whenHeld(new InstantCommand(m_intake::deployIntake, m_intake).andThen(new InstantCommand(m_intake::intakeOut, m_intake)))
-     .whenReleased(new InstantCommand(m_intake::retractIntake, m_intake).andThen(new InstantCommand(m_intake::intakeStop, m_intake)));
-
-     new JoystickButton(controller, XboxController.Button.kA.value).whenHeld(new InstantCommand(() -> m_climber.erectClimber()));
-
-     new JoystickButton(controller, XboxController.Button.kB.value).whenHeld(new InstantCommand(() -> m_climber.retractClimber()));
+  .whenHeld(new InstantCommand(m_intake::deployIntake, m_intake)
+    .andThen(new InstantCommand(m_conveyor::stopConveyor, m_conveyor)) 
+      .andThen(new WaitCommand(0.5)))
+  .whenReleased(new InstantCommand(m_intake::retractIntake, m_intake));
+  // left stick - intake in
+  new JoystickButton(controller, XboxController.Button.kStickLeft.value)
+  .whenHeld(new InstantCommand(()  -> m_intake.intakeIn(),m_intake))
+    .whenReleased(new InstantCommand(m_intake::intakeStop, m_intake));
+   
+    // right stick - intake out
+  new JoystickButton(controller, XboxController.Button.kStickRight.value)
+  .whenHeld(new InstantCommand(()  -> m_intake.intakeOut(),m_intake))
+    .whenReleased(new InstantCommand(m_intake::intakeStop, m_intake));
 
   /*
   *
   * JOYSTICK BUTTONS
   *
   */
+  
   //Winch - X (NUKE!!!!!!!!)
   new JoystickButton(Joystick, m_constants.kX)
     .whenHeld(new InstantCommand(() -> m_drivetrain.winchUp(controller, Joystick)))
-     .whenReleased(new InstantCommand(() -> m_drivetrain.stop()));
-//Climber up & Down -A (NUKE!!!!!!!!)
+     .whenReleased(new InstantCommand(() -> m_drivetrain.stop())
+     .andThen(new InstantCommand (() -> m_drivetrain.engageDrivePTO())));
+
+  //Climber up & Down -A (NUKE!!!!!!!!)
   new JoystickButton(Joystick,m_constants.kA)
     .whenHeld(new InstantCommand(() -> m_climber.NukeClimb(controller),m_climber))
       .whenReleased(new InstantCommand(m_climber::retractClimber, m_climber));
 
-//Auto Align - LB/L1
+  //Auto Align - LB/L1
   new JoystickButton(Joystick,m_constants.kLB)
     .whenHeld(new InstantCommand(() -> m_drivetrain.visionAlignment(m_limelight)));
 
-//RB Button - Start flywheel, and run the powercells out
+  //RB Button - Start flywheel, and run the powercells out
   new JoystickButton(Joystick,m_constants.kLT)
    .whenHeld(new InstantCommand(() -> m_flyWheel.runFlywheelWithoutPID())
    .andThen(new InstantCommand(m_conveyor::stopConveyor, m_conveyor))
@@ -138,7 +151,7 @@ public class RobotContainer
 
  }
 
-//m_flyWheel.runFlyWheelWithPID(m_constants.flyWheelSetPoint)
+
 
 //returns the selected command to the robot.
  public Command getAutonomousCommand(){
@@ -160,4 +173,14 @@ public class RobotContainer
   {
     return m_inertialSensor;
   }
+
+  public Drivetrain getDrivetrain()
+ {
+    return m_drivetrain;
+ }
+
+ public Conveyor getConveyor()
+ {
+    return m_conveyor;
+ }
 }

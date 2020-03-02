@@ -106,8 +106,8 @@ public class InertialSensor extends SubsystemBase {
         SmartDashboard.putNumber(   "QuaternionZ",          ahrs.getQuaternionZ());
 
         /* Connectivity Debugging Support                                           */
-        SmartDashboard.putNumber(   "IMU_Byte_Count",       ahrs.getByteCount());
-        SmartDashboard.putNumber(   "IMU_Update_Count",     ahrs.getUpdateCount());
+        // SmartDashboard.putNumber(   "IMU_Byte_Count",       ahrs.getByteCount());
+        // SmartDashboard.putNumber(   "IMU_Update_Count",     ahrs.getUpdateCount());
     }
 
 }
