@@ -30,7 +30,7 @@ public class Limelight extends SubsystemBase{
   public Limelight(){
     
     m_LimelightHasValidTarget = false;
-    NetworkTableInstance.getDefault().getTable("limelight").getEntry("lefMode").setNumber(1);
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
 
 
   }

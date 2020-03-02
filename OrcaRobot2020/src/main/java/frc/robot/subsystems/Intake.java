@@ -55,7 +55,7 @@ public class Intake extends SubsystemBase {
   public void intakeIn(XboxController driver) {
     topRoller.set(driver.getTriggerAxis(GenericHID.Hand.kLeft));
     bottomRoller.set(driver.getTriggerAxis(GenericHID.Hand.kLeft) * -1);
-    m_convey.raiseConveyor();
+   // m_convey.raiseConveyor();
 
    
   }
@@ -71,7 +71,7 @@ public class Intake extends SubsystemBase {
   public void intakeOut(XboxController driver) {
     bottomRoller.set(driver.getTriggerAxis(GenericHID.Hand.kRight));
     topRoller.set(driver.getTriggerAxis(GenericHID.Hand.kRight) * -1);
-    m_convey.lowerConveyor();
+    //m_convey.lowerConveyor();
   }
  
   /**

@@ -48,6 +48,7 @@ public class Drivetrain extends SubsystemBase {
     motors[0].follow(motors[1]);
     motors[3].follow(motors[2]);
     autoSteer = new DifferentialDrive(left_motors, right_motors);
+    engageDrivePTO();
   }
   
 
@@ -79,9 +80,9 @@ public class Drivetrain extends SubsystemBase {
 //winches up
   public void winchUp(XboxController driver, Joystick JoyStick) {
     if(driver.getYButton()||driver.getBackButton())
-    forward();
-    motors[1].set(Constants.kWinchSpeed);
-    motors[2].set(Constants.kWinchSpeed * -1);
+    engageClimbPTO();
+    left_motors.set(Constants.kWinchSpeed);
+    right_motors.set(Constants.kWinchSpeed * -1);
   }
 
 
@@ -90,7 +91,6 @@ public class Drivetrain extends SubsystemBase {
     if (driver.getStickButton(GenericHID.Hand.kRight) && driver.getYButton()){
     
     forward();
-    
     motors[1].set(Constants.kWinchSpeed);
     motors[2].set(Constants.kWinchSpeed * -1);
     }
@@ -133,8 +133,8 @@ public class Drivetrain extends SubsystemBase {
   @Override
   public void periodic() {
   // This method will be called once per scheduler run
-  engageDrivePTO();
-}
+
+  }
 //fires forward
   public void forward() {
     PTOSoli.set(DoubleSolenoid.Value.kForward);
@@ -146,11 +146,11 @@ public void engageDrivePTO(){
 }
 //holds 
 public void engageClimbPTO(){
-  PTOSoli.set(Value.kOff);
+  PTOSoli.set(Value.kForward);
 }
 
 
 public void initDefaultCommand() {
-  engageDrivePTO();
+ // engageDrivePTO();
 }
 }

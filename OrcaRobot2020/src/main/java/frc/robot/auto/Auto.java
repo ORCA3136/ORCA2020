@@ -8,8 +8,6 @@
 package frc.robot.auto;
 
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -23,7 +21,6 @@ public class Auto extends SequentialCommandGroup {
    */
   private Timer timer = new Timer();
   private Drivetrain m_Drivetrain;
-  private boolean finished;
   private final Flywheel m_fly;
   private final Conveyor m_Conveyor;
 
@@ -32,7 +29,7 @@ public class Auto extends SequentialCommandGroup {
     m_Drivetrain = dt;
     m_Conveyor = cv;
     m_fly = fw;
-    finished = false;
+  
     addCommands(
      new InstantCommand(()-> m_Drivetrain.autonomousDrive()),
      // new InstantCommand(() -> m_fly.runFlywheelWithoutPID()),

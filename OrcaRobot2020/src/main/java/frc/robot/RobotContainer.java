@@ -64,8 +64,8 @@ public class RobotContainer
     m_drivetrain.setDefaultCommand(
       new RunCommand(() -> m_drivetrain.drive(controller),m_drivetrain));
 
-    m_drivetrain.setDefaultCommand(
-      new RunCommand(() -> m_intake.defualt(controller),m_drivetrain));
+     m_drivetrain.setDefaultCommand(
+       new RunCommand(() -> m_intake.defualt(controller),m_conveyor));
 
     m_chooser.setDefaultOption("Auto 1", new Auto(m_drivetrain,m_flyWheel,m_conveyor));
     SmartDashboard.putData("Auto Chooser: ", m_chooser);
@@ -118,7 +118,8 @@ public class RobotContainer
   //Winch - X (NUKE!!!!!!!!)
   new JoystickButton(Joystick, m_constants.kX)
     .whenHeld(new InstantCommand(() -> m_drivetrain.winchUp(controller, Joystick)))
-     .whenReleased(new InstantCommand(() -> m_drivetrain.stop()));
+     .whenReleased(new InstantCommand(() -> m_drivetrain.stop())
+     .andThen(new InstantCommand (() -> m_drivetrain.engageDrivePTO())));
 
   //Climber up & Down -A (NUKE!!!!!!!!)
   new JoystickButton(Joystick,m_constants.kA)
