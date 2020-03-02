@@ -52,26 +52,18 @@ public class Intake extends SubsystemBase {
   /**
    * Runs the intake motor inward
    */
-  public void intakeIn(XboxController driver) {
-    topRoller.set(driver.getTriggerAxis(GenericHID.Hand.kLeft));
-    bottomRoller.set(driver.getTriggerAxis(GenericHID.Hand.kLeft) * -1);
-   // m_convey.raiseConveyor();
-
-   
+  public void intakeIn() {
+    topRoller.set(Constants.kConveyorSpeed);
+    bottomRoller.set(Constants.kConveyorSpeed * -1);
+    m_convey.raiseConveyor();
   }
-
-  public void defualt(XboxController driver) {
-   intakeIn(driver);  
-   intakeOut(driver);
-  }
-
   /**
    * Runs the intake motor outward
    */
-  public void intakeOut(XboxController driver) {
-    bottomRoller.set(driver.getTriggerAxis(GenericHID.Hand.kRight));
-    topRoller.set(driver.getTriggerAxis(GenericHID.Hand.kRight) * -1);
-    //m_convey.lowerConveyor();
+  public void intakeOut() {
+    bottomRoller.set(Constants.kConveyorSpeed);
+    topRoller.set(Constants.kConveyorSpeed * -1);
+    m_convey.lowerConveyor();
   }
  
   /**

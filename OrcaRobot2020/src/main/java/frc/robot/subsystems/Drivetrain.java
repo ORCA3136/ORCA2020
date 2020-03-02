@@ -72,8 +72,8 @@ public class Drivetrain extends SubsystemBase {
   }
 //code for auto
   public void autonomousDrive() {
-    left_motors.set(.25);
-    right_motors.set(-.25);
+    left_motors.set(1);
+    right_motors.set(-1);
   }
 
 

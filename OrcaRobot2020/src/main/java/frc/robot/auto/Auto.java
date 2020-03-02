@@ -31,18 +31,22 @@ public class Auto extends SequentialCommandGroup {
     m_fly = fw;
   
     addCommands(
-     new InstantCommand(()-> m_Drivetrain.autonomousDrive()),
-     // new InstantCommand(() -> m_fly.runFlywheelWithoutPID()),
-      new WaitCommand(1),
+      new InstantCommand(m_Conveyor::closeHopperToFlywheel, m_Conveyor),
+      new InstantCommand(() -> m_fly.runFlywheelWithoutPID()),
+      new InstantCommand(m_Conveyor::stopConveyor, m_Conveyor),
+      new WaitCommand(2),
       new InstantCommand(m_Conveyor::openHopperToFlyWheel, m_Conveyor)
      .andThen( new InstantCommand(m_Conveyor::raiseConveyor, m_Conveyor)),
      new WaitCommand(3),
      new InstantCommand(m_fly::stop, m_fly),
      new InstantCommand(m_Conveyor::stopConveyor, m_Conveyor),
      new InstantCommand(m_Conveyor::closeHopperToFlywheel, m_Conveyor),
-     
+     new WaitCommand(1),
+     new InstantCommand(m_Conveyor::closeHopperToFlywheel, m_Conveyor),
+     new InstantCommand(()-> m_Drivetrain.autonomousDrive()),
      new WaitCommand(1),
      new InstantCommand(()-> m_Drivetrain.stop())
+     
     );
     
 
