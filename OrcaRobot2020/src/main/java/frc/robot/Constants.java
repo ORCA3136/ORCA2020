@@ -50,16 +50,25 @@ public final class Constants {
    
     //Speeds for Motors
     public static final double kIntakeSpeed =1;
+
+    //Speeds for conveyor motors
     public static final double kConveyorSpeed = 1;
+    
+    //Speeds for FlyWheel motors
     public static final double kFlywheelSpeed = 0.93;
-    public static final double kLeftDriveScaling = 0.8;
-    public static final double kRightDriveScaling = 0.8;
-    public static final double kWinchSpeed = 0.5;
 
     public static final double flyWheelP = 0.0011;
     public static final double flyWheelI = 0;
     public static final double flyWheelD = 4;
     public static final double flyWheelF = 0.00017;
+    
+    //Speeds for Drivetrain motors
+    public static final double kLeftDriveScaling = 0.8;
+    public static final double kRightDriveScaling = 0.8;
+    public static final double kWinchSpeed = 0.5;
+    public static final double kAutoSpeed = 0.5;
+
+    
     public static final double  kMaxOutput = 1; 
     public static final double kMinOutput = -1;
 

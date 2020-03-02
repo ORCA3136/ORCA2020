@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.auto.Auto;
+import frc.robot.auto.DriveOnlyAuto;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Drivetrain;
@@ -66,7 +67,8 @@ public class RobotContainer
 
     
 
-    m_chooser.setDefaultOption("Auto 1", new Auto(m_drivetrain,m_flyWheel,m_conveyor));
+    m_chooser.setDefaultOption("Shoot Then Drive", new Auto(m_drivetrain,m_flyWheel,m_conveyor));
+    m_chooser.addOption("Drive Only",new DriveOnlyAuto(m_drivetrain));
     SmartDashboard.putData("Auto Chooser: ", m_chooser);
 
     // Configure the button bindings

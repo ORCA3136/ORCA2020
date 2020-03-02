@@ -72,8 +72,19 @@ public class Drivetrain extends SubsystemBase {
   }
 //code for auto
   public void autonomousDrive() {
+    engageDrivePTO();
     left_motors.set(1);
     right_motors.set(-1);
+  }
+
+/**
+ * used to set the motors to a specific value....
+ * @param left
+ * @param right
+ */  public void specificDrive(double left, double right) {
+    engageDrivePTO();
+    left_motors.set(left);
+    right_motors.set(-right);
   }
 
 
@@ -90,15 +101,16 @@ public class Drivetrain extends SubsystemBase {
   public void winchDown(XboxController driver) {
     if (driver.getStickButton(GenericHID.Hand.kRight) && driver.getYButton()){
     
-    forward();
+    engageClimbPTO();
     motors[1].set(Constants.kWinchSpeed);
     motors[2].set(Constants.kWinchSpeed * -1);
     }
   }
 //manual drive
-  public void drive( XboxController controller) {
- 
-     left_motors.set(trueRightX((controller.getY(GenericHID.Hand.kLeft) * Constants.kLeftDriveScaling)));
+  public void drive( XboxController controller) 
+  {
+      engageDrivePTO();
+      left_motors.set(trueRightX((controller.getY(GenericHID.Hand.kLeft) * Constants.kLeftDriveScaling)));
       right_motors.set(trueLeftX((controller.getY(GenericHID.Hand.kRight) * -Constants.kLeftDriveScaling)));
   }
 //fixes deadzone
@@ -135,11 +147,7 @@ public class Drivetrain extends SubsystemBase {
   // This method will be called once per scheduler run
 
   }
-//fires forward
-  public void forward() {
-    PTOSoli.set(DoubleSolenoid.Value.kForward);
 
-}
 //fires back
 public void engageDrivePTO(){
   PTOSoli.set(Value.kReverse);

@@ -77,8 +77,8 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
       
-
-    m_autonomousCommand = new Auto(m_robotContainer.getDrivetrain(), m_robotContainer.getFlyWheel(), m_robotContainer.getConveyor());
+    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    //m_autonomousCommand = new Auto(m_robotContainer.getDrivetrain(), m_robotContainer.getFlyWheel(), m_robotContainer.getConveyor());
 
   
     compressor.start();
