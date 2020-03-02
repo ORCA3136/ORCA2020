@@ -16,10 +16,6 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Flywheel;
 
 public class Auto extends SequentialCommandGroup {
-  /**
-   * Creates a new Auto.
-   */
-  private Timer timer = new Timer();
   private Drivetrain m_Drivetrain;
   private final Flywheel m_fly;
   private final Conveyor m_Conveyor;
