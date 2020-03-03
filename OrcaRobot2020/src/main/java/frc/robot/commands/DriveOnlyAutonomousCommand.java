@@ -14,6 +14,7 @@ public class DriveOnlyAutonomousCommand extends CommandBase {
   private final Drivetrain driveTrain;
   private boolean complete = false;
   public DriveOnlyAutonomousCommand(Drivetrain subsystem) {
+    SmartDashboard.putNumber("Drive Distance", 10);
     driveTrain = subsystem;
     addRequirements(driveTrain);
   }

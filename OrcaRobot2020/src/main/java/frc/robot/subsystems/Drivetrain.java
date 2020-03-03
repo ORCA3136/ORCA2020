@@ -98,7 +98,7 @@ public class Drivetrain extends SubsystemBase {
     boolean complete = false;
     getLeftEncoder().setPosition(0); //set the position to 0
     Double leftPosition = getLeftEncoder().getPosition();
-    SmartDashboard.putNumber("TLeft Enc Pos: ", leftPosition);
+    SmartDashboard.putNumber("Left Enc Pos: ", leftPosition);
     //really only need to get this once...
     int perRev =  getLeftEncoder().getCountsPerRevolution();
     double totalRevolutions = distance*perRev;
