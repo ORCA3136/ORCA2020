@@ -54,6 +54,8 @@ public class Flywheel extends SubsystemBase {
 
     @Override
     public void periodic() {
+        System.out.println("Calling periodic");
+        System.out.println("PID ENABLED: "+pidEnabled);
         double p = SmartDashboard.getNumber("P Gain", 0);
         double i = SmartDashboard.getNumber("I Gain", 0);
         double d = SmartDashboard.getNumber("D Gain", 0);
@@ -61,8 +63,8 @@ public class Flywheel extends SubsystemBase {
         double ff = SmartDashboard.getNumber("Feed Forward", 0);
         double max = SmartDashboard.getNumber("Max Output", 0);
         double min = SmartDashboard.getNumber("Min Output", 0);
-
-        double point = SmartDashboard.getNumber("Min Output", 0);
+        
+        double point = SmartDashboard.getNumber("set point", 0);
         // if PID coefficients on SmartDashboard have changed, write new values to
         // controller
         if (pidEnabled) {
@@ -114,9 +116,11 @@ public class Flywheel extends SubsystemBase {
     }
 
     public void runFlyWheelWithPID() {
+        System.out.println(">>runFlywheelWithPID");
         pidEnabled = true;
         SmartDashboard.putNumber("Target FlyWheel Velocity: ", Constants.flyWheelSetPoint);
-        // updateConstants();
+        setPoint = 1111;
+        System.out.println("<<runFlywheeWithPID");// updateConstants();
         // controller.setReference(Constants.flyWheelSetPoint, ControlType.kVelocity);
 
     }
@@ -131,6 +135,7 @@ public class Flywheel extends SubsystemBase {
     }
 
     public void stop() {
+        pidEnabled = false;
         left.set(0);
     }
 

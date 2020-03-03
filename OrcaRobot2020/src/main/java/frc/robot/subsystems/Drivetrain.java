@@ -32,7 +32,7 @@ public class Drivetrain extends SubsystemBase {
   private SpeedControllerGroup right_motors;
   private SpeedControllerGroup left_motors;
   DoubleSolenoid PTOSoli = new DoubleSolenoid(Constants.kPTOForward, Constants.kPTOReverse);
-  private DifferentialDrive autoSteer;  
+ // private DifferentialDrive autoSteer;  
   
 
   public Drivetrain() {
@@ -47,7 +47,7 @@ public class Drivetrain extends SubsystemBase {
 //creates leader-follower relationships
     motors[0].follow(motors[1]);
     motors[3].follow(motors[2]);
-    autoSteer = new DifferentialDrive(left_motors, right_motors);
+   // autoSteer = new DifferentialDrive(left_motors, right_motors);
     engageDrivePTO();
   }
   
@@ -62,11 +62,11 @@ public class Drivetrain extends SubsystemBase {
       //double m_LimelightDriveCommand = m_Limelight.getDrive();
       double m_LimelightSteerCommand = m_Limelight.getSteer();
 
-      autoSteer.arcadeDrive(0,m_LimelightSteerCommand);
+      //autoSteer.arcadeDrive(0,m_LimelightSteerCommand);
 
     }else{
 
-      autoSteer.arcadeDrive(0.0,0.0);
+     // autoSteer.arcadeDrive(0.0,0.0);
 
     }
   }

@@ -14,7 +14,7 @@ public class DriveOnlyAuto extends SequentialCommandGroup
     {
         addCommands(
             new RunCommand(()->driveTrain.specificDrive(Constants.kAutoSpeed, Constants.kAutoSpeed)),
-            new WaitCommand(2),
+            new WaitCommand(1),
             new InstantCommand(driveTrain::stop, driveTrain)
         );
     }
