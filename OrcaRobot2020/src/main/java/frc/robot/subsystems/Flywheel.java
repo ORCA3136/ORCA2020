@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -56,15 +57,14 @@ public class Flywheel extends SubsystemBase {
     public void periodic() {
         System.out.println("Calling periodic");
         System.out.println("PID ENABLED: "+pidEnabled);
-        double p = SmartDashboard.getNumber("P Gain", 0);
-        double i = SmartDashboard.getNumber("I Gain", 0);
-        double d = SmartDashboard.getNumber("D Gain", 0);
-        double iz = SmartDashboard.getNumber("I Zone", 0);
-        double ff = SmartDashboard.getNumber("Feed Forward", 0);
-        double max = SmartDashboard.getNumber("Max Output", 0);
-        double min = SmartDashboard.getNumber("Min Output", 0);
+        double p = SmartDashboard.getNumber("P Gain", Constants.flyWheelP);
+        double i = SmartDashboard.getNumber("I Gain", Constants.flyWheelI);
+        double d = SmartDashboard.getNumber("D Gain", Constants.flyWheelD);
+        double ff = SmartDashboard.getNumber("Feed Forward", Constants.flyWheelF);
+        double max = SmartDashboard.getNumber("Max Output", 1);
+        double min = SmartDashboard.getNumber("Min Output", -1);
         
-        double point = SmartDashboard.getNumber("set point", 0);
+        double point = SmartDashboard.getNumber("set point", Constants.flyWheelSetPoint);
         // if PID coefficients on SmartDashboard have changed, write new values to
         // controller
         if (pidEnabled) {
@@ -80,10 +80,10 @@ public class Flywheel extends SubsystemBase {
                 controller.setD(d);
                 kD = d;
             }
-            if ((iz != kIz)) {
-                controller.setIZone(iz);
-                kIz = iz;
-            }
+            // if ((iz != kIz)) {
+            //     controller.setIZone(iz);
+            //     kIz = iz;
+            // }
             if ((ff != kFF)) {
                 controller.setFF(ff);
                 kFF = ff;
@@ -116,11 +116,11 @@ public class Flywheel extends SubsystemBase {
     }
 
     public void runFlyWheelWithPID() {
-        System.out.println(">>runFlywheelWithPID");
+        new PrintCommand(">>runFlywheelWithPID");
         pidEnabled = true;
         SmartDashboard.putNumber("Target FlyWheel Velocity: ", Constants.flyWheelSetPoint);
         setPoint = 1111;
-        System.out.println("<<runFlywheeWithPID");// updateConstants();
+        new PrintCommand("runFlywheeWithPID");// updateConstants();
         // controller.setReference(Constants.flyWheelSetPoint, ControlType.kVelocity);
 
     }

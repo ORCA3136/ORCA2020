@@ -41,7 +41,7 @@ public class Limelight extends SubsystemBase{
     tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
     ta = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ta").getDouble(0);
 
-    // = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode");  
+     //NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode");  
 
     //SmartDashboard.putNumber("ledMode: ", 0);
 

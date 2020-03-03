@@ -7,6 +7,8 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.CANEncoder;
+import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -17,6 +19,7 @@ import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -32,7 +35,12 @@ public class Drivetrain extends SubsystemBase {
   private SpeedControllerGroup right_motors;
   private SpeedControllerGroup left_motors;
   DoubleSolenoid PTOSoli = new DoubleSolenoid(Constants.kPTOForward, Constants.kPTOReverse);
- // private DifferentialDrive autoSteer;  
+  // private DifferentialDrive autoSteer;  
+  private CANEncoder leftEncoder;
+  private CANEncoder rightEncoder;
+    
+  private CANPIDController leftController;
+  private CANPIDController rightController;
   
 
   public Drivetrain() {
@@ -47,6 +55,13 @@ public class Drivetrain extends SubsystemBase {
 //creates leader-follower relationships
     motors[0].follow(motors[1]);
     motors[3].follow(motors[2]);
+    //setup the encoder and pid controller for later
+    leftEncoder = motors[1].getEncoder();
+    leftController = motors[1].getPIDController();
+    leftController.setFeedbackDevice(leftEncoder);
+    rightEncoder = motors[2].getEncoder();
+    rightController = motors[2].getPIDController();
+    rightController.setFeedbackDevice(rightEncoder);
    // autoSteer = new DifferentialDrive(left_motors, right_motors);
     engageDrivePTO();
   }
@@ -79,12 +94,27 @@ public class Drivetrain extends SubsystemBase {
 
 /**
  * used to set the motors to a specific value....
- * @param left
- * @param right
- */  public void specificDrive(double left, double right) {
+ */  public boolean specificDrive(double distance) {
+    boolean complete = false;
+    getLeftEncoder().setPosition(0); //set the position to 0
+    Double leftPosition = getLeftEncoder().getPosition();
+    SmartDashboard.putNumber("TLeft Enc Pos: ", leftPosition);
+    //really only need to get this once...
+    int perRev =  getLeftEncoder().getCountsPerRevolution();
+    double totalRevolutions = distance*perRev;
+    double currentRevolutions = 0;
     engageDrivePTO();
-    left_motors.set(left);
-    right_motors.set(-right);
+    while(currentRevolutions<totalRevolutions)
+    {
+      //set the motors to running
+      left_motors.set(-Constants.kAutoSpeed);
+      right_motors.set(Constants.kAutoSpeed);
+      currentRevolutions = getLeftEncoder().getPosition() * perRev;
+      SmartDashboard.putNumber("Current Revs", currentRevolutions);
+    }
+    complete = true;
+
+    return complete;
   }
 
 
@@ -155,6 +185,26 @@ public void engageDrivePTO(){
 //holds 
 public void engageClimbPTO(){
   PTOSoli.set(Value.kForward);
+}
+
+public CANEncoder getLeftEncoder()
+{
+  return leftEncoder;
+}
+
+public CANEncoder getRightEncoder()
+{
+  return rightEncoder;
+}
+
+public CANPIDController getLeftPIDController()
+{
+  return leftController;
+}
+
+public CANPIDController getRightPIDController()
+{
+  return rightController;
 }
 
 
