@@ -114,6 +114,15 @@ public class RobotContainer
   .whenHeld(new InstantCommand(()  -> m_intake.intakeOut(),m_intake))
     .whenReleased(new InstantCommand(m_intake::intakeStop, m_intake));
 
+  //A few test buttons for PID
+  new JoystickButton(controller, XboxController.Button.kA.value)
+  .whenHeld(new InstantCommand(m_flyWheel::runFlyWheelWithPID,m_intake))
+  .whenReleased(new InstantCommand(m_flyWheel::stop, m_flyWheel));
+
+  new JoystickButton(controller, XboxController.Button.kB.value)
+  .whenHeld(new InstantCommand(()->m_flyWheel.runFlyWheelWithPID(500.00)))
+  .whenReleased(new InstantCommand(m_flyWheel::stop, m_flyWheel));
+  
   /*
   *
   * JOYSTICK BUTTONS
