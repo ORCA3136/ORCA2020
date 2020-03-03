@@ -63,8 +63,7 @@ public class Flywheel extends SubsystemBase {
         double ff = SmartDashboard.getNumber("Feed Forward", Constants.flyWheelF);
         double max = SmartDashboard.getNumber("Max Output", 1);
         double min = SmartDashboard.getNumber("Min Output", -1);
-        
-        double point = SmartDashboard.getNumber("set point", 500);
+        double point = SmartDashboard.getNumber("Set Point", 500);
         // if PID coefficients on SmartDashboard have changed, write new values to
         // controller
         if (pidEnabled) {
@@ -101,8 +100,8 @@ public class Flywheel extends SubsystemBase {
             }
 
             // controller.setReference(Constants.flyWheelSetPoint, ControlType.kVelocity);
-            SmartDashboard.putNumber("SetPoint", setPoint);
-            SmartDashboard.putNumber("ProcessVariable", encoder.getVelocity());
+            //SmartDashboard.putNumber("SetPoint", setPoint);
+            SmartDashboard.putNumber("Encoder Velocity", encoder.getVelocity());
         }
 
     }
@@ -158,7 +157,13 @@ public class Flywheel extends SubsystemBase {
         kMaxOutput = Constants.kMaxOutput;
         kMinOutput = Constants.kMinOutput;
         setPoint = Constants.flyWheelSetPoint;
-
+        SmartDashboard.putNumber("P Gain", Constants.flyWheelP);
+        SmartDashboard.putNumber("I Gain", Constants.flyWheelI);
+        SmartDashboard.putNumber("D Gain", Constants.flyWheelD);
+        SmartDashboard.putNumber("Feed Forward", Constants.flyWheelF);
+        SmartDashboard.putNumber("Max Output", Constants.kMaxOutput);
+        SmartDashboard.putNumber("Min Output", Constants.kMinOutput);
+        SmartDashboard.getNumber("Set Point", Constants.flyWheelSetPoint);
         // controller.setP(Constants.flyWheelP);
         // controller.setI(Constants.flyWheelI);
         // controller.setD(Constants.flyWheelD);
