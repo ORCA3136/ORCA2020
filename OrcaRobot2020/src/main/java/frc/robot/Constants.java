@@ -55,7 +55,7 @@ public final class Constants {
     public static final double kConveyorSpeed = 1;
     
     //Speeds for FlyWheel motors
-    public static final double kFlywheelSpeed = 0.93;
+    public static final double kFlywheelSpeed = 0.75;
 
     public static final double flyWheelP = 0.0011;
     public static final double flyWheelI = 0;
@@ -72,7 +72,7 @@ public final class Constants {
     public static final double  kMaxOutput = 1; 
     public static final double kMinOutput = -1;
 
-    public static final double flyWheelSetPoint = 5000;
+    public static final double flyWheelSetPoint = -5000;
 
     public static boolean ToggleSoli = false;
 

@@ -63,7 +63,7 @@ public class Flywheel extends SubsystemBase {
         double ff = SmartDashboard.getNumber("Feed Forward", Constants.flyWheelF);
         double max = SmartDashboard.getNumber("Max Output", 1);
         double min = SmartDashboard.getNumber("Min Output", -1);
-        double point = SmartDashboard.getNumber("Set Point", 500);
+        double point = SmartDashboard.getNumber("Set Point", -500);
         // if PID coefficients on SmartDashboard have changed, write new values to
         // controller
         if (pidEnabled) {

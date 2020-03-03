@@ -94,16 +94,14 @@ public class RobotContainer
   // Right Bumper Button - Deploy Intake and start pulling in
     new JoystickButton(controller, XboxController.Button.kBumperRight.value)
       .whenHeld(new InstantCommand(m_intake::deployIntake, m_intake)  
-        .andThen(new InstantCommand(m_conveyor::stopConveyor, m_conveyor)) 
-          .andThen(new WaitCommand(0.5))) 
-    .whenReleased(new InstantCommand(m_intake::retractIntake, m_intake));
+        .andThen(new InstantCommand(m_conveyor::stopConveyor, m_conveyor))); 
+       
 
     // Left Bumper Button - Deploy Intake and start pulling in
     new JoystickButton(controller, XboxController.Button.kBumperLeft.value)
-  .whenHeld(new InstantCommand(m_intake::deployIntake, m_intake)
-    .andThen(new InstantCommand(m_conveyor::stopConveyor, m_conveyor)) 
-      .andThen(new WaitCommand(0.5)))
-  .whenReleased(new InstantCommand(m_intake::retractIntake, m_intake));
+  .whenHeld(new InstantCommand(m_intake::retractIntake, m_intake)
+    .andThen(new InstantCommand(m_conveyor::stopConveyor, m_conveyor))); 
+   
   // left stick - intake in
   new JoystickButton(controller, XboxController.Button.kStickLeft.value)
   .whenHeld(new InstantCommand(()  -> m_intake.intakeIn(),m_intake))
@@ -123,6 +121,11 @@ public class RobotContainer
   .whenHeld(new InstantCommand(()->m_flyWheel.runFlyWheelWithPID(500.00)))
   .whenReleased(new InstantCommand(m_flyWheel::stop, m_flyWheel));
   
+  new JoystickButton(controller, XboxController.Button.kY.value)
+  .whenHeld(new InstantCommand(()->m_conveyor.closeHopperToFlywheel(), m_conveyor));
+  
+  
+
   /*
   *
   * JOYSTICK BUTTONS
@@ -148,9 +151,9 @@ public class RobotContainer
   new JoystickButton(Joystick,m_constants.kLT)
    .whenHeld(new InstantCommand(() -> m_flyWheel.runFlywheelWithoutPID())
    .andThen(new InstantCommand(m_conveyor::stopConveyor, m_conveyor))
-      .andThen(new WaitCommand(2))
+      .andThen(new WaitCommand(.5))
         .andThen(new InstantCommand(m_conveyor::openHopperToFlyWheel, m_conveyor)
-          .andThen(new WaitCommand(2))
+          .andThen(new WaitCommand(.5))
             .andThen(new InstantCommand(m_conveyor::raiseConveyor, m_conveyor))))
     .whenReleased(new InstantCommand(m_conveyor::stopConveyor, m_conveyor)
     .andThen(new InstantCommand(m_flyWheel::stop, m_flyWheel))
