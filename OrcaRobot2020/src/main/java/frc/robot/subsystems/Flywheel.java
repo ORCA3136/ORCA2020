@@ -39,7 +39,7 @@ public class Flywheel extends SubsystemBase {
         controller = left.getPIDController();
         controller.setFeedbackDevice(encoder);
 
-        putPIDValuesOnDashoard();
+        putPIDValuesOnDasboard();
         updateConstants();
         // set values on the controller
         controller.setP(kP);
@@ -55,8 +55,8 @@ public class Flywheel extends SubsystemBase {
 
     @Override
     public void periodic() {
-        System.out.println("Calling periodic");
-        System.out.println("PID ENABLED: "+pidEnabled);
+        //System.out.println("Calling periodic");
+        SmartDashboard.putBoolean("PID ENABLED", pidEnabled);
         double p = SmartDashboard.getNumber("P Gain", Constants.flyWheelP);
         double i = SmartDashboard.getNumber("I Gain", Constants.flyWheelI);
         double d = SmartDashboard.getNumber("D Gain", Constants.flyWheelD);
@@ -64,7 +64,7 @@ public class Flywheel extends SubsystemBase {
         double max = SmartDashboard.getNumber("Max Output", 1);
         double min = SmartDashboard.getNumber("Min Output", -1);
         
-        double point = SmartDashboard.getNumber("set point", Constants.flyWheelSetPoint);
+        double point = SmartDashboard.getNumber("set point", 500);
         // if PID coefficients on SmartDashboard have changed, write new values to
         // controller
         if (pidEnabled) {
@@ -89,6 +89,7 @@ public class Flywheel extends SubsystemBase {
                 kFF = ff;
             }
             if ((point != setPoint)) {
+                SmartDashboard.putNumber("POINT", point);
                 controller.setReference(point, ControlType.kVelocity);
                 setPoint = point;
             }
@@ -211,12 +212,11 @@ public class Flywheel extends SubsystemBase {
           }
     }
 
-    private void putPIDValuesOnDashoard()
+    private void putPIDValuesOnDasboard()
     {
         SmartDashboard.putNumber("P Gain", kP);
         SmartDashboard.putNumber("I Gain", kI);
         SmartDashboard.putNumber("D Gain", kD);
-        SmartDashboard.putNumber("I Zone", kIz);
         SmartDashboard.putNumber("Feed Forward", kFF);
         SmartDashboard.putNumber("Max Output", kMaxOutput);
         SmartDashboard.putNumber("Min Output", kMinOutput);
