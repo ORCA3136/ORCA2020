@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -34,8 +35,8 @@ public class Drivetrain extends SubsystemBase {
   private SpeedControllerGroup right_motors;
   private SpeedControllerGroup left_motors;
   DoubleSolenoid PTOSoli = new DoubleSolenoid(Constants.kPTOForward, Constants.kPTOReverse);
- 
-  // private DifferentialDrive autoSteer;  
+  private DifferentialDrive diffDrive;  
+
   private CANEncoder leftEncoder;
   private CANEncoder rightEncoder;
     
@@ -62,7 +63,7 @@ public class Drivetrain extends SubsystemBase {
     rightEncoder = motors[2].getEncoder();
     rightController = motors[2].getPIDController();
     rightController.setFeedbackDevice(rightEncoder);
-   // autoSteer = new DifferentialDrive(left_motors, right_motors);
+    diffDrive = new DifferentialDrive(left_motors, right_motors);
     engageDrivePTO();
   }
   
@@ -88,8 +89,9 @@ public class Drivetrain extends SubsystemBase {
 //code for auto
   public void autonomousDrive() {
     engageDrivePTO();
-    left_motors.set(1);
-    right_motors.set(-1);
+    diffDrive.tankDrive(1, -1,true);
+   // left_motors.set(1);
+   // right_motors.set(-1);
   }
 
 /**
@@ -107,8 +109,7 @@ public class Drivetrain extends SubsystemBase {
     while(currentRevolutions<totalRevolutions)
     {
       //set the motors to running
-      left_motors.set(-Constants.kAutoSpeed);
-      right_motors.set(Constants.kAutoSpeed);
+      diffDrive.tankDrive(-Constants.kAutoSpeed, Constants.kAutoSpeed);
       currentRevolutions = getLeftEncoder().getPosition() * perRev;
       SmartDashboard.putNumber("Current Revs", currentRevolutions);
     }
@@ -140,14 +141,15 @@ public class Drivetrain extends SubsystemBase {
   public void drive( XboxController controller) 
   {
       engageDrivePTO();
-      left_motors.set(trueRightX((controller.getY(GenericHID.Hand.kLeft) * Constants.kLeftDriveScaling)));
-      right_motors.set(trueLeftX((controller.getY(GenericHID.Hand.kRight) * -Constants.kLeftDriveScaling)));
+      diffDrive.tankDrive(trueRightX((controller.getY(GenericHID.Hand.kLeft) * Constants.kLeftDriveScaling)), trueRightX((controller.getY(GenericHID.Hand.kRight) * -Constants.kLeftDriveScaling)), true);
+      left_motors.set(trueLeftX((controller.getY(GenericHID.Hand.kLeft) * Constants.kLeftDriveScaling)));
+     
   }
 //fixes deadzone
-  public double trueLeftX(double LY) {
+  public double trueRightX(double RY) {
     // Used t get the absolute position of our Left control stick Y-axis (removes
     // deadzone)
-    double stick = LY;
+    double stick = RY;
     stick *= Math.abs(stick);
     if (Math.abs(stick) < 0.1) {
       stick = 0;
@@ -155,10 +157,10 @@ public class Drivetrain extends SubsystemBase {
     return stick;
   }
 //fixes deadzone
-  public double trueRightX(double RY) {
+  public double trueLeftX(double LY) {
     // Used to get the absolute position of our Right control stick Y-axis (removes
     // deadzone)
-    double stick = RY;
+    double stick = LY;
     stick *= Math.abs(stick);
     if (Math.abs(stick) < 0.1) {
       stick = 0;
