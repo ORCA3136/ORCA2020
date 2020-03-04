@@ -109,7 +109,7 @@ public class Drivetrain extends SubsystemBase {
     while(currentRevolutions<totalRevolutions)
     {
       //set the motors to running
-      diffDrive.tankDrive(-Constants.kAutoSpeed, Constants.kAutoSpeed);
+      diffDrive.tankDrive(Constants.kAutoSpeed, Constants.kAutoSpeed,true);
       currentRevolutions = getLeftEncoder().getPosition() * perRev;
       SmartDashboard.putNumber("Current Revs", currentRevolutions);
     }
@@ -141,8 +141,8 @@ public class Drivetrain extends SubsystemBase {
   public void drive( XboxController controller) 
   {
       engageDrivePTO();
-      diffDrive.tankDrive(trueRightX((controller.getY(GenericHID.Hand.kLeft) * Constants.kLeftDriveScaling)), trueRightX((controller.getY(GenericHID.Hand.kRight) * -Constants.kLeftDriveScaling)), true);
-      left_motors.set(trueLeftX((controller.getY(GenericHID.Hand.kLeft) * Constants.kLeftDriveScaling)));
+      diffDrive.tankDrive(trueRightX((controller.getY(GenericHID.Hand.kLeft) * Constants.kLeftDriveScaling)), trueRightX((controller.getY(GenericHID.Hand.kRight) * Constants.kLeftDriveScaling)), true);
+      //left_motors.set(trueLeftX((controller.getY(GenericHID.Hand.kLeft) * Constants.kLeftDriveScaling)));
      
   }
 //fixes deadzone
