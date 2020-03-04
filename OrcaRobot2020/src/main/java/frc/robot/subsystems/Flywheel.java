@@ -109,10 +109,15 @@ public class Flywheel extends SubsystemBase {
     // manual run of flywheel
     // NOTE because the constructor has them setup as followers - setting the right
     // does not matter.
-    public void runFlywheelWithoutPID() {
+    public void runFlywheelTrench() {
         pidEnabled = false;
-        left.set(Constants.kFlywheelSpeed);
-        right.set(Constants.kFlywheelSpeed);
+        left.set(1);
+    }
+
+     public void runFlywheelSector() {
+        pidEnabled = false;
+        left.set(.8);
+ 
     }
 
     public void runFlyWheelWithPID() {

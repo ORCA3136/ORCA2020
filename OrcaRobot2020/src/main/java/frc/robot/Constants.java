@@ -55,7 +55,7 @@ public final class Constants {
     public static final double kConveyorSpeed = 1;
     
     //Speeds for FlyWheel motors
-    public static final double kFlywheelSpeed = 0.75;
+    public static final double kFlywheelSpeed = 1;
 
     public static final double flyWheelP = 0.0011;
     public static final double flyWheelI = 0;

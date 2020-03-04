@@ -36,6 +36,7 @@ public class Drivetrain extends SubsystemBase {
   private SpeedControllerGroup left_motors;
   DoubleSolenoid PTOSoli = new DoubleSolenoid(Constants.kPTOForward, Constants.kPTOReverse);
   private DifferentialDrive diffDrive;  
+
   private CANEncoder leftEncoder;
   private CANEncoder rightEncoder;
     
