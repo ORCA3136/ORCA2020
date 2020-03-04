@@ -66,7 +66,7 @@ public final class Constants {
     public static final double kLeftDriveScaling = 0.8;
     public static final double kRightDriveScaling = 0.8;
     public static final double kWinchSpeed = 0.5;
-    public static final double kAutoSpeed = 0.3;
+    public static final double kAutoSpeed = -0.5;
 
     
     public static final double  kMaxOutput = 1; 
