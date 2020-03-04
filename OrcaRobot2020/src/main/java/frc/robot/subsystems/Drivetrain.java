@@ -18,7 +18,6 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -35,6 +34,7 @@ public class Drivetrain extends SubsystemBase {
   private SpeedControllerGroup right_motors;
   private SpeedControllerGroup left_motors;
   DoubleSolenoid PTOSoli = new DoubleSolenoid(Constants.kPTOForward, Constants.kPTOReverse);
+ 
   // private DifferentialDrive autoSteer;  
   private CANEncoder leftEncoder;
   private CANEncoder rightEncoder;

@@ -28,7 +28,7 @@ public class Auto extends SequentialCommandGroup {
   
     addCommands(
       new InstantCommand(m_Conveyor::closeHopperToFlywheel, m_Conveyor),
-      new InstantCommand(() -> m_fly.runFlywheelWithoutPID()),
+      new InstantCommand(() -> m_fly.runFlywheelSector()),
       new InstantCommand(m_Conveyor::stopConveyor, m_Conveyor),
       new WaitCommand(2),
       new InstantCommand(m_Conveyor::openHopperToFlyWheel, m_Conveyor)

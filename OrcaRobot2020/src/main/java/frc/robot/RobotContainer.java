@@ -149,7 +149,7 @@ public class RobotContainer
 
   //RB Button - Start flywheel, and run the powercells out
   new JoystickButton(Joystick,m_constants.kLT)
-   .whenHeld(new InstantCommand(() -> m_flyWheel.runFlywheelWithoutPID())
+   .whenHeld(new InstantCommand(() -> m_flyWheel.runFlywheelSector())
    .andThen(new InstantCommand(m_conveyor::stopConveyor, m_conveyor))
       .andThen(new WaitCommand(.5))
         .andThen(new InstantCommand(m_conveyor::openHopperToFlyWheel, m_conveyor)
@@ -157,10 +157,21 @@ public class RobotContainer
             .andThen(new InstantCommand(m_conveyor::raiseConveyor, m_conveyor))))
     .whenReleased(new InstantCommand(m_conveyor::stopConveyor, m_conveyor)
     .andThen(new InstantCommand(m_flyWheel::stop, m_flyWheel))
-      .andThen(new WaitCommand(2))
+      .andThen(new WaitCommand(1))
         .andThen(new InstantCommand(m_conveyor::closeHopperToFlywheel, m_conveyor)));
 
-
+  //B Button - Start flywheel, and run the powercells out
+  new JoystickButton(Joystick,m_constants.kB)
+   .whenHeld(new InstantCommand(() -> m_flyWheel.runFlywheelTrench())
+   .andThen(new InstantCommand(m_conveyor::stopConveyor, m_conveyor))
+      .andThen(new WaitCommand(.5))
+        .andThen(new InstantCommand(m_conveyor::openHopperToFlyWheel, m_conveyor)
+          .andThen(new WaitCommand(.5))
+            .andThen(new InstantCommand(m_conveyor::raiseConveyor, m_conveyor))))
+    .whenReleased(new InstantCommand(m_conveyor::stopConveyor, m_conveyor)
+    .andThen(new InstantCommand(m_flyWheel::stop, m_flyWheel))
+      .andThen(new WaitCommand(1))
+        .andThen(new InstantCommand(m_conveyor::closeHopperToFlywheel, m_conveyor)));
 
 
  }
