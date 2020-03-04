@@ -27,6 +27,7 @@ public class Auto extends SequentialCommandGroup {
     m_fly = fw;
   
     addCommands(
+      new DriveOnlyAuto(dt),
       new InstantCommand(m_Conveyor::closeHopperToFlywheel, m_Conveyor),
       new InstantCommand(() -> m_fly.runFlywheelSector()),
       new InstantCommand(m_Conveyor::stopConveyor, m_Conveyor),
