@@ -173,6 +173,11 @@ public class RobotContainer
       .andThen(new WaitCommand(1))
         .andThen(new InstantCommand(m_conveyor::closeHopperToFlywheel, m_conveyor)));
 
+  //Rt Button - Start flywheel, and run the powercells out
+new JoystickButton(Joystick,m_constants.kRT)
+.whenPressed(new InstantCommand(() -> m_drivetrain.specificDrive(10)))    
+  .whenReleased(new InstantCommand( m_drivetrain::stop,  m_drivetrain));
+
 
  }
 
