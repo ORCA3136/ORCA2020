@@ -91,24 +91,24 @@ public class RobotContainer
   *
   */
    
-  // Right Bumper Button - Deploy Intake and start pulling in
-    new JoystickButton(controller, XboxController.Button.kBumperRight.value)
+  // Right Stick Button - Deploy Intake and start pulling in
+    new JoystickButton(controller, XboxController.Button.kStickRight.value)
       .whenHeld(new InstantCommand(m_intake::deployIntake, m_intake)  
         .andThen(new InstantCommand(m_conveyor::stopConveyor, m_conveyor))); 
        
 
-    // Left Bumper Button - Deploy Intake and start pulling in
-    new JoystickButton(controller, XboxController.Button.kBumperLeft.value)
+    // Left Stick Button - Deploy Intake and start pulling in
+    new JoystickButton(controller, XboxController.Button.kStickLeft.value)
   .whenHeld(new InstantCommand(m_intake::retractIntake, m_intake)
     .andThen(new InstantCommand(m_conveyor::stopConveyor, m_conveyor))); 
    
-  // left stick - intake in
-  new JoystickButton(controller, XboxController.Button.kStickLeft.value)
+  // left Bumper - intake in
+  new JoystickButton(controller, XboxController.Button.kBumperLeft.value)
   .whenHeld(new InstantCommand(()  -> m_intake.intakeIn(),m_intake))
     .whenReleased(new InstantCommand(m_intake::intakeStop, m_intake));
    
-    // right stick - intake out
-  new JoystickButton(controller, XboxController.Button.kStickRight.value)
+    // right Bumper - intake out
+  new JoystickButton(controller, XboxController.Button.kBumperRight.value)
   .whenHeld(new InstantCommand(()  -> m_intake.intakeOut(),m_intake))
     .whenReleased(new InstantCommand(m_intake::intakeStop, m_intake));
 
@@ -174,7 +174,7 @@ public class RobotContainer
         .andThen(new InstantCommand(m_conveyor::closeHopperToFlywheel, m_conveyor)));
 
   //Rt Button - Start flywheel, and run the powercells out
-new JoystickButton(Joystick,m_constants.kRT)
+new JoystickButton(Joystick,m_constants.kRB)
 .whenPressed(new InstantCommand(() -> m_drivetrain.specificDrive(10)))
   .whenReleased(new InstantCommand( m_drivetrain::stop,  m_drivetrain));
 

@@ -49,7 +49,7 @@ public final class Constants {
     public static final int kPTOReverse = 1;
    
     //Speeds for Motors
-    public static final double kIntakeSpeed =1;
+    public static final double kIntakeSpeed =.2;
 
     //Speeds for conveyor motors
     public static final double kConveyorSpeed = 1;
