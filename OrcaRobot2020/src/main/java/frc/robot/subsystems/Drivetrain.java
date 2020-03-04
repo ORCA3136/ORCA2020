@@ -7,6 +7,8 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.CANEncoder;
+import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -17,6 +19,7 @@ import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -32,7 +35,13 @@ public class Drivetrain extends SubsystemBase {
   private SpeedControllerGroup right_motors;
   private SpeedControllerGroup left_motors;
   DoubleSolenoid PTOSoli = new DoubleSolenoid(Constants.kPTOForward, Constants.kPTOReverse);
-  private DifferentialDrive autoSteer;  
+  private DifferentialDrive diffDrive;  
+
+  private CANEncoder leftEncoder;
+  private CANEncoder rightEncoder;
+    
+  private CANPIDController leftController;
+  private CANPIDController rightController;
   
 
   public Drivetrain() {
@@ -47,7 +56,14 @@ public class Drivetrain extends SubsystemBase {
 //creates leader-follower relationships
     motors[0].follow(motors[1]);
     motors[3].follow(motors[2]);
-    autoSteer = new DifferentialDrive(left_motors, right_motors);
+    //setup the encoder and pid controller for later
+    leftEncoder = motors[1].getEncoder();
+    leftController = motors[1].getPIDController();
+    leftController.setFeedbackDevice(leftEncoder);
+    rightEncoder = motors[2].getEncoder();
+    rightController = motors[2].getPIDController();
+    rightController.setFeedbackDevice(rightEncoder);
+    diffDrive = new DifferentialDrive(left_motors, right_motors);
     engageDrivePTO();
   }
   
@@ -62,18 +78,44 @@ public class Drivetrain extends SubsystemBase {
       //double m_LimelightDriveCommand = m_Limelight.getDrive();
       double m_LimelightSteerCommand = m_Limelight.getSteer();
 
-      autoSteer.arcadeDrive(0,m_LimelightSteerCommand);
+      //autoSteer.arcadeDrive(0,m_LimelightSteerCommand);
 
     }else{
 
-      autoSteer.arcadeDrive(0.0,0.0);
+     // autoSteer.arcadeDrive(0.0,0.0);
 
     }
   }
 //code for auto
   public void autonomousDrive() {
-    left_motors.set(1);
-    right_motors.set(-1);
+    engageDrivePTO();
+    diffDrive.tankDrive(1, -1,true);
+   // left_motors.set(1);
+   // right_motors.set(-1);
+  }
+
+/**
+ * used to set the motors to a specific value....
+ */  public boolean specificDrive(double distance) {
+    boolean complete = false;
+    getLeftEncoder().setPosition(0); //set the position to 0
+    Double leftPosition = getLeftEncoder().getPosition();
+    SmartDashboard.putNumber("Left Enc Pos: ", leftPosition);
+    //really only need to get this once...
+    int perRev =  getLeftEncoder().getCountsPerRevolution();
+    double totalRevolutions = distance*perRev;
+    double currentRevolutions = 0;
+    engageDrivePTO();
+    while(currentRevolutions<totalRevolutions)
+    {
+      //set the motors to running
+      diffDrive.tankDrive(Constants.kAutoSpeed, Constants.kAutoSpeed,true);
+      currentRevolutions = getLeftEncoder().getPosition() * perRev;
+      SmartDashboard.putNumber("Current Revs", currentRevolutions);
+    }
+    complete = true;
+
+    return complete;
   }
 
 
@@ -90,22 +132,24 @@ public class Drivetrain extends SubsystemBase {
   public void winchDown(XboxController driver) {
     if (driver.getStickButton(GenericHID.Hand.kRight) && driver.getYButton()){
     
-    forward();
+    engageClimbPTO();
     motors[1].set(Constants.kWinchSpeed);
     motors[2].set(Constants.kWinchSpeed * -1);
     }
   }
 //manual drive
-  public void drive( XboxController controller) {
- 
-     left_motors.set(trueRightX((controller.getY(GenericHID.Hand.kLeft) * Constants.kLeftDriveScaling)));
-      right_motors.set(trueLeftX((controller.getY(GenericHID.Hand.kRight) * -Constants.kLeftDriveScaling)));
+  public void drive( XboxController controller) 
+  {
+      engageDrivePTO();
+      diffDrive.tankDrive(trueRightX((controller.getY(GenericHID.Hand.kLeft) * Constants.kLeftDriveScaling)), trueRightX((controller.getY(GenericHID.Hand.kRight) * Constants.kLeftDriveScaling)), true);
+      //left_motors.set(trueLeftX((controller.getY(GenericHID.Hand.kLeft) * Constants.kLeftDriveScaling)));
+     
   }
 //fixes deadzone
-  public double trueLeftX(double LY) {
+  public double trueRightX(double RY) {
     // Used t get the absolute position of our Left control stick Y-axis (removes
     // deadzone)
-    double stick = LY;
+    double stick = RY;
     stick *= Math.abs(stick);
     if (Math.abs(stick) < 0.1) {
       stick = 0;
@@ -113,10 +157,10 @@ public class Drivetrain extends SubsystemBase {
     return stick;
   }
 //fixes deadzone
-  public double trueRightX(double RY) {
+  public double trueLeftX(double LY) {
     // Used to get the absolute position of our Right control stick Y-axis (removes
     // deadzone)
-    double stick = RY;
+    double stick = LY;
     stick *= Math.abs(stick);
     if (Math.abs(stick) < 0.1) {
       stick = 0;
@@ -135,11 +179,7 @@ public class Drivetrain extends SubsystemBase {
   // This method will be called once per scheduler run
 
   }
-//fires forward
-  public void forward() {
-    PTOSoli.set(DoubleSolenoid.Value.kForward);
 
-}
 //fires back
 public void engageDrivePTO(){
   PTOSoli.set(Value.kReverse);
@@ -147,6 +187,26 @@ public void engageDrivePTO(){
 //holds 
 public void engageClimbPTO(){
   PTOSoli.set(Value.kForward);
+}
+
+public CANEncoder getLeftEncoder()
+{
+  return leftEncoder;
+}
+
+public CANEncoder getRightEncoder()
+{
+  return rightEncoder;
+}
+
+public CANPIDController getLeftPIDController()
+{
+  return leftController;
+}
+
+public CANPIDController getRightPIDController()
+{
+  return rightController;
 }
 
 

@@ -5,7 +5,7 @@ import com.kauailabs.navx.frc.AHRS;
 
 
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.SerialPort;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class InertialSensor extends SubsystemBase {
@@ -16,7 +16,7 @@ public class InertialSensor extends SubsystemBase {
     {
         try
         {
-        ahrs = new AHRS(SerialPort.Port.kUSB1);
+        ahrs = new AHRS(SPI.Port.kMXP);
         ahrs.enableLogging(true);
         //TODO CLEAN THIS UP - I don't think we want this every time, will need to research more.
         ahrs.zeroYaw();
@@ -43,7 +43,7 @@ public class InertialSensor extends SubsystemBase {
         SmartDashboard.putNumber(   "IMU_CompassHeading",   ahrs.getCompassHeading());
 
         /* Display 9-axis Heading (requires magnetometer calibration to be useful)  */
-        SmartDashboard.putNumber(   "IMU_FusedHeading",     ahrs.getFusedHeading());
+        //SmartDashboard.putNumber(   "IMU_FusedHeading",     ahrs.getFusedHeading());
 
         /* These functions are compatible w/the WPI Gyro Class, providing a simple  */
         /* path for upgrading from the Kit-of-Parts gyro to the navx MXP            */
@@ -64,27 +64,27 @@ public class InertialSensor extends SubsystemBase {
         /* of these errors due to single (velocity) integration and especially      */
         /* double (displacement) integration.                                       */
 
-        SmartDashboard.putNumber(   "Velocity_X",           ahrs.getVelocityX());
-        SmartDashboard.putNumber(   "Velocity_Y",           ahrs.getVelocityY());
-        SmartDashboard.putNumber(   "Displacement_X",       ahrs.getDisplacementX());
-        SmartDashboard.putNumber(   "Displacement_Y",       ahrs.getDisplacementY());
+        // SmartDashboard.putNumber(   "Velocity_X",           ahrs.getVelocityX());
+        // SmartDashboard.putNumber(   "Velocity_Y",           ahrs.getVelocityY());
+        // SmartDashboard.putNumber(   "Displacement_X",       ahrs.getDisplacementX());
+        // SmartDashboard.putNumber(   "Displacement_Y",       ahrs.getDisplacementY());
 
         /* Display Raw Gyro/Accelerometer/Magnetometer Values                       */
         /* NOTE:  These values are not normally necessary, but are made available   */
         /* for advanced users.  Before using this data, please consider whether     */
         /* the processed data (see above) will suit your needs.                     */
 
-        SmartDashboard.putNumber(   "RawGyro_X",            ahrs.getRawGyroX());
-        SmartDashboard.putNumber(   "RawGyro_Y",            ahrs.getRawGyroY());
-        SmartDashboard.putNumber(   "RawGyro_Z",            ahrs.getRawGyroZ());
-        SmartDashboard.putNumber(   "RawAccel_X",           ahrs.getRawAccelX());
-        SmartDashboard.putNumber(   "RawAccel_Y",           ahrs.getRawAccelY());
-        SmartDashboard.putNumber(   "RawAccel_Z",           ahrs.getRawAccelZ());
-        SmartDashboard.putNumber(   "RawMag_X",             ahrs.getRawMagX());
-        SmartDashboard.putNumber(   "RawMag_Y",             ahrs.getRawMagY());
-        SmartDashboard.putNumber(   "RawMag_Z",             ahrs.getRawMagZ());
-        SmartDashboard.putNumber(   "IMU_Temp_C",           ahrs.getTempC());
-        SmartDashboard.putNumber(   "IMU_Timestamp",        ahrs.getLastSensorTimestamp());
+        // SmartDashboard.putNumber(   "RawGyro_X",            ahrs.getRawGyroX());
+        // SmartDashboard.putNumber(   "RawGyro_Y",            ahrs.getRawGyroY());
+        // SmartDashboard.putNumber(   "RawGyro_Z",            ahrs.getRawGyroZ());
+        // SmartDashboard.putNumber(   "RawAccel_X",           ahrs.getRawAccelX());
+        // SmartDashboard.putNumber(   "RawAccel_Y",           ahrs.getRawAccelY());
+        // SmartDashboard.putNumber(   "RawAccel_Z",           ahrs.getRawAccelZ());
+        // SmartDashboard.putNumber(   "RawMag_X",             ahrs.getRawMagX());
+        // SmartDashboard.putNumber(   "RawMag_Y",             ahrs.getRawMagY());
+        // SmartDashboard.putNumber(   "RawMag_Z",             ahrs.getRawMagZ());
+        // SmartDashboard.putNumber(   "IMU_Temp_C",           ahrs.getTempC());
+        // SmartDashboard.putNumber(   "IMU_Timestamp",        ahrs.getLastSensorTimestamp());
 
         /* Omnimount Yaw Axis Information                                           */
         /* For more info, see http://navx-mxp.kauailabs.com/installation/omnimount  */
@@ -100,10 +100,10 @@ public class InertialSensor extends SubsystemBase {
         /* orientation data.  All of the Yaw, Pitch and Roll Values can be derived  */
         /* from the Quaternions.  If interested in motion processing, knowledge of  */
         /* Quaternions is highly recommended.                                       */
-        SmartDashboard.putNumber(   "QuaternionW",          ahrs.getQuaternionW());
-        SmartDashboard.putNumber(   "QuaternionX",          ahrs.getQuaternionX());
-        SmartDashboard.putNumber(   "QuaternionY",          ahrs.getQuaternionY());
-        SmartDashboard.putNumber(   "QuaternionZ",          ahrs.getQuaternionZ());
+        // SmartDashboard.putNumber(   "QuaternionW",          ahrs.getQuaternionW());
+        // SmartDashboard.putNumber(   "QuaternionX",          ahrs.getQuaternionX());
+        // SmartDashboard.putNumber(   "QuaternionY",          ahrs.getQuaternionY());
+        // SmartDashboard.putNumber(   "QuaternionZ",          ahrs.getQuaternionZ());
 
         /* Connectivity Debugging Support                                           */
         // SmartDashboard.putNumber(   "IMU_Byte_Count",       ahrs.getByteCount());

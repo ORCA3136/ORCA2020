@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.auto.Auto;
+import frc.robot.auto.DriveOnlyAuto;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Drivetrain;
@@ -66,7 +67,8 @@ public class RobotContainer
 
     
 
-    m_chooser.setDefaultOption("Auto 1", new Auto(m_drivetrain,m_flyWheel,m_conveyor));
+    m_chooser.setDefaultOption("Shoot Then Drive", new Auto(m_drivetrain,m_flyWheel,m_conveyor));
+    m_chooser.addOption("Drive Only",new DriveOnlyAuto(m_drivetrain));
     SmartDashboard.putData("Auto Chooser: ", m_chooser);
 
     // Configure the button bindings
@@ -92,16 +94,14 @@ public class RobotContainer
   // Right Bumper Button - Deploy Intake and start pulling in
     new JoystickButton(controller, XboxController.Button.kBumperRight.value)
       .whenHeld(new InstantCommand(m_intake::deployIntake, m_intake)  
-        .andThen(new InstantCommand(m_conveyor::stopConveyor, m_conveyor)) 
-          .andThen(new WaitCommand(0.5))) 
-    .whenReleased(new InstantCommand(m_intake::retractIntake, m_intake));
+        .andThen(new InstantCommand(m_conveyor::stopConveyor, m_conveyor))); 
+       
 
     // Left Bumper Button - Deploy Intake and start pulling in
     new JoystickButton(controller, XboxController.Button.kBumperLeft.value)
-  .whenHeld(new InstantCommand(m_intake::deployIntake, m_intake)
-    .andThen(new InstantCommand(m_conveyor::stopConveyor, m_conveyor)) 
-      .andThen(new WaitCommand(0.5)))
-  .whenReleased(new InstantCommand(m_intake::retractIntake, m_intake));
+  .whenHeld(new InstantCommand(m_intake::retractIntake, m_intake)
+    .andThen(new InstantCommand(m_conveyor::stopConveyor, m_conveyor))); 
+   
   // left stick - intake in
   new JoystickButton(controller, XboxController.Button.kStickLeft.value)
   .whenHeld(new InstantCommand(()  -> m_intake.intakeIn(),m_intake))
@@ -111,6 +111,20 @@ public class RobotContainer
   new JoystickButton(controller, XboxController.Button.kStickRight.value)
   .whenHeld(new InstantCommand(()  -> m_intake.intakeOut(),m_intake))
     .whenReleased(new InstantCommand(m_intake::intakeStop, m_intake));
+
+  //A few test buttons for PID
+  new JoystickButton(controller, XboxController.Button.kA.value)
+  .whenHeld(new InstantCommand(m_flyWheel::runFlyWheelWithPID,m_intake))
+  .whenReleased(new InstantCommand(m_flyWheel::stop, m_flyWheel));
+
+  new JoystickButton(controller, XboxController.Button.kB.value)
+  .whenHeld(new InstantCommand(()->m_flyWheel.runFlyWheelWithPID(500.00)))
+  .whenReleased(new InstantCommand(m_flyWheel::stop, m_flyWheel));
+  
+  new JoystickButton(controller, XboxController.Button.kY.value)
+  .whenHeld(new InstantCommand(()->m_conveyor.closeHopperToFlywheel(), m_conveyor));
+  
+  
 
   /*
   *
@@ -135,18 +149,34 @@ public class RobotContainer
 
   //RB Button - Start flywheel, and run the powercells out
   new JoystickButton(Joystick,m_constants.kLT)
-   .whenHeld(new InstantCommand(() -> m_flyWheel.runFlywheelWithoutPID())
+   .whenHeld(new InstantCommand(() -> m_flyWheel.runFlywheelSector())
    .andThen(new InstantCommand(m_conveyor::stopConveyor, m_conveyor))
-      .andThen(new WaitCommand(2))
+      .andThen(new WaitCommand(.5))
         .andThen(new InstantCommand(m_conveyor::openHopperToFlyWheel, m_conveyor)
-          .andThen(new WaitCommand(2))
+          .andThen(new WaitCommand(.5))
             .andThen(new InstantCommand(m_conveyor::raiseConveyor, m_conveyor))))
     .whenReleased(new InstantCommand(m_conveyor::stopConveyor, m_conveyor)
     .andThen(new InstantCommand(m_flyWheel::stop, m_flyWheel))
-      .andThen(new WaitCommand(2))
+      .andThen(new WaitCommand(1))
         .andThen(new InstantCommand(m_conveyor::closeHopperToFlywheel, m_conveyor)));
 
+  //B Button - Start flywheel, and run the powercells out
+  new JoystickButton(Joystick,m_constants.kB)
+   .whenHeld(new InstantCommand(() -> m_flyWheel.runFlywheelTrench())
+   .andThen(new InstantCommand(m_conveyor::stopConveyor, m_conveyor))
+      .andThen(new WaitCommand(.5))
+        .andThen(new InstantCommand(m_conveyor::openHopperToFlyWheel, m_conveyor)
+          .andThen(new WaitCommand(.5))
+            .andThen(new InstantCommand(m_conveyor::raiseConveyor, m_conveyor))))
+    .whenReleased(new InstantCommand(m_conveyor::stopConveyor, m_conveyor)
+    .andThen(new InstantCommand(m_flyWheel::stop, m_flyWheel))
+      .andThen(new WaitCommand(1))
+        .andThen(new InstantCommand(m_conveyor::closeHopperToFlywheel, m_conveyor)));
 
+  //Rt Button - Start flywheel, and run the powercells out
+new JoystickButton(Joystick,m_constants.kRT)
+.whenPressed(new InstantCommand(() -> m_drivetrain.specificDrive(10)))
+  .whenReleased(new InstantCommand( m_drivetrain::stop,  m_drivetrain));
 
 
  }
