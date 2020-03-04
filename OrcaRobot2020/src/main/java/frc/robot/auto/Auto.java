@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.commands.DriveOnlyAutonomousCommand;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Flywheel;
@@ -27,7 +28,8 @@ public class Auto extends SequentialCommandGroup {
     m_fly = fw;
   
     addCommands(
-      new DriveOnlyAuto(dt),
+      new DriveOnlyAutonomousCommand(dt),
+      new InstantCommand(dt::stop, dt),
       new InstantCommand(m_Conveyor::closeHopperToFlywheel, m_Conveyor),
       new InstantCommand(() -> m_fly.runFlywheelSector()),
       new InstantCommand(m_Conveyor::stopConveyor, m_Conveyor),
@@ -39,10 +41,10 @@ public class Auto extends SequentialCommandGroup {
      new InstantCommand(m_Conveyor::stopConveyor, m_Conveyor),
      new InstantCommand(m_Conveyor::closeHopperToFlywheel, m_Conveyor),
      new WaitCommand(1),
-     new InstantCommand(m_Conveyor::closeHopperToFlywheel, m_Conveyor),
-     new InstantCommand(()-> m_Drivetrain.autonomousDrive()),
-     new WaitCommand(1),
-     new InstantCommand(()-> m_Drivetrain.stop())
+     new InstantCommand(m_Conveyor::closeHopperToFlywheel, m_Conveyor)
+    //  new InstantCommand(()-> m_Drivetrain.autonomousDrive()),
+    //  new WaitCommand(1),
+    //  new InstantCommand(()-> m_Drivetrain.stop())
      
     );
     
