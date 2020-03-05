@@ -12,10 +12,12 @@ import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -72,17 +74,18 @@ public class Drivetrain extends SubsystemBase {
   public void visionAlignment(Limelight m_Limelight){
 
     boolean m_LimelightHasValidTarget = m_Limelight.findTarget();
-   
+    
+    
+
     if (m_LimelightHasValidTarget){
 
       //double m_LimelightDriveCommand = m_Limelight.getDrive();
       double m_LimelightSteerCommand = m_Limelight.getSteer();
       SmartDashboard.putNumber("Steer Command: ", m_LimelightSteerCommand);
-      // diffDrive.arcadeDrive(0,m_LimelightSteerCommand);
-
+      diffDrive.arcadeDrive(0,m_LimelightSteerCommand);
     }else{
 
-     //autoSteer.arcadeDrive(0.0,0.0);
+     diffDrive.arcadeDrive(0.0,0.0);
 
     }
   }

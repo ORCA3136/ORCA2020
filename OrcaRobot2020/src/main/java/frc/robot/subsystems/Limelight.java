@@ -8,13 +8,14 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.networktables.*;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
 public class Limelight extends SubsystemBase{
 
-  private final double STEER_K = 0.03;
+  private final double STEER_K = 0.041;
   private final double DRIVE_K = 0.26;
   private final double MAX_DRIVE = 0.6;
   private final double DESIRED_TARGET_AREA = 13.0;
@@ -29,32 +30,36 @@ public class Limelight extends SubsystemBase{
   public Limelight(){
     
     m_LimelightHasValidTarget = false;
-    NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
+    NetworkTableInstance.getDefault().getTable("limelight-orca").getEntry("ledMode").setNumber(1);
+
+
+    tv = NetworkTableInstance.getDefault().getTable("limelight-orca").getEntry("tv").getDouble(0);
+    tx = NetworkTableInstance.getDefault().getTable("limelight-orca").getEntry("tx").getDouble(0);
+    ta = NetworkTableInstance.getDefault().getTable("limelight-orca").getEntry("ta").getDouble(0);
 
 
   }
   
   public void periodic(){
 
-    tv = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
-    tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
-    ta = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ta").getDouble(0);
+    tv = NetworkTableInstance.getDefault().getTable("limelight-orca").getEntry("tv").getDouble(0);
+    tx = NetworkTableInstance.getDefault().getTable("limelight-orca").getEntry("tx").getDouble(0);
+    ta = NetworkTableInstance.getDefault().getTable("limelight-orca").getEntry("ta").getDouble(0);
 
     SmartDashboard.putNumber("tv: ", tv);
     SmartDashboard.putNumber("tx: ", tx);
     SmartDashboard.putNumber("ta: ", ta);
     SmartDashboard.putNumber("ledMode:", NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").getDouble(0));
+    SmartDashboard.putBoolean("ValidTarget: ", m_LimelightHasValidTarget);
 
   }
 
 
   public boolean findTarget(){
-    
+  
     m_LimelightHasValidTarget = false;
 
-    NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3);
-
-    if(tv > 1){
+    if(tv >= 1){
 
       m_LimelightHasValidTarget = true;
       return m_LimelightHasValidTarget;
@@ -67,11 +72,15 @@ public class Limelight extends SubsystemBase{
 
   }
 
+  public void startTracking(){
+    NetworkTableInstance.getDefault().getTable("limelight-orca").getEntry("ledMode").setNumber(3);
+  }
+
 
   public void stopTracking(){
 
     m_LimelightHasValidTarget = false;
-    NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
+    NetworkTableInstance.getDefault().getTable("limelight-orca").getEntry("ledMode").setNumber(1);
   }
 
   public double getDrive(){
@@ -94,7 +103,7 @@ public class Limelight extends SubsystemBase{
 
     double steer_cmd = tx * STEER_K;
     
-    return steer_cmd;
+    return steer_cmd * -1;
 
   }
 
