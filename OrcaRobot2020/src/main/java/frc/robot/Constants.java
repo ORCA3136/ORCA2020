@@ -63,8 +63,8 @@ public final class Constants {
     public static final double flyWheelF = 0.00017;
     
     //Speeds for Drivetrain motors
-    public static final double kLeftDriveScaling = 0.5;
-    public static final double kRightDriveScaling = 0.5;
+    public static final double kLeftDriveScaling = 0.7;
+    public static final double kRightDriveScaling = 0.7;
     public static final double kWinchSpeed = 0.5;
     public static final double kAutoSpeed = -0.5;
 

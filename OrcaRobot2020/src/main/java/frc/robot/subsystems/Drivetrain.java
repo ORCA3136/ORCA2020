@@ -77,12 +77,12 @@ public class Drivetrain extends SubsystemBase {
 
       //double m_LimelightDriveCommand = m_Limelight.getDrive();
       double m_LimelightSteerCommand = m_Limelight.getSteer();
-
-      //autoSteer.arcadeDrive(0,m_LimelightSteerCommand);
+      SmartDashboard.putNumber("Steer Command: ", m_LimelightSteerCommand);
+      // diffDrive.arcadeDrive(0,m_LimelightSteerCommand);
 
     }else{
 
-     // autoSteer.arcadeDrive(0.0,0.0);
+     //autoSteer.arcadeDrive(0.0,0.0);
 
     }
   }

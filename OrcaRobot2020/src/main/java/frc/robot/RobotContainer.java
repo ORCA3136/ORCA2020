@@ -145,7 +145,8 @@ public class RobotContainer
 
   //Auto Align - LB/L1
   new JoystickButton(Joystick,m_constants.kLB)
-    .whenHeld(new InstantCommand(() -> m_drivetrain.visionAlignment(m_limelight)));
+    .whenHeld(new InstantCommand(() -> m_drivetrain.visionAlignment(m_limelight)))
+    .whenReleased(new InstantCommand(() -> m_limelight.stopTracking()));
 
   //RB Button - Start flywheel, and run the powercells out
   new JoystickButton(Joystick,m_constants.kLT)

@@ -20,7 +20,6 @@ public class Limelight extends SubsystemBase{
   private final double DESIRED_TARGET_AREA = 13.0;
 
   private double tv, tx, ta;
-  private NetworkTableEntry ledMode;
 
   public boolean m_LimelightHasValidTarget;
   
@@ -41,20 +40,19 @@ public class Limelight extends SubsystemBase{
     tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
     ta = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ta").getDouble(0);
 
-     //NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode");  
+    SmartDashboard.putNumber("tv: ", tv);
+    SmartDashboard.putNumber("tx: ", tx);
+    SmartDashboard.putNumber("ta: ", ta);
+    SmartDashboard.putNumber("ledMode:", NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").getDouble(0));
 
-    //SmartDashboard.putNumber("ledMode: ", 0);
-
-    
-    //changeLedMode = SmartDashboard.getNumber("ledMode: ", 1);
-    
-    //ledMode.setNumber(changeLedMode);
   }
 
 
   public boolean findTarget(){
     
     m_LimelightHasValidTarget = false;
+
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3);
 
     if(tv > 1){
 
@@ -73,7 +71,7 @@ public class Limelight extends SubsystemBase{
   public void stopTracking(){
 
     m_LimelightHasValidTarget = false;
-    
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
   }
 
   public double getDrive(){
