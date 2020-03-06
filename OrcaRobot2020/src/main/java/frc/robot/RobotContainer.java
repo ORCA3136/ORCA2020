@@ -91,13 +91,13 @@ public class RobotContainer
   *
   */
    
-  // Right Stick Button - Deploy Intake and start pulling in
+  // Right Stick Button - Deploy Intake
     new JoystickButton(controller, XboxController.Button.kStickRight.value)
       .whenHeld(new InstantCommand(m_intake::deployIntake, m_intake)  
         .andThen(new InstantCommand(m_conveyor::stopConveyor, m_conveyor))); 
        
 
-    // Left Stick Button - Deploy Intake and start pulling in
+    // Left Stick Button - Retract Intake
     new JoystickButton(controller, XboxController.Button.kStickLeft.value)
   .whenHeld(new InstantCommand(m_intake::retractIntake, m_intake)
     .andThen(new InstantCommand(m_conveyor::stopConveyor, m_conveyor))); 
@@ -112,17 +112,17 @@ public class RobotContainer
   .whenHeld(new InstantCommand(()  -> m_intake.intakeOut(),m_intake))
     .whenReleased(new InstantCommand(m_intake::intakeStop, m_intake));
 
-  //A few test buttons for PID
-  new JoystickButton(controller, XboxController.Button.kA.value)
-  .whenHeld(new InstantCommand(m_flyWheel::runFlyWheelWithPID,m_intake))
-  .whenReleased(new InstantCommand(m_flyWheel::stop, m_flyWheel));
+  // //A few test buttons for PID
+  // new JoystickButton(controller, XboxController.Button.kA.value)
+  // .whenHeld(new InstantCommand(m_flyWheel::runFlyWheelWithPID,m_intake))
+  // .whenReleased(new InstantCommand(m_flyWheel::stop, m_flyWheel));
 
-  new JoystickButton(controller, XboxController.Button.kB.value)
-  .whenHeld(new InstantCommand(()->m_flyWheel.runFlyWheelWithPID(500.00)))
-  .whenReleased(new InstantCommand(m_flyWheel::stop, m_flyWheel));
+  // new JoystickButton(controller, XboxController.Button.kB.value)
+  // .whenHeld(new InstantCommand(()->m_flyWheel.runFlyWheelWithPID(1500.00)))
+  // .whenReleased(new InstantCommand(m_flyWheel::stop, m_flyWheel));
   
-  new JoystickButton(controller, XboxController.Button.kY.value)
-  .whenHeld(new InstantCommand(()->m_conveyor.closeHopperToFlywheel(), m_conveyor));
+  // new JoystickButton(controller, XboxController.Button.kY.value)
+  // .whenHeld(new InstantCommand(()->m_conveyor.closeHopperToFlywheel(), m_conveyor));
   
   
 
@@ -144,11 +144,11 @@ public class RobotContainer
       .whenReleased(new InstantCommand(m_climber::retractClimber, m_climber));
 
   //Auto Align - LB/L1
-  new JoystickButton(Joystick,m_constants.kLB)
+  new JoystickButton(Joystick,m_constants.kY)
     .whileHeld(new InstantCommand(() -> m_limelight.startTracking())
     .andThen(new InstantCommand(() -> m_drivetrain.visionAlignment(m_limelight))));
 
-  new JoystickButton(Joystick, m_constants.kLB)
+  new JoystickButton(Joystick, m_constants.kY)
     .whenReleased(new InstantCommand(() -> m_limelight.stopTracking()));
 
   //RB Button - Start flywheel, and run the powercells out

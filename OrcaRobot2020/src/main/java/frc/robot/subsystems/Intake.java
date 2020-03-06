@@ -59,8 +59,8 @@ public class Intake extends SubsystemBase {
    * Runs the intake motor outward
    */
   public void intakeOut() {
-    bottomRoller.set(Constants.kConveyorSpeed);
-    topRoller.set(Constants.kConveyorSpeed * -1);
+    bottomRoller.set(Constants.kConveyorSpeed/2);
+    topRoller.set((Constants.kConveyorSpeed * -1)/2);
     m_convey.lowerConveyor();
   }
  

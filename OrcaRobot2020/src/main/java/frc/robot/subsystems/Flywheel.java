@@ -88,8 +88,8 @@ public class Flywheel extends SubsystemBase {
                 kFF = ff;
             }
             if ((point != setPoint)) {
-                SmartDashboard.putNumber("POINT", point);
-                controller.setReference(point, ControlType.kVelocity);
+                //SmartDashboard.putNumber("POINT", point);
+                controller.setReference(setPoint, ControlType.kVelocity);
                 setPoint = point;
             }
 
@@ -124,7 +124,7 @@ public class Flywheel extends SubsystemBase {
         new PrintCommand(">>runFlywheelWithPID");
         pidEnabled = true;
         SmartDashboard.putNumber("Target FlyWheel Velocity: ", Constants.flyWheelSetPoint);
-        setPoint = 1111;
+        setPoint = 700;
         new PrintCommand("runFlywheeWithPID");// updateConstants();
         // controller.setReference(Constants.flyWheelSetPoint, ControlType.kVelocity);
 

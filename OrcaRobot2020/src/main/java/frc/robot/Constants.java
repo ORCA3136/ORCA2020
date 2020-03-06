@@ -63,8 +63,8 @@ public final class Constants {
     public static final double flyWheelF = 0.00017;
     
     //Speeds for Drivetrain motors
-    public static final double kLeftDriveScaling = 0.7;
-    public static final double kRightDriveScaling = 0.7;
+    public static final double kLeftDriveScaling = 1;
+    public static final double kRightDriveScaling = 1;
     public static final double kWinchSpeed = 0.5;
     public static final double kAutoSpeed = -0.5;
 
@@ -77,11 +77,10 @@ public final class Constants {
     public static boolean ToggleSoli = false;
 
     //JoyStick buttons
-    public final int kY = 0;
     public final int kX = 1;
     public final int kA = 2;
     public final int kB = 3;
-    public final int kLB = 4;
+    public final int kY = 4;
     public final int kRB = 5;
     public final int kRT = 6;
     public final int kLT = 7;
