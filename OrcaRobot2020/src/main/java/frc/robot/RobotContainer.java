@@ -177,11 +177,18 @@ public class RobotContainer
       .andThen(new WaitCommand(1))
         .andThen(new InstantCommand(m_conveyor::closeHopperToFlywheel, m_conveyor)));
 
-  //Rt Button - Start flywheel, and run the powercells out
+  //Rb Button - Drive FORWARD 10
 new JoystickButton(Joystick,m_constants.kRB)
 .whenPressed(new InstantCommand(() -> m_drivetrain.specificDrive(10)))
   .whenReleased(new InstantCommand( m_drivetrain::stop,  m_drivetrain));
 
+  //TEST BUTTON - TO RAISE CONVEOR A SMALL AMT
+  new JoystickButton(controller, XboxController.Button.kA.value)
+  .whenHeld(new InstantCommand(()->m_conveyor.specificRaise(10), m_conveyor));
+ 
+  //TEST BUTTON - TO LOWER CONVEYOR A SMALL AMT
+  new JoystickButton(controller, XboxController.Button.kB.value)
+  .whenHeld(new InstantCommand(()->m_conveyor.specificLower(10), m_conveyor));
 
  }
 
