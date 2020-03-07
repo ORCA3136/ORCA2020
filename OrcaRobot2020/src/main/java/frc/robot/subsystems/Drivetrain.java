@@ -123,10 +123,10 @@ public class Drivetrain extends SubsystemBase {
 
 
 //winches up
-  public void winchUp() {
+  public void winchUp(XboxController controller) {
+
     engageClimbPTO();
-    left_motors.set(Constants.kWinchSpeed);
-    right_motors.set(Constants.kWinchSpeed * -1);
+    diffDrive.tankDrive(trueRightX((controller.getY(GenericHID.Hand.kLeft) * Constants.kLeftDriveScaling)), trueRightX((controller.getY(GenericHID.Hand.kRight) * Constants.kLeftDriveScaling)), true);
   }
 
 

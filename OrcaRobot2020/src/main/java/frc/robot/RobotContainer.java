@@ -112,11 +112,7 @@ public class RobotContainer
   .whenHeld(new InstantCommand(()  -> m_intake.intakeOut(),m_intake))
     .whenReleased(new InstantCommand(m_intake::intakeStop, m_intake));
 
-      //Rt Button - Start flywheel, and run the powercells out
-  new JoystickButton(controller,XboxController.Button.kX.value)
-  .whileHeld(new InstantCommand( m_drivetrain::engageClimbPTO,  m_drivetrain))
-    .whenReleased(new InstantCommand( m_drivetrain::engageDrivePTO,  m_drivetrain));
-
+ 
   // //A few test buttons for PID
   // new JoystickButton(controller, XboxController.Button.kA.value)
   // .whenHeld(new InstantCommand(m_flyWheel::runFlyWheelWithPID,m_intake))
@@ -139,8 +135,7 @@ public class RobotContainer
   
   //Winch - X (NUKE!!!!!!!!)
   new JoystickButton(Joystick, m_constants.kX)
-  .whileHeld(new InstantCommand( m_drivetrain::engageClimbPTO,  m_drivetrain))
-    //.andThen(new InstantCommand(()->m_drivetrain.drive(controller),m_drivetrain)))
+  .whileHeld(new InstantCommand(() -> m_drivetrain.winchUp(controller),  m_drivetrain))
   .whenReleased(new InstantCommand(() -> m_drivetrain.stop())
   .andThen(new InstantCommand (() -> m_drivetrain.engageDrivePTO())));
 
