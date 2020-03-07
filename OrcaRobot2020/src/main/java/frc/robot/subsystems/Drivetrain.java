@@ -123,8 +123,7 @@ public class Drivetrain extends SubsystemBase {
 
 
 //winches up
-  public void winchUp(XboxController driver, Joystick JoyStick) {
-    if(driver.getYButton()||driver.getBackButton())
+  public void winchUp() {
     engageClimbPTO();
     left_motors.set(Constants.kWinchSpeed);
     right_motors.set(Constants.kWinchSpeed * -1);

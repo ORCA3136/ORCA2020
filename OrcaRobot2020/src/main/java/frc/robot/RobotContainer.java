@@ -112,6 +112,11 @@ public class RobotContainer
   .whenHeld(new InstantCommand(()  -> m_intake.intakeOut(),m_intake))
     .whenReleased(new InstantCommand(m_intake::intakeStop, m_intake));
 
+      //Rt Button - Start flywheel, and run the powercells out
+  new JoystickButton(controller,XboxController.Button.kX.value)
+  .whileHeld(new InstantCommand( m_drivetrain::engageClimbPTO,  m_drivetrain))
+    .whenReleased(new InstantCommand( m_drivetrain::engageDrivePTO,  m_drivetrain));
+
   // //A few test buttons for PID
   // new JoystickButton(controller, XboxController.Button.kA.value)
   // .whenHeld(new InstantCommand(m_flyWheel::runFlyWheelWithPID,m_intake))
@@ -134,9 +139,10 @@ public class RobotContainer
   
   //Winch - X (NUKE!!!!!!!!)
   new JoystickButton(Joystick, m_constants.kX)
-    .whenHeld(new InstantCommand(() -> m_drivetrain.winchUp(controller, Joystick)))
-     .whenReleased(new InstantCommand(() -> m_drivetrain.stop())
-     .andThen(new InstantCommand (() -> m_drivetrain.engageDrivePTO())));
+  .whileHeld(new InstantCommand( m_drivetrain::engageClimbPTO,  m_drivetrain))
+    //.andThen(new InstantCommand(()->m_drivetrain.drive(controller),m_drivetrain)))
+  .whenReleased(new InstantCommand(() -> m_drivetrain.stop())
+  .andThen(new InstantCommand (() -> m_drivetrain.engageDrivePTO())));
 
   //Climber up & Down -A (NUKE!!!!!!!!)
   new JoystickButton(Joystick,m_constants.kA)
@@ -182,7 +188,11 @@ new JoystickButton(Joystick,m_constants.kRB)
 .whenPressed(new InstantCommand(() -> m_drivetrain.specificDrive(10)))
   .whenReleased(new InstantCommand( m_drivetrain::stop,  m_drivetrain));
 
-
+  //Rt Button - Start flywheel, and run the powercells out
+  new JoystickButton(Joystick,m_constants.kStart)
+  .whileHeld(new InstantCommand(() -> m_drivetrain.engageClimbPTO()))
+    .whenReleased(new InstantCommand( m_drivetrain::engageDrivePTO,  m_drivetrain));
+  
  }
 
 
