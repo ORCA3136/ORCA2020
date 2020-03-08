@@ -92,13 +92,13 @@ public class RobotContainer
   */
    
   // Right Stick Button - Deploy Intake
-    new JoystickButton(controller, XboxController.Button.kStickRight.value)
+    new JoystickButton(controller, XboxController.Button.kB.value)
       .whenHeld(new InstantCommand(m_intake::deployIntake, m_intake)  
         .andThen(new InstantCommand(m_conveyor::stopConveyor, m_conveyor))); 
        
 
     // Left Stick Button - Retract Intake
-    new JoystickButton(controller, XboxController.Button.kStickLeft.value)
+    new JoystickButton(controller, XboxController.Button.kA.value)
   .whenHeld(new InstantCommand(m_intake::retractIntake, m_intake)
     .andThen(new InstantCommand(m_conveyor::stopConveyor, m_conveyor))); 
    
@@ -178,10 +178,6 @@ public class RobotContainer
       .andThen(new WaitCommand(1))
         .andThen(new InstantCommand(m_conveyor::closeHopperToFlywheel, m_conveyor)));
 
-  //Rt Button - Start flywheel, and run the powercells out
-new JoystickButton(Joystick,m_constants.kRB)
-.whenPressed(new InstantCommand(() -> m_drivetrain.specificDrive(10)))
-  .whenReleased(new InstantCommand( m_drivetrain::stop,  m_drivetrain));
 
   //Rt Button - Start flywheel, and run the powercells out
   new JoystickButton(Joystick,m_constants.kStart)

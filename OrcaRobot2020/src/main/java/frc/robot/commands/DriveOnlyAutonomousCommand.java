@@ -14,14 +14,14 @@ public class DriveOnlyAutonomousCommand extends CommandBase {
   private final Drivetrain driveTrain;
   private boolean complete = false;
   public DriveOnlyAutonomousCommand(Drivetrain subsystem) {
-    SmartDashboard.putNumber("Drive Distance", 55);
+    SmartDashboard.putNumber("Drive Distance", 42);
     driveTrain = subsystem;
     addRequirements(driveTrain);
   }
 
   @Override
   public void initialize() {
-    double distance = SmartDashboard.getNumber("Drive Distance", 55);
+    double distance = SmartDashboard.getNumber("Drive Distance", -42);
     complete = driveTrain.specificDrive(distance);
   }
 

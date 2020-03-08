@@ -112,7 +112,7 @@ public class Drivetrain extends SubsystemBase {
     while(currentRevolutions<totalRevolutions)
     {
       //set the motors to running
-      diffDrive.tankDrive(Constants.kAutoSpeed, Constants.kAutoSpeed,true);
+      diffDrive.tankDrive(Constants.kAutoSpeedL, Constants.kAutoSpeedR,true);
       currentRevolutions = getLeftEncoder().getPosition() * perRev;
       SmartDashboard.putNumber("Current Revs", currentRevolutions);
     }
@@ -140,13 +140,23 @@ public class Drivetrain extends SubsystemBase {
     }
   }
 //manual drive
-  public void drive( XboxController controller) 
+  public void driveSlow( XboxController controller) 
   {
       engageDrivePTO();
-      diffDrive.tankDrive(trueRightX((controller.getY(GenericHID.Hand.kLeft) * Constants.kLeftDriveScaling)), trueRightX((controller.getY(GenericHID.Hand.kRight) * Constants.kLeftDriveScaling)), true);
+      diffDrive.tankDrive(trueRightX((controller.getY(GenericHID.Hand.kLeft) * Constants.kLeftDriveScaling/2)), trueRightX((controller.getY(GenericHID.Hand.kRight) * Constants.kLeftDriveScaling/2)), true);
       //left_motors.set(trueLeftX((controller.getY(GenericHID.Hand.kLeft) * Constants.kLeftDriveScaling)));
      
   }
+
+  //slow manual drive
+  public void drive( XboxController controller) 
+  {
+      engageDrivePTO();
+      diffDrive.tankDrive(trueRightX((controller.getY(GenericHID.Hand.kLeft)* Constants.kLeftDriveScaling)), trueRightX((controller.getY(GenericHID.Hand.kRight)* Constants.kRightDriveScaling)), true);
+      //left_motors.set(trueLeftX((controller.getY(GenericHID.Hand.kLeft) * Constants.kLeftDriveScaling)));
+     
+  }
+
 //fixes deadzone
   public double trueRightX(double RY) {
     // Used t get the absolute position of our Left control stick Y-axis (removes
