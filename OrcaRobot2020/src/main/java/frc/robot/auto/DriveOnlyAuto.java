@@ -13,7 +13,7 @@ public class DriveOnlyAuto extends SequentialCommandGroup
     public DriveOnlyAuto(Drivetrain driveTrain)
     {
         addCommands(
-            new DriveOnlyAutonomousCommand(driveTrain),
+            new DriveOnlyAutonomousCommand(driveTrain).withTimeout(14), //added timeout to make sure the issue with encoders not reaching ticks is eliminated
             new PrintCommand("Completed Drive Auto Command"),
             new InstantCommand(driveTrain::stop, driveTrain)
         );

@@ -7,6 +7,7 @@
 
 package frc.robot.subsystems;
 
+import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
@@ -14,6 +15,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
@@ -24,6 +26,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import edu.wpi.first.wpilibj.SPI;
 
 
 
@@ -36,7 +39,7 @@ public class Drivetrain extends SubsystemBase {
   private CANSparkMax[] motors;
   private SpeedControllerGroup right_motors;
   private SpeedControllerGroup left_motors;
-  DoubleSolenoid PTOSoli = new DoubleSolenoid(Constants.kPTOForward, Constants.kPTOReverse);
+  private DoubleSolenoid PTOSoli = new DoubleSolenoid(Constants.kPTOForward, Constants.kPTOReverse);
   private DifferentialDrive diffDrive;  
 
   private CANEncoder leftEncoder;
@@ -44,6 +47,8 @@ public class Drivetrain extends SubsystemBase {
     
   private CANPIDController leftController;
   private CANPIDController rightController;
+
+  private AHRS ahrs;
   
 
   public Drivetrain() {
@@ -66,6 +71,18 @@ public class Drivetrain extends SubsystemBase {
     rightController = motors[2].getPIDController();
     rightController.setFeedbackDevice(rightEncoder);
     diffDrive = new DifferentialDrive(left_motors, right_motors);
+    try
+    {
+    ahrs = new AHRS(SPI.Port.kMXP);
+    ahrs.enableLogging(true);
+    //TODO CLEAN THIS UP - I don't think we want this every time, will need to research more.
+    ahrs.zeroYaw();
+
+    }
+    catch(RuntimeException ex)
+    {
+        DriverStation.reportError("Error instantating NavX: "+ex.getMessage(),true);
+    }
     engageDrivePTO();
   }
   
@@ -179,50 +196,88 @@ public class Drivetrain extends SubsystemBase {
     }
     return stick;
   }
-//stops motorsS
-  public void stop() {
-    for (CANSparkMax t : motors) {
-      t.set(0);
+  //stops motorsS
+    public void stop() {
+      for (CANSparkMax t : motors) {
+        t.set(0);
+      }
     }
+
+    @Override
+    public void periodic() {
+    // This method will be called once per scheduler run
+
+    }
+
+  //fires back
+  public void engageDrivePTO(){
+    PTOSoli.set(Value.kReverse);
+  }
+  //holds 
+  public void engageClimbPTO(){
+    PTOSoli.set(Value.kForward);
   }
 
-  @Override
-  public void periodic() {
-  // This method will be called once per scheduler run
-
+  public CANEncoder getLeftEncoder()
+  {
+    return leftEncoder;
   }
 
-//fires back
-public void engageDrivePTO(){
-  PTOSoli.set(Value.kReverse);
-}
-//holds 
-public void engageClimbPTO(){
-  PTOSoli.set(Value.kForward);
-}
+  public CANEncoder getRightEncoder()
+  {
+    return rightEncoder;
+  }
 
-public CANEncoder getLeftEncoder()
-{
-  return leftEncoder;
-}
+  public CANPIDController getLeftPIDController()
+  {
+    return leftController;
+  }
 
-public CANEncoder getRightEncoder()
-{
-  return rightEncoder;
-}
-
-public CANPIDController getLeftPIDController()
-{
-  return leftController;
-}
-
-public CANPIDController getRightPIDController()
-{
-  return rightController;
-}
+  public CANPIDController getRightPIDController()
+  {
+    return rightController;
+  }
 
 
-public void initDefaultCommand() {
- // engageDrivePTO();
-}
+  public void initDefaultCommand() {
+  // engageDrivePTO();
+  }
+  /**
+   * method to cap the output that can be used for driving - makes it easy to add a button to override to .5 or 1 etc...
+   * @param maxOutput
+   */
+  public void setMaxOutput(double maxOutput) {
+    diffDrive.setMaxOutput(maxOutput);
+  }
+
+   /**
+   * Zeroes the heading of the robot.
+   */
+  public void zeroHeading() {
+    ahrs.reset();
+  }
+
+  /**
+   * Returns the heading of the robot.
+   *
+   * @return the robot's heading in degrees, from 180 to 180
+   */
+  public double getHeading() {
+    return Math.IEEEremainder(ahrs.getAngle(), 360) * 1;
+  }
+
+  /**
+   * Returns the turn rate of the robot.
+   *
+   * @return The turn rate of the robot, in degrees per second
+   */
+  public double getTurnRate() {
+    return ahrs.getRate() * 1;
+  }
+
+  public void arcadeDrive(double fwd, double rot) {
+    diffDrive.arcadeDrive(fwd, rot);
+  }
+
+
 }

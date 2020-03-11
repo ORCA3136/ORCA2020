@@ -7,13 +7,14 @@
 
 package frc.robot;
 
-
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.PIDCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -121,10 +122,20 @@ public class RobotContainer
   // new JoystickButton(controller, XboxController.Button.kB.value)
   // .whenHeld(new InstantCommand(()->m_flyWheel.runFlyWheelWithPID(1500.00)))
   // .whenReleased(new InstantCommand(m_flyWheel::stop, m_flyWheel));
-  
-  // new JoystickButton(controller, XboxController.Button.kY.value)
-  // .whenHeld(new InstantCommand(()->m_conveyor.closeHopperToFlywheel(), m_conveyor));
-  
+
+  //So theoretically this should drive straight  
+  new JoystickButton(controller, XboxController.Button.kY.value)
+  .whenHeld(new PIDCommand(
+    new PIDController(Constants.gyroDriveP, Constants.gyroDriveI,
+                      Constants.gyroDriveD),
+    // Close the loop on the turn rate
+    m_drivetrain::getTurnRate,
+    // Setpoint is 0
+    0,
+    // Pipe the output to the turning controls
+    output -> m_drivetrain.arcadeDrive(Constants.kAutoSpeed, output),
+    // Require the robot drive
+    m_drivetrain));
   
 
   /*
