@@ -35,7 +35,7 @@ public final class Constants {
     public static final int kFlyWheel_l = 7;
     public static final int kFlyWheel_R = 6;
  
- //Solinoids
+   //Solenoids
     public static final int kIntakeForward = 3;
     public static final int kIntakeReverse = 0;
     
@@ -47,6 +47,8 @@ public final class Constants {
     
     public static final int kPTOForward = 2;
     public static final int kPTOReverse = 1;
+
+    public static boolean ToggleSoli = false;
    
     //Speeds for Motors
     public static final double kIntakeSpeed =.2;
@@ -56,11 +58,11 @@ public final class Constants {
     
     //Speeds for FlyWheel motors
     public static final double kFlywheelSpeed = 1;
-
     public static final double flyWheelP = 0.0011;
     public static final double flyWheelI = 0;
     public static final double flyWheelD = 4;
     public static final double flyWheelF = 0.00017;
+    public static final double flyWheelSetPoint = -5000;
     
     //Speeds for Drivetrain motors
     public static final double kLeftDriveScaling = .9;
@@ -70,12 +72,12 @@ public final class Constants {
     public static final double kAutoSpeedL = -0.43;
 
     
+    // Min / Max Output Constants
     public static final double  kMaxOutput = 1; 
     public static final double kMinOutput = -1;
-
-    public static final double flyWheelSetPoint = -5000;
-
-    public static boolean ToggleSoli = false;
+    
+   
+   
 
     //JoyStick buttons
     public final int kX = 1;
@@ -87,6 +89,7 @@ public final class Constants {
     public final int kLT = 7;
     public final int kSelect = 8;
     public final int kStart = 9;
+
     //JoyStick Axis
     public final int kAxisX =0;
     public final int kAxisY =1;

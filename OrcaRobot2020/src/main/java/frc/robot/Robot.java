@@ -20,28 +20,26 @@ import frc.robot.subsystems.Camera;
  * project.
  */
 public class Robot extends TimedRobot {
+
+  // Declare / instantiate our Autnomous Command, Compressor, Camera, and RobotContainer
   private Command m_autonomousCommand;
   Compressor compressor = new Compressor(0);
   public RobotContainer m_robotContainer;
-
   private static Camera mCamera = new Camera();
 
-  /**
+  /*
    * This function is run when the robot is first started up and should be used
    * for any initialization code.
    */
   @Override
   public void robotInit() {
-    // Instantiate our RobotContainer. This will perform all our button bindings,
-    // and put our
-    // autonomous chooser on the dashboard.
-
+    /* Instantiate our RobotContainer. This will perform all our button bindings,
+     * and put our
+     * autonomous chooser on the dashboard.
+     */ 
     m_robotContainer = new RobotContainer();
     compressor.start();
     mCamera.startCam();
-    
-    
-  
    
   }
 
@@ -54,6 +52,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
@@ -63,6 +62,7 @@ public class Robot extends TimedRobot {
     m_robotContainer.getFlyWheel().update();
     //update the smart dashboard with intertial sensor data.
     m_robotContainer.getInertialSensor().updateDashboard();
+
   }
 
   /**
