@@ -36,7 +36,7 @@ public class Drivetrain extends SubsystemBase {
   private CANSparkMax[] motors;
   private SpeedControllerGroup right_motors;
   private SpeedControllerGroup left_motors;
-  DoubleSolenoid PTOSoli = new DoubleSolenoid(Constants.kPTOForward, Constants.kPTOReverse);
+  private DoubleSolenoid PTOSoli;
   private DifferentialDrive diffDrive;  
 
   private CANEncoder leftEncoder;
@@ -49,23 +49,33 @@ public class Drivetrain extends SubsystemBase {
   public Drivetrain() {
 //instantiates motors
     motors = new CANSparkMax[] { new CANSparkMax(Constants.rr_motor_id, MotorType.kBrushless),
-        new CANSparkMax(Constants.fr_motor_id, MotorType.kBrushless),
-        new CANSparkMax(Constants.rl_motor_id, MotorType.kBrushless),
-        new CANSparkMax(Constants.fl_motor_id, MotorType.kBrushless) };
+                                 new CANSparkMax(Constants.fr_motor_id, MotorType.kBrushless),
+                                 new CANSparkMax(Constants.rl_motor_id, MotorType.kBrushless),
+                                 new CANSparkMax(Constants.fl_motor_id, MotorType.kBrushless) };
 
     right_motors = new SpeedControllerGroup(motors[0], motors[1]);
     left_motors = new SpeedControllerGroup(motors[3], motors[2]);
-//creates leader-follower relationships
+    
+    //creates leader-follower relationships
     motors[0].follow(motors[1]);
     motors[3].follow(motors[2]);
-    //setup the encoder and pid controller for later
+    //setup the L / R Encoders
+    
     leftEncoder = motors[1].getEncoder();
-    leftController = motors[1].getPIDController();
-    leftController.setFeedbackDevice(leftEncoder);
     rightEncoder = motors[2].getEncoder();
+
+    //setup the L / R PIDControllers
+
+    leftController = motors[1].getPIDController();  
     rightController = motors[2].getPIDController();
+
+    //setup the L / R controller feedbackDevice
+    leftController.setFeedbackDevice(leftEncoder);
     rightController.setFeedbackDevice(rightEncoder);
+    
     diffDrive = new DifferentialDrive(left_motors, right_motors);
+    PTOSoli = new DoubleSolenoid(Constants.kPTOForward, Constants.kPTOReverse);
+    
     engageDrivePTO();
   }
   
@@ -83,27 +93,29 @@ public class Drivetrain extends SubsystemBase {
       double m_LimelightSteerCommand = m_Limelight.getSteer();
       SmartDashboard.putNumber("Steer Command: ", m_LimelightSteerCommand);
       diffDrive.arcadeDrive(0,m_LimelightSteerCommand);
+
     }else{
 
      diffDrive.arcadeDrive(0.0,0.0);
 
     }
   }
-//code for auto
+
+  //code for auto
   public void autonomousDrive() {
     engageDrivePTO();
     diffDrive.tankDrive(1, -1,true);
-   // left_motors.set(1);
-   // right_motors.set(-1);
   }
 
-/**
- * used to set the motors to a specific value....
- */  public boolean specificDrive(double distance) {
+  /**
+    * used to set the motors to a specific value....
+    */  
+  public boolean specificDrive(double distance) {
     boolean complete = false;
     getLeftEncoder().setPosition(0); //set the position to 0
     Double leftPosition = getLeftEncoder().getPosition();
     SmartDashboard.putNumber("Left Enc Pos: ", leftPosition);
+    
     //really only need to get this once...
     int perRev =  getLeftEncoder().getCountsPerRevolution();
     double totalRevolutions = distance*perRev;
@@ -124,7 +136,6 @@ public class Drivetrain extends SubsystemBase {
 
 //winches up
   public void winchUp(XboxController controller) {
-
     engageClimbPTO();
     diffDrive.tankDrive(trueRightX((controller.getY(GenericHID.Hand.kLeft) * Constants.kLeftDriveScaling)), trueRightX((controller.getY(GenericHID.Hand.kRight) * Constants.kLeftDriveScaling)), true);
   }
@@ -133,19 +144,16 @@ public class Drivetrain extends SubsystemBase {
 //winches down
   public void winchDown(XboxController driver) {
     if (driver.getStickButton(GenericHID.Hand.kRight) && driver.getYButton()){
-    
-    engageClimbPTO();
-    motors[1].set(Constants.kWinchSpeed);
-    motors[2].set(Constants.kWinchSpeed * -1);
+      engageClimbPTO();
+      motors[1].set(Constants.kWinchSpeed);
+      motors[2].set(Constants.kWinchSpeed * -1);
     }
   }
 //manual drive
-  public void driveSlow( XboxController controller) 
-  {
+  public void driveSlow( XboxController controller) {
       engageDrivePTO();
       diffDrive.tankDrive(trueRightX((controller.getY(GenericHID.Hand.kLeft) * Constants.kLeftDriveScaling/2)), trueRightX((controller.getY(GenericHID.Hand.kRight) * Constants.kLeftDriveScaling/2)), true);
-      //left_motors.set(trueLeftX((controller.getY(GenericHID.Hand.kLeft) * Constants.kLeftDriveScaling)));
-     
+      //left_motors.set(trueLeftX((controller.getY(GenericHID.Hand.kLeft) * Constants.kLeftDriveScaling)));   
   }
 
   //slow manual drive

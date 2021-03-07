@@ -27,7 +27,7 @@ public class Conveyor extends SubsystemBase {
     leftConveyor = new CANSparkMax(Constants.kConveyor1, MotorType.kBrushless);
     rightConveyor = new CANSparkMax(Constants.kConveyor2, MotorType.kBrushless);
     ConveySoli = new DoubleSolenoid(Constants.kHopperStopperForward, Constants.kHopperStopperReverse);
-    rightConveyor.follow(leftConveyor,true);
+    rightConveyor.follow(leftConveyor, true);
   }
 
 
@@ -51,7 +51,7 @@ public class Conveyor extends SubsystemBase {
    * Stops conveyor
    */
   public void stopConveyor() {
-    leftConveyor.set( 0);
+    leftConveyor.set(0);
     
   }
 
