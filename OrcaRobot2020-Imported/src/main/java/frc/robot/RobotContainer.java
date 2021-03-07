@@ -22,7 +22,7 @@ import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Flywheel;
-import frc.robot.subsystems.InertialSensor;
+import frc.robot.subsystems.NavX;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Limelight;
 
@@ -47,7 +47,7 @@ public class RobotContainer
   private final Flywheel m_flyWheel = new Flywheel();
   private final Limelight m_limelight = new Limelight();
   private final Climber m_climber = new Climber();
-  private final InertialSensor m_inertialSensor = new InertialSensor();
+  private final NavX m_NavX = new NavX();
   private final Constants m_constants= new Constants();
 
 
@@ -195,9 +195,9 @@ public class RobotContainer
   }
 
   // Getter for our NavX
-  public InertialSensor getInertialSensor(){
+  public NavX getInertialSensor(){
 
-    return m_inertialSensor;
+    return m_NavX;
   
   }
 

@@ -8,11 +8,11 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class InertialSensor extends SubsystemBase {
+public class NavX extends SubsystemBase {
 
     private AHRS ahrs;
 
-    public InertialSensor()
+    public NavX()
     {
         try
         {
