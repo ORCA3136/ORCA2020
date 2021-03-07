@@ -82,8 +82,6 @@ public class Drivetrain extends SubsystemBase {
   public void visionAlignment(Limelight m_Limelight){
 
     boolean m_LimelightHasValidTarget = m_Limelight.findTarget();
-    
-    
 
     if (m_LimelightHasValidTarget){
       double m_LimelightSteerCommand = m_Limelight.getSteer();
